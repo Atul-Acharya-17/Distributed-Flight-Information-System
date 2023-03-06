@@ -2,6 +2,6 @@
 
 For now type
 
-g++ client.cpp constants.hpp marshall/* proxy/* -o client.o
+g++ main.cpp constants.hpp marshall/* proxy/* communication/* client* -o client.o
 
 ./client.o

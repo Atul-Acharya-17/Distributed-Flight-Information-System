@@ -1,80 +1,100 @@
-// Client side implementation of UDP client-server model
-#include <bits/stdc++.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include <string.h>
+#include <errno.h>
+#include <netdb.h>
 #include <sys/types.h>
 #include <sys/socket.h>
-#include <arpa/inet.h>
 #include <netinet/in.h>
-#include <stdio.h>
+#include <arpa/inet.h>
+#include <iostream>
 
-#include<cassert>
+#include "client.hpp"
 
-#include "constants.hpp"
 #include "proxy/proxy.hpp"
 
-#define PORT	 8080
-#define MAXLINE 1024
-
-// Driver code
-int main() {
-	int sockfd;
-	char buffer[MAXLINE];
-	char message[MAXLINE];
-	struct sockaddr_in	 servaddr;
-
-	// Creating socket file descriptor
-	if ( (sockfd = socket(AF_INET, SOCK_DGRAM, 0)) < 0 ) {
-		perror("socket creation failed");
-		exit(EXIT_FAILURE);
-	}
-
-	memset(&servaddr, 0, sizeof(servaddr));
-	
-	// Filling server information
-	servaddr.sin_family = AF_INET;
-	servaddr.sin_port = htons(PORT);
-	servaddr.sin_addr.s_addr = INADDR_ANY;
-	
-	int n;
-	socklen_t len;
-
-	uint32_t choice;
-
-try{
-    while (true)
-    {	
-        std::cout << "Enter Functionality\n";
-
-		for (auto it = functionalities.begin(); it != functionalities.end(); ++it)
-		{
-			std::cout << it->first << ". " << it->second << '\n';
-		}
-
-		std::cin >> choice;
-
-		Proxy p;
-		p.handleInfoQuery("Atul");
-
-        sendto(sockfd, (const char *)functionalities[choice], strlen(functionalities[choice]),
-            MSG_CONFIRM, (const struct sockaddr *) &servaddr,
-                sizeof(servaddr));
-        std::cout<<"Hello message sent."<<std::endl;
-            
-        n = recvfrom(sockfd, (char *)buffer, MAXLINE,
-                    MSG_WAITALL, (struct sockaddr *) &servaddr,
-                    &len);
-        buffer[n] = '\0';
-        std::cout<<"Server : "<<buffer<<std::endl;
-    }
-
-	close(sockfd);
+void check_host_name(int hostname) { //This function returns host name for local computer
+   if (hostname == -1) {
+      perror("gethostname");
+      exit(1);
+   }
+}
+void check_host_entry(struct hostent * hostentry) { //find host info from host name
+   if (hostentry == NULL){
+      perror("gethostbyname");
+      exit(1);
+   }
+}
+void IP_formatter(char *IPbuffer) { //convert IP string to dotted decimal format
+   if (NULL == IPbuffer) {
+      perror("inet_ntoa");
+      exit(1);
+   }
 }
 
-catch(const std::exception &exec)
+Client::Client()
 {
-	std::cerr << "Exception " << exec.what();
+	this->message_id = 0;
+
+	char host[256];
+	char *IP;
+	struct hostent *host_entry;
+	int hostname;
+	hostname = gethostname(host, sizeof(host)); //find the host name
+	check_host_name(hostname);
+	host_entry = gethostbyname(host); //find host information
+	check_host_entry(host_entry);
+	IP = inet_ntoa(*((struct in_addr*) host_entry->h_addr_list[0])); //Convert into IP string
+	printf("Current Host Name: %s\n", host);
+	printf("Host IP: %s\n", IP);
+	this->ip_address = IP;
+	this->host_name = host;
 }
-	return 0;
+
+
+void Client::queryLocation()
+{
+
+	std::string source, destination;
+
+	std::cout << "Enter the source location\n";
+	std::cin >> source;
+
+	std::cout << "Enter the destination location\n";
+	std::cin >> destination;
+
+	Proxy p;
+	p.handleLocationQuery(this->ip_address, this->message_id, source, destination);
+
+}
+
+void Client::queryFlight()
+{
+	std::string flight_id;
+
+	std::cout << "Enter the flight id\n";
+	std::cin >> flight_id;
+}
+
+void Client::reserveSeats()
+{
+	std::string flight_id;
+	uint32_t num_seats;
+
+	std::cout << "Enter the flight id\n";
+	std::cin >> flight_id;
+
+	std::cout << "Enter the nummber of seats to reserve\n";
+	std::cin >> num_seats;
+
+	if (num_seats <= 0)
+	{
+		std::cerr << "You should book atleast 1 seat\n";
+		return;
+	}
+}
+
+void Client::monitorUpdates()
+{
+
 }

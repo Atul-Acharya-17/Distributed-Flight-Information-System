@@ -8,7 +8,7 @@
 #include <sys/types.h>
 #include <netinet/in.h>
 
-uint32_t unmarshall_int(unsigned char* byte_string, int start_idx) // 4 bytes = int
+uint32_t unmarshall_int(char* byte_string, int start_idx) // 4 bytes = int
 {
 
     uint32_t data = 0;
@@ -21,7 +21,7 @@ uint32_t unmarshall_int(unsigned char* byte_string, int start_idx) // 4 bytes = 
     return ntohl(data);
 }
 
-std::string unmarshall_string(unsigned char* byte_string, int start_idx, int end_idx)
+std::string unmarshall_string(char* byte_string, int start_idx, int end_idx)
 {
     std::string data;
 
