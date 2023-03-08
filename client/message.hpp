@@ -14,14 +14,14 @@ class CommunicationMessage : public Serializable  {
         size_t content_size;
 
     public:
+    CommunicationMessage(){}
+    
     CommunicationMessage(int messageType, int requestId, char* clientId, char* contents, size_t content_size) {
         this->messageType = messageType;
         this->requestId = requestId;
         this->content_size = content_size;
-        this->clientId = new char[strlen(clientId)];
-        this->contents = new char[strlen(contents)];
-        strcpy(this->clientId, clientId);
-        strcpy(this->contents, contents);
+        this->clientId = clientId;
+        this->contents = contents;
     }
 
     size_t serialize_size() const
@@ -36,23 +36,24 @@ class CommunicationMessage : public Serializable  {
     {
         int size = serialize_size();
 
-        std::cout << size << '\n';
-
         char* dataOut = new char[size + 1];
-
-        SerializablePOD<int>::serialize(dataOut, messageType, 0);
-        SerializablePOD<int>::serialize(dataOut, requestId, sizeof(int));
-        SerializablePOD<char*>::serialize(dataOut, clientId, 2 * sizeof(int));
-        SerializablePOD<size_t>::serialize(dataOut, content_size, 2 * sizeof(int) + strlen(clientId) + sizeof(size_t));
-        memcpy(dataOut + 2 * sizeof(int) + 2 * sizeof(size_t) + strlen(clientId), contents, content_size);
-
         dataOut[size] = '\0';
+
+        SerializablePOD<int>::serialize(dataOut, messageType);
+        SerializablePOD<int>::serialize(dataOut, requestId);
+        SerializablePOD<char*>::serialize(dataOut, clientId);
+        SerializablePOD<size_t>::serialize(dataOut, content_size);
         
+        memcpy(dataOut, contents, content_size);
+        dataOut += content_size;
+        
+        dataOut -= size;
+
         return dataOut;
 
     }
 
-    void deserialize(const char* dataIn)
+    void deserialize(char* dataIn)
     {
         // dataIn = SerializablePOD<int>::deserialize(dataIn, messageType);
         // dataIn = SerializablePOD<int>::deserialize(dataIn, requestId);
@@ -64,17 +65,27 @@ class CommunicationMessage : public Serializable  {
         char* ip;
         char* contents;
 
-        SerializablePOD<int>::deserialize(dataIn, message_type, 0);
+        SerializablePOD<int>::deserialize(dataIn, message_type);
         std::cout << "Message Type: " << message_type << '\n';
-        SerializablePOD<int>::deserialize(dataIn, request_id, sizeof(int));
+        SerializablePOD<int>::deserialize(dataIn, request_id);
         std::cout << "Request ID: " << request_id << '\n';
-        SerializablePOD<char*>::deserialize(dataIn, ip, 2 * sizeof(int));
-        SerializablePOD<char*>::deserialize(dataIn, contents, 2 * sizeof(int) + strlen(ip));
+        SerializablePOD<char*>::deserialize(dataIn, ip);
+        std::cout << "IP: " << ip <<'\n';
+        SerializablePOD<char*>::deserialize(dataIn, contents);
 
         this->messageType = message_type;
         this->requestId = request_id;
         this->clientId = ip;
         this->contents = contents;
+
+        int service_id;
+	    char* location;
+
+        SerializablePOD<int>::deserialize(contents, service_id);
+        std::cout << "Service ID: " << service_id <<'\n';
+        SerializablePOD<char*>::deserialize(contents, location);
+
+        std::cout <<"Location: " << location << '\n';        
     }
 
 };

@@ -64,9 +64,11 @@ void Proxy::handleFlightQuery(std::string ip, int message_id, std::string flight
 
     int service_type = 1;
 
-    SerializablePOD<int>::serialize(content_buffer, service_type, 0);
+    SerializablePOD<int>::serialize(content_buffer, service_type);
 
-    SerializablePOD<char*>::serialize(content_buffer, string_to_array(flight_id), sizeof(int));
+    SerializablePOD<char*>::serialize(content_buffer, string_to_array(flight_id));
+
+    content_buffer -= content_size;
 
     CommunicationMessage comm_message(request_type, message_id, client_ip, content_buffer, content_size);
     char* message_buffer = comm_message.serialize();

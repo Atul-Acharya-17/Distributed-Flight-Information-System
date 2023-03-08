@@ -8,6 +8,7 @@
 #include <arpa/inet.h>
 #include <netinet/in.h>
 #include "marshall/SerializablePOD.hpp"
+#include "message.hpp"
 
 #define PORT	 8080
 #define MAXLINE 1024
@@ -16,21 +17,10 @@
 void un_marshall(char* buffer)
 {
 
-	int message_type;;
-	int request_id;
-	char* ip;
-	char* contents;
+	CommunicationMessage cm;
 
-	SerializablePOD<int>::deserialize(buffer, message_type, 0);
-	std::cout << "Message Type: " << message_type << '\n';
-	SerializablePOD<int>::deserialize(buffer, request_id, sizeof(int));
-	std::cout << "Request ID: " << request_id << '\n';
-	SerializablePOD<char*>::deserialize(buffer, ip, 2 * sizeof(int));
-	std::cout << "IP: " << ip << '\n';
-	SerializablePOD<char*>::deserialize(buffer, contents, 2 * sizeof(int) + sizeof(size_t) + strlen(ip));
+	cm.deserialize(buffer);
 	
-	std::cout<< message_type << " " << request_id <<  " " << ip <<'\n';
-
 }
 
 // Driver code
