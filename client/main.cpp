@@ -53,6 +53,9 @@ int main() {
             {
                 c.queryLocation();
             }
+            if (choice==2) {
+                c.queryFlight();
+            }
 
             switch(choice)
             {

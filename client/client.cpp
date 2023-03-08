@@ -74,6 +74,9 @@ void Client::queryFlight()
 
 	std::cout << "Enter the flight id\n";
 	std::cin >> flight_id;
+
+	Proxy p;
+	p.handleFlightQuery(this->ip_address, this->message_id, flight_id);
 }
 
 void Client::reserveSeats()
