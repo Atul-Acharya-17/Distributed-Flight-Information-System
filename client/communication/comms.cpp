@@ -19,9 +19,9 @@ void Communication::setup()
 	Communication::servaddr.sin_addr.s_addr = INADDR_ANY;
 }
 
-void Communication::send(const char* message)
+void Communication::send(const char* message, size_t message_size)
 {
-    sendto(Communication::sockfd, (const char *)message, strlen(message),
+    sendto(Communication::sockfd, (const char *)message, message_size,
             MSG_CONFIRM, (const struct sockaddr *) &Communication::servaddr,
                 sizeof(Communication::servaddr));
 }

@@ -66,11 +66,11 @@ int main() {
                 default: break;
             }
 
-            Communication::send((const char *)functionalities[choice]);
-            std::cout<<"Hello message sent."<<std::endl;
+            // Communication::send((const char *)functionalities[choice]);
+            // std::cout<<"Hello message sent."<<std::endl;
                 
-            char* reply = Communication::receive();
-            std::cout<<"Server : "<<reply<<std::endl;
+            // char* reply = Communication::receive();
+            // std::cout<<"Server : "<<reply<<std::endl;
         }
 
     }

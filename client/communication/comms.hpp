@@ -22,7 +22,7 @@ class Communication
     public:
 
         static void setup();
-        static void send(const char* message);
+        static void send(const char* message, size_t message_size);
         static char* receive();
         static void terminate();
     

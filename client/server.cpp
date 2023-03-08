@@ -7,9 +7,31 @@
 #include <sys/socket.h>
 #include <arpa/inet.h>
 #include <netinet/in.h>
+#include "marshall/SerializablePOD.hpp"
 
 #define PORT	 8080
 #define MAXLINE 1024
+
+
+void un_marshall(char* buffer)
+{
+
+	int message_type;;
+	int request_id;
+	char* ip;
+	char* contents;
+
+	SerializablePOD<int>::deserialize(buffer, message_type, 0);
+	std::cout << "Message Type: " << message_type << '\n';
+	SerializablePOD<int>::deserialize(buffer, request_id, sizeof(int));
+	std::cout << "Request ID: " << request_id << '\n';
+	SerializablePOD<char*>::deserialize(buffer, ip, 2 * sizeof(int));
+	std::cout << "IP: " << ip << '\n';
+	SerializablePOD<char*>::deserialize(buffer, contents, 2 * sizeof(int) + sizeof(size_t) + strlen(ip));
+	
+	std::cout<< message_type << " " << request_id <<  " " << ip <<'\n';
+
+}
 
 // Driver code
 int main() {
@@ -50,8 +72,11 @@ int main() {
         n = recvfrom(sockfd, (char *)buffer, MAXLINE,
                     MSG_WAITALL, ( struct sockaddr *) &cliaddr,
                     &len);
+
+		std::cout << n << '\n';
         buffer[n] = '\0';
-        printf("Client : %s\n", buffer);
+        // printf("Client : %s\n", buffer);
+		un_marshall(buffer);
         sendto(sockfd, (const char *)hello, strlen(hello),
             MSG_CONFIRM, (const struct sockaddr *) &cliaddr,
                 len);

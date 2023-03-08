@@ -1,4 +1,6 @@
 #include <string>
+#include <bits/stdc++.h>
+#include <stddef.h>
 
 template <typename POD>
 class SerializablePOD
@@ -8,14 +10,15 @@ public:
     {
         return sizeof(POD);
     }
-    static char* serialize( char* target, POD value )
+
+    static void serialize( char*& target, POD value, int start_idx )
     {
-        return memcpy( target, &value, serialize_size(value) );
+        memcpy( target + start_idx, &value, serialize_size(value) );
     }
-    static const char* deserialize( const char* source, POD& target )
+
+    static void deserialize( const char* source, POD& target, int start_idx)
     {
-        memcpy( &target, source, serialize_size(target) );
-        return source + serialize_size(target);
+        memcpy( &target, source + start_idx, serialize_size(target) );
     }
 };
 
@@ -26,10 +29,18 @@ size_t SerializablePOD<char*>::serialize_size(char* str)
 }
 
 template<>
-const char* SerializablePOD<char*>::deserialize( const char* source, char*& target )
+void SerializablePOD<char*>::serialize(char*& target, char* value, int start_idx)
+{
+    SerializablePOD<size_t>::serialize(target, strlen(value), start_idx);
+    memcpy(target + start_idx + sizeof(size_t), value, strlen(value));
+}
+
+template<>
+void SerializablePOD<char*>::deserialize( const char* source, char*& target, int start_idx)
 {
     size_t length;
-    memcpy( &length, source, sizeof(size_t) );
-    memcpy( &target, source + sizeof(size_t), length );
-    return source + sizeof(size_t) + length;
+    memcpy( &length, source + start_idx, sizeof(size_t) );
+    target = new char[length + 1];
+    memcpy( target, source + start_idx + sizeof(size_t), length );
+    target[length] = '\0';
 }

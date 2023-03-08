@@ -3,54 +3,82 @@
 
 #include "../marshall/marshall.hpp"
 #include "../marshall/unmarshall.hpp"
+#include "../utils/utils.hpp"
 
 #include <bits/stdc++.h>
+#include "../message.hpp"
+
+#include "../communication/comms.hpp"
 
 
-void Proxy::handleFlightQuery(std::string ip, uint32_t message_id, std::string flight_id)
+void Proxy::handleFlightQuery(std::string ip, int message_id, std::string flight_id)
 {
-    char* message_type_buff = marshall_int(0);
-    char* client_ip_size = marshall_int(ip.size());
-    char* client_ip = marshall_string(ip);
-    char* message_id_buff = marshall_int(message_id);
-    char* flight_id_buff = marshall_string(flight_id);
-    char* service_id_buff = marshall_int(1);
-    char* flight_id_size_buff = marshall_int(flight_id.size());
+    // char* message_type_buff = marshall_int(0);
+    // char* client_ip_size = marshall_int(ip.size());
+    // char* client_ip = marshall_string(ip);
+    // char* message_id_buff = marshall_int(message_id);
+    // char* flight_id_buff = marshall_string(flight_id);
+    // char* service_id_buff = marshall_int(1);
+    // char* flight_id_size_buff = marshall_int(flight_id.size());
 
-    char* byte_string = new char[sizeof(uint32_t) * 5 + ip.size() + flight_id.size() + 1];
+    // char* byte_string = new char[sizeof(uint32_t) * 5 + ip.size() + flight_id.size() + 1];
 
-    uint32_t size = 0;
+    // uint32_t size = 0;
 
-    memcpy(byte_string, message_type_buff, sizeof(uint32_t));
-    size += sizeof(uint32_t);
+    // memcpy(byte_string, message_type_buff, sizeof(uint32_t));
+    // size += sizeof(uint32_t);
 
-    memcpy(byte_string + size, client_ip_size, sizeof(uint32_t));
-    size += sizeof(uint32_t);
+    // memcpy(byte_string + size, client_ip_size, sizeof(uint32_t));
+    // size += sizeof(uint32_t);
 
-    memcpy(byte_string + size, client_ip, ip.size());
-    size += ip.size();
+    // memcpy(byte_string + size, client_ip, ip.size());
+    // size += ip.size();
 
-    memcpy(byte_string + size, service_id_buff, sizeof(uint32_t));
-    size += sizeof(uint32_t);
+    // memcpy(byte_string + size, service_id_buff, sizeof(uint32_t));
+    // size += sizeof(uint32_t);
 
-    memcpy(byte_string + size, flight_id_size_buff, sizeof(uint32_t));
-    size += sizeof(uint32_t);
+    // memcpy(byte_string + size, flight_id_size_buff, sizeof(uint32_t));
+    // size += sizeof(uint32_t);
 
-    memcpy(byte_string + size, flight_id_buff, flight_id.size());
-    size += flight_id.size();
+    // memcpy(byte_string + size, flight_id_buff, flight_id.size());
+    // size += flight_id.size();
 
-    byte_string[size] = '\0';
+    // byte_string[size] = '\0';
 
-    uint32_t mt = unmarshall_int(byte_string, 0);
-    uint32_t ip_size = unmarshall_int(byte_string, sizeof(uint32_t));
-    std::string i = unmarshall_string(byte_string, 2*sizeof(uint32_t), 2*sizeof(uint32_t) + ip_size);
+    // uint32_t mt = unmarshall_int(byte_string, 0);
+    // uint32_t ip_size = unmarshall_int(byte_string, sizeof(uint32_t));
+    // std::string i = unmarshall_string(byte_string, 2*sizeof(uint32_t), 2*sizeof(uint32_t) + ip_size);
 
-    std::cout << mt << " " << i << '\n';
+    // std::cout << mt << " " << i << '\n';
 
+    // char* byte_string = new char[sizeof(uint32_t) * 5 + ip.size() + flight_id.size() + 1];
+
+    int request_type = 0;
+    char* client_ip = string_to_array(ip);
+
+    size_t content_size = sizeof(int) + sizeof(size_t) + flight_id.size(); // Service type, type of length, length of string
+
+    char* content_buffer = new char[content_size + 1];
+
+    content_buffer[content_size] = '\0';
+
+    int service_type = 1;
+
+    SerializablePOD<int>::serialize(content_buffer, service_type, 0);
+
+    SerializablePOD<char*>::serialize(content_buffer, string_to_array(flight_id), sizeof(int));
+
+    CommunicationMessage comm_message(request_type, message_id, client_ip, content_buffer, content_size);
+    char* message_buffer = comm_message.serialize();
+
+    Communication::send(message_buffer, comm_message.serialize_size() + 1);
+
+    char* reply = Communication::receive();
+    std::cout << "Reply from server: " << reply <<'\n';
 }
 
 
-void Proxy::handleLocationQuery(std::string ip, uint32_t message_id, std::string source, std::string destination)
+void Proxy::handleLocationQuery(std::string ip, int message_id, std::string source, std::string destination)
 {
     char* message_type_buff = marshall_int(0);
     char* client_ip_size = marshall_int(ip.size());
@@ -124,7 +152,7 @@ void Proxy::handleLocationQuery(std::string ip, uint32_t message_id, std::string
 }
 
 
-void Proxy::handleReservation(std::string ip, uint32_t message_id, std::string flight_id, uint32_t num_seats)
+void Proxy::handleReservation(std::string ip, int message_id, std::string flight_id, int num_seats)
 {
     char* message_type_buff = marshall_int(0);
     char* client_ip_size = marshall_int(ip.size());
