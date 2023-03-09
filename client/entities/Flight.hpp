@@ -1,5 +1,7 @@
 #include "../marshall/Serializable.hpp"
 
+#ifndef FLIGHT_H
+#define FLIGHT_H
 class Flight : public Serializable {
     public:
         virtual char* getFlightID() = 0;
@@ -20,3 +22,5 @@ class Flight : public Serializable {
         virtual float getPrice() = 0;
         void setPrice(float price);
 };
+
+#endif

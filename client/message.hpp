@@ -4,6 +4,7 @@
 #include "marshall/Serializable.hpp"
 #include "marshall/SerializablePOD.hpp"
 #include <string>
+#include <iostream>
 
 class CommunicationMessage : public Serializable  {
     private:
@@ -24,18 +25,19 @@ class CommunicationMessage : public Serializable  {
         this->contents = contents;
     }
 
-    size_t serialize_size() const
+    size_t serialization_size() const
     {
-        return SerializablePOD<int>::serialize_size(messageType) +
-               SerializablePOD<int>::serialize_size(requestId) +
-               SerializablePOD<char*>::serialize_size(clientId) +
+        return SerializablePOD<int>::serialization_size(messageType) +
+               SerializablePOD<int>::serialization_size(requestId) +
+               SerializablePOD<char*>::serialization_size(clientId) +
                this->content_size + sizeof(size_t);
     }
 
     char* serialize() const
     {
-        int size = serialize_size();
+        int size = serialization_size();
 
+        // Initialize output buffer for serialized string
         char* dataOut = new char[size + 1];
         dataOut[size] = '\0';
 
@@ -45,10 +47,10 @@ class CommunicationMessage : public Serializable  {
         SerializablePOD<size_t>::serialize(dataOut, content_size);
         
         memcpy(dataOut, contents, content_size);
-        dataOut += content_size;
         
+        // Reset pointer to start of serialized string and return
+        dataOut += content_size;
         dataOut -= size;
-
         return dataOut;
 
     }

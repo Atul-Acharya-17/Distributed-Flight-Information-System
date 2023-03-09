@@ -73,7 +73,7 @@ void Proxy::handleFlightQuery(std::string ip, int message_id, std::string flight
     CommunicationMessage comm_message(request_type, message_id, client_ip, content_buffer, content_size);
     char* message_buffer = comm_message.serialize();
 
-    Communication::send(message_buffer, comm_message.serialize_size() + 1);
+    Communication::send(message_buffer, comm_message.serialization_size() + 1);
 
     char* reply = Communication::receive();
     std::cout << "Reply from server: " << reply <<'\n';

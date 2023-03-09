@@ -1,5 +1,8 @@
 #include "Flight.hpp"
 
+#ifndef FLIGHTSERVANT_H
+#define FLIGHTSERVANT_H
+
 class FlightServant : public Flight
 {
 private:
@@ -11,6 +14,7 @@ private:
     float price;
 
 public:
+    FlightServant();
     FlightServant(char *flightId, char *source, char *destination, int seatsAvailable, int seatsBooked, float price);
     char* getFlightID();
     void setFlightID(char* flightID);
@@ -25,6 +29,11 @@ public:
     float getPrice();
     void setPrice(float price);
 
-    void serialize(char* dataOut);
-    void deserialize(const char* dataIn);
+    void display();
+
+    size_t serialization_size() const;
+    char* serialize() const;
+    void deserialize(char* dataIn);
 };
+
+#endif

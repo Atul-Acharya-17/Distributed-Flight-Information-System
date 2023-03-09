@@ -9,26 +9,26 @@ template <typename POD>
 class SerializablePOD
 {
 public:
-    static size_t serialize_size(POD str)
+    static size_t serialization_size(POD str)
     {
         return sizeof(POD);
     }
 
     static void serialize( char*& target, POD value )
     {
-        memcpy( target, &value, serialize_size(value) );
-        target += serialize_size(value);
+        memcpy( target, &value, serialization_size(value) );
+        target += serialization_size(value);
     }
 
     static void deserialize( char*& source, POD& target)
     {
-        memcpy( &target, source, serialize_size(target) );
-        source += serialize_size(target);
+        memcpy( &target, source, serialization_size(target) );
+        source += serialization_size(target);
     }
 };
 
 template<>
-size_t SerializablePOD<char*>::serialize_size(char* str)
+size_t SerializablePOD<char*>::serialization_size(char* str)
 {
     return sizeof(size_t) + strlen(str);
 }

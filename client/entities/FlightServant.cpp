@@ -1,7 +1,25 @@
 #include "FlightServant.hpp"
 #include <string>
+#include <iostream>
 #include "../marshall/SerializablePOD.hpp"
 
+FlightServant::FlightServant()
+{
+    this->flightId = "";
+    this->source = "";
+    this->destination = "";
+    this->seatsAvailable = -1;
+    this->seatsBooked = -1;
+    this->price = -1;
+}
+FlightServant::FlightServant(char *flightId, char *source, char *destination, int seatsAvailable, int seatsBooked, float price) {
+    this->flightId = flightId;
+    this->source = source;
+    this->destination = destination;
+    this->seatsAvailable = seatsAvailable;
+    this->seatsBooked = seatsBooked;
+    this->price = price;
+}
 char* FlightServant::getFlightID() {
     return this->flightId;
 }
@@ -39,22 +57,60 @@ void FlightServant::setPrice(float price) {
     this->price = price;
 }
 
-void FlightServant::serialize(char* dataOut)
-{
-    dataOut = SerializablePOD<char*>::serialize(dataOut, flightId);
-    dataOut = SerializablePOD<char*>::serialize(dataOut, source);
-    dataOut = SerializablePOD<char*>::serialize(dataOut, destination);
-    dataOut = SerializablePOD<int>::serialize(dataOut, seatsAvailable);
-    dataOut = SerializablePOD<int>::serialize(dataOut, seatsBooked);
-    dataOut = SerializablePOD<float>::serialize(dataOut, price);
+void FlightServant::display() {
+    std::cout << this->flightId << "@" << this->source << "->" << this->destination << std::endl;
+    std::cout << this->seatsAvailable << "-" << this->seatsBooked << "#" << this->price << std::endl;
 }
 
-void FlightServant::deserialize(const char* dataIn)
+size_t FlightServant::serialization_size() const
 {
-    dataIn = SerializablePOD<char*>::deserialize(dataIn, flightId);
-    dataIn = SerializablePOD<char*>::deserialize(dataIn, source);
-    dataIn = SerializablePOD<char*>::deserialize(dataIn, destination);
-    dataIn = SerializablePOD<int>::deserialize(dataIn, seatsAvailable);
-    dataIn = SerializablePOD<int>::deserialize(dataIn, seatsBooked);
-    dataIn = SerializablePOD<float>::deserialize(dataIn, price);
+    return SerializablePOD<char*>::serialization_size(flightId) +
+            SerializablePOD<char*>::serialization_size(source) +
+            SerializablePOD<char*>::serialization_size(destination) +
+            SerializablePOD<int>::serialization_size(seatsAvailable) +
+            SerializablePOD<int>::serialization_size(seatsBooked) +
+            SerializablePOD<float>::serialization_size(price);
+}
+char* FlightServant::serialize() const
+{
+    int size = serialization_size();
+
+    // Initialize output buffer for serialized string
+    char* dataOut = new char[size + 1];
+    dataOut[size] = '\0';
+
+    SerializablePOD<char*>::serialize(dataOut, flightId);
+    SerializablePOD<char*>::serialize(dataOut, source);
+    SerializablePOD<char*>::serialize(dataOut, destination);
+    SerializablePOD<int>::serialize(dataOut, seatsAvailable);
+    SerializablePOD<int>::serialize(dataOut, seatsBooked);
+    SerializablePOD<float>::serialize(dataOut, price);
+
+    // Reset pointer to start of serialized string and return
+    dataOut -= size;
+    return dataOut;
+}
+
+void FlightServant::deserialize(char* dataIn)
+{
+    char* flightId;
+    char* source;
+    char* destination;
+    int seatsAvailable;
+    int seatsBooked;
+    float price;
+
+    SerializablePOD<char*>::deserialize(dataIn, flightId);
+    SerializablePOD<char*>::deserialize(dataIn, source);
+    SerializablePOD<char*>::deserialize(dataIn, destination);
+    SerializablePOD<int>::deserialize(dataIn, seatsAvailable);
+    SerializablePOD<int>::deserialize(dataIn, seatsBooked);
+    SerializablePOD<float>::deserialize(dataIn, price);
+
+    this->flightId = flightId;
+    this->source = source;
+    this->destination = destination;
+    this->seatsAvailable = seatsAvailable;
+    this->seatsBooked = seatsBooked;
+    this->price = price;
 }
