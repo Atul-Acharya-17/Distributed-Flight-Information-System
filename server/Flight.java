@@ -1,5 +1,3 @@
-package server;
-
 import java.rmi.*;
 
 public interface Flight extends Remote {

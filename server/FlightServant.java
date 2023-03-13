@@ -1,5 +1,3 @@
-package server;
-
 import java.rmi.server.UnicastRemoteObject;
 
 public class FlightServant extends UnicastRemoteObject implements Flight {
