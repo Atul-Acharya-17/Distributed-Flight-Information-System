@@ -12,7 +12,8 @@ FlightServant::FlightServant()
     this->seatsBooked = -1;
     this->price = -1;
 }
-FlightServant::FlightServant(char *flightId, char *source, char *destination, int seatsAvailable, int seatsBooked, float price) {
+FlightServant::FlightServant(char* flightId, char* source, char* destination, int seatsAvailable, int seatsBooked, float price)
+{
     this->flightId = flightId;
     this->source = source;
     this->destination = destination;
@@ -20,56 +21,69 @@ FlightServant::FlightServant(char *flightId, char *source, char *destination, in
     this->seatsBooked = seatsBooked;
     this->price = price;
 }
-char* FlightServant::getFlightID() {
+char* FlightServant::getFlightID()
+{
     return this->flightId;
 }
-void FlightServant::setFlightID(char* flightId) {
+void FlightServant::setFlightID(char* flightId)
+{
     strcpy(this->flightId, flightId);
 }
-char* FlightServant::getSource() {
+char* FlightServant::getSource()
+{
     return this->source;
 }
-void FlightServant::setSource(char* source) {
+void FlightServant::setSource(char* source)
+{
     strcpy(this->source, source);
 }
-char* FlightServant::getDestination() {
+char* FlightServant::getDestination()
+{
     return this->destination;
 }
-void FlightServant::setDestination(char* destination) {
+void FlightServant::setDestination(char* destination)
+{
     strcpy(this->destination, destination);
 }
-int FlightServant::getSeatsAvailable() {
+int FlightServant::getSeatsAvailable()
+{
     return this->seatsAvailable;
 }
-void FlightServant::setSeatsAvailable(int seatsAvaiable) {
+void FlightServant::setSeatsAvailable(int seatsAvaiable)
+{
     this->seatsAvailable = seatsAvaiable;
 }
-int FlightServant::getSeatsBooked() {
+int FlightServant::getSeatsBooked()
+{
     return this->seatsBooked;
 }
-void FlightServant::setSeatsBooked(int seatsBooked) {
+void FlightServant::setSeatsBooked(int seatsBooked)
+{
     this->seatsBooked = seatsBooked;
 }
-float FlightServant::getPrice() {
+float FlightServant::getPrice()
+{
     return this->price;
 }
-void FlightServant::setPrice(float price) {
+void FlightServant::setPrice(float price)
+{
     this->price = price;
 }
 
-void FlightServant::display() {
+void FlightServant::display()
+{
     std::cout << this->flightId << "@" << this->source << "->" << this->destination << std::endl;
     std::cout << this->seatsAvailable << "-" << this->seatsBooked << "#" << this->price << std::endl;
 }
 
 size_t FlightServant::serialization_size() const
 {
-    return SerializablePOD<char*>::serialization_size(flightId) +
-            SerializablePOD<char*>::serialization_size(source) +
-            SerializablePOD<char*>::serialization_size(destination) +
-            SerializablePOD<int>::serialization_size(seatsAvailable) +
-            SerializablePOD<int>::serialization_size(seatsBooked) +
-            SerializablePOD<float>::serialization_size(price);
+    return SerializablePOD<char* >::serialization_size(flightId) +
+           SerializablePOD<char* >::serialization_size(source) +
+           SerializablePOD<char* >::serialization_size(destination) +
+           SerializablePOD<int>::serialization_size(seatsAvailable) +
+           SerializablePOD<int>::serialization_size(seatsBooked) +
+           SerializablePOD<float>::serialization_size(price);
 }
 char* FlightServant::serialize() const
 {
@@ -79,9 +93,9 @@ char* FlightServant::serialize() const
     char* dataOut = new char[size + 1];
     dataOut[size] = '\0';
 
-    SerializablePOD<char*>::serialize(dataOut, flightId);
-    SerializablePOD<char*>::serialize(dataOut, source);
-    SerializablePOD<char*>::serialize(dataOut, destination);
+    SerializablePOD<char* >::serialize(dataOut, flightId);
+    SerializablePOD<char* >::serialize(dataOut, source);
+    SerializablePOD<char* >::serialize(dataOut, destination);
     SerializablePOD<int>::serialize(dataOut, seatsAvailable);
     SerializablePOD<int>::serialize(dataOut, seatsBooked);
     SerializablePOD<float>::serialize(dataOut, price);

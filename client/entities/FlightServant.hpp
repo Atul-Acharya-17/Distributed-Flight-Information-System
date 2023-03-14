@@ -15,7 +15,7 @@ private:
 
 public:
     FlightServant();
-    FlightServant(char *flightId, char *source, char *destination, int seatsAvailable, int seatsBooked, float price);
+    FlightServant(char* flightId, char* source, char* destination, int seatsAvailable, int seatsBooked, float price);
     char* getFlightID();
     void setFlightID(char* flightID);
     char* getSource();
