@@ -21,6 +21,8 @@ class Flight : public Serializable {
         
         virtual float getPrice() = 0;
         void setPrice(float price);
+
+        virtual void display() = 0;
 };
 
 #endif
