@@ -1,4 +1,3 @@
-package server;
 import java.io.File;
 import java.rmi.*;
 import java.rmi.server.UnicastRemoteObject;
