@@ -1,0 +1,32 @@
+EK511,New Delhi,Dubai,350,48,195.87
+EK512,Dubai,New Delhi,250,23,249.97
+EK515,New Delhi,Dubai,175,89,295.79
+EK516,Dubai,New Delhi,350,173,449.97
+EK503,Mumbai,Dubai,350,88,225.87
+EK502,Dubai,Mumbai,250,123,279.97
+EK507,Mumbai,Dubai,275,89,285.69
+EK508,Dubai,Mumbai,250,173,239.97
+AI974,Muscat,New Delhi,200,13,129.80
+AI973,New Delhi,Muscat,250,73,139.97
+EK867,Muscat,Dubai,200,0,253.3
+EK868,Dubai,Muscat,200,0,226
+FZ131,Dubai,Muscat,125,38,221
+FZ132,Muscat,Dubai,180,86,109.83
+SQ495,Dubai,Singapore,450,126,421
+SQ494,Singapore,Dubai,450,108,459
+EK354,Dubai,Singapore,480,336,447
+EK355,Singapore,Dubai,480,147,343
+AI382,New Delhi,Singapore,250,46,182
+AI381,Singapore,New Delhi,250,82,222
+UK115,New Delhi,Singapore,175,55,240
+UK116,Singapore,New Delhi,175,41,252
+6E1016,Singapore,Kolkata,300,93,246
+6E5078,Kolkata,New Delhi,150,76,214
+BA106,Dubai,London,350,223,590
+BA107,London,Dubai,350,123,437.4
+EK65,Dubai,London,450,321,499.6
+EK66,London,Dubai,450,264,446.8
+SQ305,London,Singapore,450,83,853
+SQ306,Singapore,London,450,380,1153
+SQ321,London,Singapore,450,184,953
+SQ322,Singapore,London,450,263,984

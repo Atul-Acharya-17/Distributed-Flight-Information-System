@@ -1,23 +1,25 @@
-import java.rmi.*;
 
-public interface Flight extends Remote {
 
-    public String getFlightID() throws RemoteException;
-    public void setFlightID(String flightID) throws RemoteException;
+public interface Flight {
 
-    public String getSource() throws RemoteException;
-    public void setSource(String source) throws RemoteException;
+    public String getFlightId();
+    public void setFlightId(String flightId);
 
-    public String getDestination() throws RemoteException;
-    public void setDestination(String destination) throws RemoteException;
+    public String getSource();
+    public void setSource(String source);
 
-    public int getSeatsAvailable() throws RemoteException;
-    public void setSeatsAvailable(int seatsAvailable) throws RemoteException;
+    public String getDestination();
+    public void setDestination(String destination);
 
-    public int getSeatsBooked() throws RemoteException;
-    public void setSeatsBooked(int seatsBooked) throws RemoteException;
+    public int getSeatsAvailable();
+    public void setSeatsAvailable(int seatsAvailable);
+
+    public int getSeatsBooked();
+    public void setSeatsBooked(int seatsBooked);
     
-    public float getPrice() throws RemoteException; //Price per seat
-    public void setPrice(float price) throws RemoteException;
+    public float getPrice(); //Price per seat
+    public void setPrice(float price);
+
+    public void display();
 
 }

@@ -10,7 +10,12 @@ import utils.PrimitiveSizes;
 
 public class Main{
 
-    public static void main(String args[]) throws IOException{
+    public static void main(String args[]) throws IOException {
+        FlightFactoryServant ffs = new FlightFactoryServant();
+        ffs.populateFlights();
+
+        ffs.displayFlights();
+
         DatagramSocket aSocket = null;
         try{
             Communication.setup(8080);
