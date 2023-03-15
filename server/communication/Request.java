@@ -4,11 +4,13 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 
 import marshall.Serialization;
+import marshall.SerializePOD;
 import utils.PrimitiveSizes;
 
 public class Request implements Serialization {
     private int messageType;
     private int requestId;
+    private int serviceId;
     private char[] clientIp;
     private byte[] contents;
     private long contentSize;
@@ -46,42 +48,17 @@ public class Request implements Serialization {
         int start = 0;
         messageType = 0;
         
-        for (int i=0; i<4; ++i)
-        {
-            messageType |= (buffer[start + i] << (8 * i));
-        }
+        messageType = SerializePOD.deserializeInt(buffer, start);
         start += PrimitiveSizes.sizeof(messageType);
 
-        requestId = 0;
-        for (int i=0; i<4; ++i)
-        {
-            requestId |= (buffer[start + i] << (8 * i));
-        }
-        start += PrimitiveSizes.sizeof(messageType);;
+        requestId = SerializePOD.deserializeInt(buffer, start);
+        start += PrimitiveSizes.sizeof(requestId);;
 
-        long clientIpSize = 0;
-        for (int i=0; i<8; ++i)
-        {
-            clientIpSize |= (buffer[start + i] << (8 * i));
-        }
+        clientIp = SerializePOD.deserializeString(buffer, start);
+        long clientIpSize = clientIp.length;
+        start += clientIpSize + PrimitiveSizes.sizeof(clientIpSize);
 
-        start += PrimitiveSizes.sizeof(clientIpSize);;
-
-        clientIp = new char[(int)clientIpSize];
-
-        for (int i=0; i<clientIpSize; ++i)
-        {
-            clientIp[i] = (char)buffer[start + i];
-        }
-
-        start += clientIpSize;
-
-        contentSize = 0;
-        for (int i=0; i<8; ++i)
-        {
-            contentSize |= (buffer[start + i] << (8 * i));
-        }
-
+        contentSize = SerializePOD.deserializeLong(buffer, start);
         start += PrimitiveSizes.sizeof(contentSize);;
         
         contents = new byte[(int)contentSize];
@@ -109,6 +86,10 @@ public class Request implements Serialization {
 
     public long getContentSize() {
         return contentSize;
+    }
+
+    public int getServiceId() {
+        return 1;
     }
 
 }

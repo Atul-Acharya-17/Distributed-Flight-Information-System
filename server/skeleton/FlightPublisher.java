@@ -5,8 +5,13 @@ import java.util.ArrayList;
 
 import entities.Subscriber;
 
-public class FlightPublisher {
+public class FlightPublisher extends Skeleton {
     private static ArrayList<Subscriber> subscribers;
+
+    public static void handle(byte[] content, String clientIP, int port, int requestId)
+    {
+        // 
+    }
 
     public static void subscribe(String clientIp, int port, long timestamp)
     {
