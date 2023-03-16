@@ -1,5 +1,4 @@
 package communication;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 
@@ -41,15 +40,19 @@ public class Request implements Serialization {
         System.out.println(clientIpBuffer.length);
         System.out.println(clientIp.length);
         
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream( );
-        outputStream.write( messageBuffer );
-        outputStream.write( requestIdBuffer );
-        outputStream.write( clientIpSizeBuffer );
-        outputStream.write( clientIpBuffer );
-        outputStream.write( contentSizeBuffer );
-        outputStream.write( contentsBuffer );
-
-        buffer = outputStream.toByteArray();
+        int i = 0;
+        System.arraycopy(messageBuffer, 0, buffer, i, messageBuffer.length);
+        i += messageBuffer.length;
+        System.arraycopy(requestIdBuffer, 0, buffer, i, requestIdBuffer.length);
+        i += requestIdBuffer.length;
+        System.arraycopy(clientIpSizeBuffer, 0, buffer, i, clientIpSizeBuffer.length);
+        i += clientIpSizeBuffer.length;
+        System.arraycopy(clientIpBuffer, 0, buffer, i, clientIpBuffer.length);
+        i += clientIpBuffer.length;
+        System.arraycopy(contentSizeBuffer, 0, buffer, i, contentSizeBuffer.length);
+        i += contentSizeBuffer.length;
+        System.arraycopy(contentsBuffer, 0, buffer, i, contentsBuffer.length);
+        i += contentsBuffer.length;
 
         return buffer;
     }
