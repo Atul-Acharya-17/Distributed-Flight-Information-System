@@ -29,6 +29,10 @@ public class Main{
                 Request request = new Request();
                 request.deserialize(messageByteString);
 
+                byte[] x = request.serialize();
+                System.out.println(x.length);
+                request.deserialize(x);
+
                 char[] clientIp = request.getClientIp();
                 int requestId = request.getRequestId();
 

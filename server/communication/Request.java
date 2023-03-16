@@ -6,11 +6,11 @@ import java.nio.ByteBuffer;
 import marshall.Serialization;
 import marshall.SerializePOD;
 import utils.PrimitiveSizes;
+import utils.Utils;
 
 public class Request implements Serialization {
     private int messageType;
     private int requestId;
-    private int serviceId;
     private char[] clientIp;
     private byte[] contents;
     private long contentSize;
@@ -22,14 +22,25 @@ public class Request implements Serialization {
 
     public byte[] serialize() throws IOException
     {
-        byte[] buffer = new byte[(int)this.size() + 1];
-        byte[] messageBuffer = ByteBuffer.allocate(4).putInt(messageType).array();
-        byte[] requestIdBuffer = ByteBuffer.allocate(4).putInt(requestId).array();
-        byte[] clientIpSizeBuffer = ByteBuffer.allocate(8).putLong((long)clientIp.length).array();
-        byte[] clientIpBuffer = clientIp.toString().getBytes();
-        byte[] contentSizeBuffer = ByteBuffer.allocate(8).putLong(contentSize).array();
+        byte[] buffer = new byte[(int)this.size()];
+
+        byte[] messageBuffer = Utils.reverse(ByteBuffer.allocate(4).putInt(messageType).array());
+        byte[] requestIdBuffer = Utils.reverse(ByteBuffer.allocate(4).putInt(requestId).array());
+
+        byte[] clientIpSizeBuffer = Utils.reverse(ByteBuffer.allocate(8).putLong((long)clientIp.length).array());
+        byte[] clientIpBuffer = new byte[clientIp.length];
+
+        for (int i=0; i<clientIp.length; ++i)
+        {
+            clientIpBuffer[i] = (byte) clientIp[i];
+        }
+
+        byte[] contentSizeBuffer = Utils.reverse(ByteBuffer.allocate(8).putLong(contentSize).array());
         byte[] contentsBuffer = contents;
 
+        System.out.println(clientIpBuffer.length);
+        System.out.println(clientIp.length);
+        
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream( );
         outputStream.write( messageBuffer );
         outputStream.write( requestIdBuffer );

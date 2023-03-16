@@ -56,7 +56,7 @@ public class FlightFactoryServant extends UnicastRemoteObject implements FlightF
         // TODO: Test this method
         try
         {
-            File fileObj = new File("C:\\Users\\tejas\\Desktop\\NTU Stuff\\Y4S1\\Distributed Systems\\Distributed-Flight-Information-System\\server\\flights.txt");
+            File fileObj = new File(System.getProperty("user.dir") + "/flights.txt");
             Scanner scanner = new Scanner(fileObj);
             while(scanner.hasNextLine()){
                 String line = scanner.nextLine();
