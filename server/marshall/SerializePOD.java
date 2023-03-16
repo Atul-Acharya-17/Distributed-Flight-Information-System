@@ -1,6 +1,8 @@
 package marshall;
-import utils.PrimitiveSizes;
+import java.nio.ByteBuffer;
 
+import utils.PrimitiveSizes;
+import utils.Utils;
 
 // Generics in JAVA expect Object inputs
 
@@ -8,7 +10,39 @@ public class SerializePOD {
     
     public static byte[] serialize(int value)
     {
-        return new byte[1];
+        return Utils.reverse(ByteBuffer.allocate((int)(PrimitiveSizes.sizeof(value))).putInt(value).array());
+    }
+
+    public static byte[] serialize(long value)
+    {
+        return Utils.reverse(ByteBuffer.allocate((int)(PrimitiveSizes.sizeof(value))).putLong(value).array());
+    }
+
+    public static byte[] serialize(float value)
+    {
+        return Utils.reverse(ByteBuffer.allocate((int)(PrimitiveSizes.sizeof(value))).putFloat(value).array());
+    }
+
+    public static byte[] serialize(double value)
+    {
+        return Utils.reverse(ByteBuffer.allocate((int)(PrimitiveSizes.sizeof(value))).putDouble(value).array());
+    }
+
+    public static byte[] serialize(char[] value)
+    {
+        byte[] buffer = new byte[value.length];
+
+        for (int i=0; i<value.length; ++i)
+        {
+            buffer[i] = (byte) value[i];
+        }
+        
+        return buffer;
+    }
+
+    public static byte[] serialize(String value)
+    {
+        return SerializePOD.serialize(value.toCharArray());
     }
 
     public static int deserializeInt(byte[] buffer, int start)

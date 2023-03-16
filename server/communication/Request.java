@@ -23,18 +23,13 @@ public class Request implements Serialization {
     {
         byte[] buffer = new byte[(int)this.size()];
 
-        byte[] messageBuffer = Utils.reverse(ByteBuffer.allocate(4).putInt(messageType).array());
-        byte[] requestIdBuffer = Utils.reverse(ByteBuffer.allocate(4).putInt(requestId).array());
+        byte[] messageBuffer = SerializePOD.serialize(messageType);
+        byte[] requestIdBuffer = SerializePOD.serialize(requestId);
 
-        byte[] clientIpSizeBuffer = Utils.reverse(ByteBuffer.allocate(8).putLong((long)clientIp.length).array());
-        byte[] clientIpBuffer = new byte[clientIp.length];
+        byte[] clientIpSizeBuffer = SerializePOD.serialize((long)clientIp.length);
+        byte[] clientIpBuffer = SerializePOD.serialize(clientIp);
 
-        for (int i=0; i<clientIp.length; ++i)
-        {
-            clientIpBuffer[i] = (byte) clientIp[i];
-        }
-
-        byte[] contentSizeBuffer = Utils.reverse(ByteBuffer.allocate(8).putLong(contentSize).array());
+        byte[] contentSizeBuffer = SerializePOD.serialize(contentSize);
         byte[] contentsBuffer = contents;
 
         System.out.println(clientIpBuffer.length);

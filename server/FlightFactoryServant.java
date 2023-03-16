@@ -53,7 +53,6 @@ public class FlightFactoryServant extends UnicastRemoteObject implements FlightF
 
     @Override
     public void populateFlights() throws RemoteException {
-        // TODO: Test this method
         try
         {
             File fileObj = new File(System.getProperty("user.dir") + "/flights.txt");
