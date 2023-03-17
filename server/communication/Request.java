@@ -16,7 +16,12 @@ public class Request implements Serialization {
 
     public long size()
     {
-        return PrimitiveSizes.sizeof(messageType) + PrimitiveSizes.sizeof(requestId) + 2 * PrimitiveSizes.sizeof(contentSize) + clientIp.length + contentSize;
+        return (
+            PrimitiveSizes.sizeof(messageType) + 
+            PrimitiveSizes.sizeof(requestId) + 
+            PrimitiveSizes.sizeof(clientIp.length) + clientIp.length + 
+            PrimitiveSizes.sizeof(contentSize) + contentSize
+        );
     }
 
     public byte[] serialize() throws IOException
@@ -61,14 +66,14 @@ public class Request implements Serialization {
         start += PrimitiveSizes.sizeof(messageType);
 
         requestId = SerializePOD.deserializeInt(buffer, start);
-        start += PrimitiveSizes.sizeof(requestId);;
+        start += PrimitiveSizes.sizeof(requestId);
 
         clientIp = SerializePOD.deserializeString(buffer, start);
         long clientIpSize = clientIp.length;
         start += clientIpSize + PrimitiveSizes.sizeof(clientIpSize);
 
         contentSize = SerializePOD.deserializeLong(buffer, start);
-        start += PrimitiveSizes.sizeof(contentSize);;
+        start += PrimitiveSizes.sizeof(contentSize);
         
         contents = new byte[(int)contentSize];
         for (int i=0; i<contentSize; ++i)

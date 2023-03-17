@@ -1,41 +1,40 @@
+package entities;
 import java.io.File;
-import java.rmi.*;
-import java.rmi.server.UnicastRemoteObject;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Scanner;
 
-public class FlightFactoryServant extends UnicastRemoteObject implements FlightFactory {
+public class FlightFactoryServant implements FlightFactory {
     private Hashtable<String, Flight> flights = new Hashtable<>();
-    public FlightFactoryServant() throws java.rmi.RemoteException {
+    public FlightFactoryServant() {
         super();
     }
 
-    public void createFlight(String flightID, String source, String destination, int seatsAvailable, int seatsBooked, float price) throws java.rmi.RemoteException {
-        Flight flight = new FlightServant(flightID, source, destination, seatsAvailable, seatsBooked, price);
+    public void createFlight(String flightID, String source, String destination, int seatsAvailable, int seatsBooked, float price) {
+        Flight flight = new FlightServant(flightID.toCharArray(), source.toCharArray(), destination.toCharArray(), seatsAvailable, seatsBooked, price);
         flights.put(flightID, flight);
     }
 
-    public void bookSeat(String flightID) throws java.rmi.RemoteException {
+    public void bookSeat(String flightID) {
         Flight flight = flights.get(flightID);
         flight.setSeatsAvailable(flight.getSeatsAvailable() - 1);
         flight.setSeatsBooked(flight.getSeatsBooked() + 1);
     }
 
-    public void sendNotification(String clientID) throws java.rmi.RemoteException {
+    public void sendNotification(String clientID) {
         //TODO: Which class is storing the clientID?
         
         // ClientCallback client = ClientCallbackFactory.getClientCallback(clientID);
         // client.notifyClient();
     }
 
-    public void registerClientCallback(String clientID) throws java.rmi.RemoteException {
+    public void registerClientCallback(String clientID) {
         // ClientCallback client = ClientCallbackFactory.getClientCallback(clientID);
         // client.registerClientCallback();
     }
 
-    public void unregisterClientCallback(String clientID) throws java.rmi.RemoteException {
+    public void unregisterClientCallback(String clientID) {
         // ClientCallback client = ClientCallbackFactory.getClientCallback(clientID);
         // client.unregisterClientCallback();
     }
@@ -52,10 +51,10 @@ public class FlightFactoryServant extends UnicastRemoteObject implements FlightF
     }
 
     @Override
-    public void populateFlights() throws RemoteException {
+    public void populateFlights() {
         try
         {
-            File fileObj = new File(System.getProperty("user.dir") + "/flights.txt");
+            File fileObj = new File(System.getProperty("user.dir") + "/data/flights.txt");
             Scanner scanner = new Scanner(fileObj);
             while(scanner.hasNextLine()){
                 String line = scanner.nextLine();

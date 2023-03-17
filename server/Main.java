@@ -4,6 +4,7 @@ import java.io.*;
 
 import communication.Communication;
 import communication.Request;
+import entities.FlightFactoryServant;
 import marshall.SerializePOD;
 import skeleton.FlightQuerySkeleton;
 import utils.PrimitiveSizes;
