@@ -3,6 +3,7 @@
 #include "Flight.hpp"
 #include <string>
 #include <iostream>
+#include <iomanip>
 
 #include "../marshall/SerializablePOD.hpp"
 
@@ -75,8 +76,15 @@ void FlightServant::setPrice(float price)
 
 void FlightServant::display()
 {
-    std::cout << this->flightId << "@" << this->source << "->" << this->destination << std::endl;
-    std::cout << this->seatsAvailable << "-" << this->seatsBooked << "#" << this->price << std::endl;
+    std::cout << std::left << std::setw(20) << "Flight Number" << ':' << '\t' << this->flightId << '\n';
+    std::cout << std::left << std::setw(20) << "Source" << ':' << '\t' << this->source << '\n';
+    std::cout << std::left << std::setw(20) << "Destination" << ':' << '\t' << this->destination << '\n';
+    std::cout << std::left << std::setw(20) << "Available Seats" << ':' << '\t' << this->seatsAvailable << '\n';
+    std::cout << std::left << std::setw(20) << "Booked Seats" << ':' << '\t' << this->seatsBooked << '\n';
+    std::cout << std::left << std::setw(20) << "Price" << ':' << '\t' << this->price << '\n';
+
+    // std::cout << this->flightId << "@" << this->source << "->" << this->destination << std::endl;
+    // std::cout << this->seatsAvailable << "-" << this->seatsBooked << "#" << this->price << std::endl;
 }
 
 size_t FlightServant::serialization_size() const

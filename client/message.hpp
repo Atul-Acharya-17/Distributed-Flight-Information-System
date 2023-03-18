@@ -38,7 +38,6 @@ class CommunicationMessage : public Serializable  {
         int size = serialization_size();
 
         // Initialize output buffer for serialized string
-        std::cout << "Size: " << size << '\n';
 
         char* dataOut = new char[size + 1];
         dataOut[size] = '\0';
@@ -70,11 +69,8 @@ class CommunicationMessage : public Serializable  {
         char* contents;
 
         SerializablePOD<int>::deserialize(dataIn, message_type);
-        std::cout << "Message Type: " << message_type << '\n';
         SerializablePOD<int>::deserialize(dataIn, request_id);
-        std::cout << "Request ID: " << request_id << '\n';
         SerializablePOD<char*>::deserialize(dataIn, ip);
-        std::cout << "IP: " << ip <<'\n';
         SerializablePOD<char*>::deserialize(dataIn, contents);
 
         this->messageType = message_type;
@@ -86,10 +82,8 @@ class CommunicationMessage : public Serializable  {
 	    char* location;
 
         SerializablePOD<int>::deserialize(contents, service_id);
-        std::cout << "Service ID: " << service_id <<'\n';
         SerializablePOD<char*>::deserialize(contents, location);
-
-        std::cout <<"Location: " << location << '\n';        
+             
     }
 
 };

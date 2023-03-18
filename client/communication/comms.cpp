@@ -36,14 +36,11 @@ void Communication::send(const char* message, size_t message_size)
 
 char* Communication::receive()
 {
-	std::cout <<"Waiting to receive\n";
 	len = sizeof(Communication::servaddr);
     int n = recvfrom(Communication::sockfd, (char *)Communication::buffer, MAXLINE,
                     MSG_WAITALL, (struct sockaddr *) &Communication::servaddr,
                     &Communication::len);
     Communication::buffer[n] = '\0';
-
-	std::cout << "Received\n";
 
     return (char*) Communication::buffer;
 }

@@ -55,7 +55,7 @@ int main(int argc, char** argv) {
 
             if (choice == 1)
             {
-                // c.queryLocation();
+                c.queryLocation();
             }
             if (choice==2) {
                 c.queryFlight();
