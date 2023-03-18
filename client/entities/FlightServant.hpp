@@ -1,4 +1,5 @@
 #include "Flight.hpp"
+#include "../marshall/SerializablePOD.hpp"
 
 #ifndef FLIGHTSERVANT_H
 #define FLIGHTSERVANT_H

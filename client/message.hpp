@@ -38,6 +38,8 @@ class CommunicationMessage : public Serializable  {
         int size = serialization_size();
 
         // Initialize output buffer for serialized string
+        std::cout << "Size: " << size << '\n';
+
         char* dataOut = new char[size + 1];
         dataOut[size] = '\0';
 

@@ -19,12 +19,15 @@
 
 
 // Driver code
-int main() {
+int main(int argc, char** argv) {
 	
-    Communication::setup();
+    char* server_ip = argv[1];
+    char* client_ip = argv[2];
+
+    Communication::setup(server_ip);
 
 	uint32_t choice;
-    Client c;
+    Client c = Client(std::string(client_ip));
 
     try{
         while (true)
@@ -41,6 +44,7 @@ int main() {
             if (functionalities.find(choice) == functionalities.end())
             {
                 std::cerr << "Invalid Functionality Chosen\n\n";
+                continue;
             }
 
             if (choice == 0)
@@ -51,7 +55,7 @@ int main() {
 
             if (choice == 1)
             {
-                c.queryLocation();
+                // c.queryLocation();
             }
             if (choice==2) {
                 c.queryFlight();

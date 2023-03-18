@@ -1,6 +1,9 @@
 #include "FlightServant.hpp"
+
+#include "Flight.hpp"
 #include <string>
 #include <iostream>
+
 #include "../marshall/SerializablePOD.hpp"
 
 FlightServant::FlightServant()

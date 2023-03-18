@@ -1,7 +1,8 @@
-#include "../marshall/Serializable.hpp"
-
 #ifndef FLIGHT_H
 #define FLIGHT_H
+
+#include "../marshall/Serializable.hpp"
+
 class Flight : public Serializable 
 {
 public:
