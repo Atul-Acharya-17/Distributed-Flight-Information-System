@@ -1,5 +1,6 @@
 package entities;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Map;
@@ -14,7 +15,6 @@ public class FlightFactoryServant implements FlightFactory {
     public void createFlight(String flightID, String source, String destination, int seatsAvailable, int seatsBooked, float price) {
         Flight flight = new FlightServant(flightID.toCharArray(), source.toCharArray(), destination.toCharArray(), seatsAvailable, seatsBooked, price);
         flights.put(flightID, flight);
-        System.out.println("Put flight");
     }
 
     public void bookSeat(String flightID) {
@@ -32,6 +32,24 @@ public class FlightFactoryServant implements FlightFactory {
     public Flight getFlight(String flightID)
     {
         return flights.get(flightID);
+    }
+
+    public ArrayList<String> findFlights(String source, String destination)
+    {
+        ArrayList<String> result = new ArrayList<String>();
+        
+        Iterator<Map.Entry<String,Flight>> itr = flights.entrySet().iterator();
+        Map.Entry<String, Flight> entry = null;
+        while(itr.hasNext()) {
+            entry = itr.next();
+
+            if (new String(entry.getValue().getSource()).equals(source) && new String(entry.getValue().getDestination()).equals(destination))
+            {
+                result.add(entry.getKey());
+            }
+        }
+
+        return result;
     }
 
     public void sendNotification(String clientID) {

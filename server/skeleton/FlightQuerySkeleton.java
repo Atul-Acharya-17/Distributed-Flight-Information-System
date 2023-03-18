@@ -13,10 +13,6 @@ public class FlightQuerySkeleton extends Skeleton{
         //content = Arrays.copyOfRange(content, (int)PrimitiveSizes.sizeof(flightIdSize), (int)(PrimitiveSizes.sizeof(flightIdSize) + content.length - PrimitiveSizes.sizeof(flightIdSize)));
 
         char[] flightID = SerializePOD.deserializeString(content, 0);
-
-        System.out.println("FlightID: ");
-
-        System.out.println("Flight Number: " + new String(flightID));
         FlightFactoryServant fm = new FlightFactoryServant();
         FlightServant fs = (FlightServant) fm.getFlight(new String(flightID));
 
@@ -26,11 +22,10 @@ public class FlightQuerySkeleton extends Skeleton{
         if (fs == null)
         {
             status = 1;
-            System.out.println("Here");
             replyContent = SerializePOD.serialize("Flight number does not exist".toCharArray());
         }
 
-        else{
+        else {
             replyContent = fs.serialize();
         }
         
