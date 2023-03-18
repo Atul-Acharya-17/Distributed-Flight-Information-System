@@ -5,12 +5,17 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 
 import marshall.Serialization;
+import marshall.SerializePOD;
 import utils.PrimitiveSizes;
 
 public class Reply implements Serialization{
     private short status;
     private byte[] contents;
     private long contentSize;
+
+    public byte[] getContents() {
+        return contents;
+    }
 
     public Reply(short status, byte[] contents)
     {
@@ -26,18 +31,19 @@ public class Reply implements Serialization{
 
     public byte[] serialize() throws IOException
     {
-        byte[] buffer = new byte[(int)this.size() + 1];
+        byte[] buffer = new byte[(int)this.size()];
 
-        byte[] statusBuffer = ByteBuffer.allocate(4).putInt(status).array();
-        byte[] contentSizeBuffer = ByteBuffer.allocate(8).putLong(contentSize).array();
-        byte[] contentsBuffer = contents;
+        byte[] statusBuffer = SerializePOD.serialize(status);
+        byte[] contentSizeBuffer = SerializePOD.serialize((long)contentSize);
+        byte[] contentBuffer = contents;
 
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream( );
-        outputStream.write(statusBuffer);
-        outputStream.write( contentSizeBuffer );
-        outputStream.write( contentsBuffer );
-
-        buffer = outputStream.toByteArray();
+        int i = 0;
+        System.arraycopy(statusBuffer, 0, buffer, i, statusBuffer.length);
+        i += statusBuffer.length;
+        System.arraycopy(contentSizeBuffer, 0, buffer, i, contentSizeBuffer.length);
+        i += contentSizeBuffer.length;
+        System.arraycopy(contentBuffer, 0, buffer, i, contentBuffer.length);
+        i += contentBuffer.length;
 
         return buffer;
     }
@@ -46,20 +52,10 @@ public class Reply implements Serialization{
     {
         int start = 0;
 
-        status = 0;
-        
-        for (int i=0; i<4; ++i)
-        {
-            status |= (buffer[start + i] << (8 * i));
-        }
+        status = SerializePOD.deserializeShort(buffer, start);
         start += PrimitiveSizes.sizeof(status);
 
-        contentSize = 0;
-        for (int i=0; i<8; ++i)
-        {
-            contentSize |= (buffer[start + i] << (8 * i));
-        }
-
+        contentSize = SerializePOD.deserializeLong(buffer, start);
         start += PrimitiveSizes.sizeof(contentSize);;
         
         contents = new byte[(int)contentSize];
@@ -67,9 +63,5 @@ public class Reply implements Serialization{
         {
             contents[i] = buffer[start + i]; 
         }
-    }
-
-    public byte[] getContents() {
-        return contents;
     }
 }

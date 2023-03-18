@@ -1,11 +1,9 @@
 package communication;
 import java.io.IOException;
-import java.nio.ByteBuffer;
 
 import marshall.Serialization;
 import marshall.SerializePOD;
 import utils.PrimitiveSizes;
-import utils.Utils;
 
 public class Request implements Serialization {
     private int messageType;
@@ -19,7 +17,7 @@ public class Request implements Serialization {
         return (
             PrimitiveSizes.sizeof(messageType) + 
             PrimitiveSizes.sizeof(requestId) + 
-            PrimitiveSizes.sizeof(clientIp.length) + clientIp.length + 
+            PrimitiveSizes.sizeof((long)clientIp.length) + clientIp.length + 
             PrimitiveSizes.sizeof(contentSize) + contentSize
         );
     }
@@ -31,26 +29,27 @@ public class Request implements Serialization {
         byte[] messageBuffer = SerializePOD.serialize(messageType);
         byte[] requestIdBuffer = SerializePOD.serialize(requestId);
 
-        byte[] clientIpSizeBuffer = SerializePOD.serialize((long)clientIp.length);
+        // byte[] clientIpSizeBuffer = SerializePOD.serialize((long)clientIp.length);
         byte[] clientIpBuffer = SerializePOD.serialize(clientIp);
 
         byte[] contentSizeBuffer = SerializePOD.serialize(contentSize);
         byte[] contentsBuffer = contents;
-
-        System.out.println(clientIpBuffer.length);
-        System.out.println(clientIp.length);
         
         int i = 0;
         System.arraycopy(messageBuffer, 0, buffer, i, messageBuffer.length);
         i += messageBuffer.length;
+        System.out.println("CUR: " + i);
         System.arraycopy(requestIdBuffer, 0, buffer, i, requestIdBuffer.length);
         i += requestIdBuffer.length;
-        System.arraycopy(clientIpSizeBuffer, 0, buffer, i, clientIpSizeBuffer.length);
-        i += clientIpSizeBuffer.length;
+        System.out.println("CUR: " + i);
         System.arraycopy(clientIpBuffer, 0, buffer, i, clientIpBuffer.length);
         i += clientIpBuffer.length;
+        System.out.println("CUR: " + i);
         System.arraycopy(contentSizeBuffer, 0, buffer, i, contentSizeBuffer.length);
         i += contentSizeBuffer.length;
+        System.out.println("CUR: " + i);
+
+        System.out.println("Length: " + contentsBuffer.length);
         System.arraycopy(contentsBuffer, 0, buffer, i, contentsBuffer.length);
         i += contentsBuffer.length;
 
@@ -100,10 +99,6 @@ public class Request implements Serialization {
 
     public long getContentSize() {
         return contentSize;
-    }
-
-    public int getServiceId() {
-        return 1;
     }
 
 }

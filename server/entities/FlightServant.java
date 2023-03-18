@@ -12,6 +12,18 @@ public class FlightServant implements Flight {
     private int seatsBooked;
     private float price;
 
+    @Override
+    public long size() {
+        return (
+            PrimitiveSizes.sizeof((long)flightId.length) + flightId.length + 
+            PrimitiveSizes.sizeof((long)source.length) + source.length +
+            PrimitiveSizes.sizeof((long)destination.length) + destination.length +
+            PrimitiveSizes.sizeof(seatsAvailable) + 
+            PrimitiveSizes.sizeof(seatsBooked) + 
+            PrimitiveSizes.sizeof(price)
+        );
+    }
+
     public FlightServant(char[] flightId, char[] source, char[] destination, int seatsAvailable, int seatsBooked, float price) {
         this.flightId = flightId;
         this.source = source;
@@ -101,31 +113,23 @@ public class FlightServant implements Flight {
         start += PrimitiveSizes.sizeof(price);
     }
 
-    @Override
     public byte[] serialize() throws IOException {
         byte[] buffer = new byte[(int)this.size()];
 
-        byte[] flightIdSizeBuffer = SerializePOD.serialize((long)flightId.length);
+        System.out.println(flightId);
+
         byte[] flightIdBuffer = SerializePOD.serialize(flightId);
-        byte[] sourceSizeBuffer = SerializePOD.serialize((long)source.length);
         byte[] sourceBuffer = SerializePOD.serialize(source);
-        byte[] destinationSizeBuffer = SerializePOD.serialize((long)destination.length);
         byte[] destinationBuffer = SerializePOD.serialize(destination);
         byte[] seatsAvailableBuffer = SerializePOD.serialize(seatsAvailable);
         byte[] seatsBookedBuffer = SerializePOD.serialize(seatsBooked);
         byte[] priceBuffer = SerializePOD.serialize(price);
 
         int i = 0;
-        System.arraycopy(flightIdSizeBuffer, 0, buffer, i, flightIdSizeBuffer.length);
-        i += flightIdSizeBuffer.length;
         System.arraycopy(flightIdBuffer, 0, buffer, i, flightIdBuffer.length);
         i += flightIdBuffer.length;
-        System.arraycopy(sourceSizeBuffer, 0, buffer, i, sourceSizeBuffer.length);
-        i += sourceSizeBuffer.length;
         System.arraycopy(sourceBuffer, 0, buffer, i, sourceBuffer.length);
         i += sourceBuffer.length;
-        System.arraycopy(destinationSizeBuffer, 0, buffer, i, destinationSizeBuffer.length);
-        i += destinationSizeBuffer.length;
         System.arraycopy(destinationBuffer, 0, buffer, i, destinationBuffer.length);
         i += destinationBuffer.length;
         System.arraycopy(seatsAvailableBuffer, 0, buffer, i, seatsAvailableBuffer.length);
@@ -138,16 +142,5 @@ public class FlightServant implements Flight {
         return buffer;
     }
 
-    @Override
-    public long size() {
-        return (
-            PrimitiveSizes.sizeof(flightId.length) + flightId.length + 
-            PrimitiveSizes.sizeof(source.length) + source.length +
-            PrimitiveSizes.sizeof(destination.length) + destination.length +
-            PrimitiveSizes.sizeof(seatsAvailable) + 
-            PrimitiveSizes.sizeof(seatsBooked) + 
-            PrimitiveSizes.sizeof(price)
-        );
-    }
 }
 

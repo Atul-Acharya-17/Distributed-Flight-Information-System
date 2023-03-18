@@ -4,13 +4,17 @@ import java.nio.ByteBuffer;
 import utils.PrimitiveSizes;
 import utils.Utils;
 
-// Generics in JAVA expect Object inputs
 
 public class SerializePOD {
     
     public static byte[] serialize(int value)
     {
         return Utils.reverse(ByteBuffer.allocate((int)(PrimitiveSizes.sizeof(value))).putInt(value).array());
+    }
+
+    public static byte[] serialize(short value)
+    {
+        return Utils.reverse(ByteBuffer.allocate((int)(PrimitiveSizes.sizeof(value))).putShort(value).array());
     }
 
     public static byte[] serialize(long value)
@@ -30,11 +34,14 @@ public class SerializePOD {
 
     public static byte[] serialize(char[] value)
     {
-        byte[] buffer = new byte[value.length];
+        byte [] sizeBuffer = serialize((long) value.length);
+        byte[] buffer = new byte[value.length + (int)PrimitiveSizes.sizeof((long) value.length)];
+
+        System.arraycopy(sizeBuffer, 0, buffer, 0, sizeBuffer.length);
 
         for (int i=0; i<value.length; ++i)
         {
-            buffer[i] = (byte) value[i];
+            buffer[i + sizeBuffer.length] = (byte) value[i];
         }
         
         return buffer;
@@ -48,6 +55,16 @@ public class SerializePOD {
     public static int deserializeInt(byte[] buffer, int start)
     {
         int value = 0;
+        for (int i=0; i<PrimitiveSizes.sizeof(value); ++i)
+        {
+            value |= (buffer[start + i] << (8 * i));
+        }
+        return value;
+    }
+
+    public static short deserializeShort(byte[] buffer, int start)
+    {
+        short value = 0;
         for (int i=0; i<PrimitiveSizes.sizeof(value); ++i)
         {
             value |= (buffer[start + i] << (8 * i));

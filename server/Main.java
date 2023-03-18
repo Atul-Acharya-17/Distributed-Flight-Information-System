@@ -42,7 +42,9 @@ public class Main{
 
                 System.out.println("Content Size:" + request.getContentSize());
                 System.out.println("Service ID: " + serviceId);
-                System.out.println("Client IP: " + new String(request.getClientIp()));
+                System.out.println("Client IP: " + new String(clientIp));
+
+                System.out.println("Client Port: " + messagePacket.getPort());
 
                 contentBuffer = Arrays.copyOfRange(contentBuffer, (int)PrimitiveSizes.sizeof(serviceId), (int)(PrimitiveSizes.sizeof(serviceId) + contentBuffer.length - PrimitiveSizes.sizeof(serviceId)));
 
@@ -69,8 +71,9 @@ public class Main{
                     default:
                       // code block
                 }
-
-                Communication.send(messagePacket);
+                
+                // Communication.send(messagePacket);//new String(clientIp), messagePacket.getPort(), messagePacket.getData());
+                // System.out.println(InetAddress.getByName(new String(clientIp)));
             }
         } finally {if (aSocket != null) aSocket.close();}
     } 

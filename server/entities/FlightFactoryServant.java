@@ -6,7 +6,7 @@ import java.util.Map;
 import java.util.Scanner;
 
 public class FlightFactoryServant implements FlightFactory {
-    private Hashtable<String, Flight> flights = new Hashtable<>();
+    private static Hashtable<String, Flight> flights = new Hashtable<>();
     public FlightFactoryServant() {
         super();
     }
@@ -14,12 +14,24 @@ public class FlightFactoryServant implements FlightFactory {
     public void createFlight(String flightID, String source, String destination, int seatsAvailable, int seatsBooked, float price) {
         Flight flight = new FlightServant(flightID.toCharArray(), source.toCharArray(), destination.toCharArray(), seatsAvailable, seatsBooked, price);
         flights.put(flightID, flight);
+        System.out.println("Put flight");
     }
 
     public void bookSeat(String flightID) {
         Flight flight = flights.get(flightID);
         flight.setSeatsAvailable(flight.getSeatsAvailable() - 1);
         flight.setSeatsBooked(flight.getSeatsBooked() + 1);
+    }
+
+    public boolean checkFlight(String flightID)
+    {
+        this.displayFlights();
+        return flights.containsKey(flightID);
+    }
+
+    public Flight getFlight(String flightID)
+    {
+        return flights.get(flightID);
     }
 
     public void sendNotification(String clientID) {

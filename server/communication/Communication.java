@@ -11,9 +11,26 @@ public class Communication {
         aSocket = new DatagramSocket(port);
     }
 
-    public static void send(DatagramPacket message) throws IOException
+    public static void send(String ip, int port, byte[]message) throws IOException
     {
-        aSocket.send(message);
+        System.out.println("Sending to : " + ip + ":" + port);
+        System.out.println(message.length);
+        DatagramPacket packet = new DatagramPacket(message, message.length, InetAddress.getByName(ip), port);
+        aSocket.send(packet);
+    }
+
+    public static void send(DatagramPacket messagePacket) throws IOException
+    {
+        System.out.println("Length of packet: " + messagePacket.getLength());
+
+        for (int i=0; i<messagePacket.getLength(); ++i)
+        {
+            System.out.println((int) messagePacket.getData()[i]);
+        }
+        System.out.println(messagePacket.getPort());
+        System.out.println(messagePacket.getAddress());
+        //System.out.println((int)messagePacket.getData()[messagePacket.getLength()]);
+        aSocket.send(messagePacket);
     }
 
     public static DatagramPacket receive() throws IOException
