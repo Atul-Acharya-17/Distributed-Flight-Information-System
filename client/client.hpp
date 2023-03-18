@@ -12,7 +12,7 @@ class Client
         std::string ip_address;
 
     public:
-        Client();
+        Client(std::string ip);
         void queryLocation();
         void queryFlight();
         void reserveSeats();

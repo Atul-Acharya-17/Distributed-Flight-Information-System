@@ -1,7 +1,7 @@
-#include "Booking.hpp"
-
 #ifndef BOOKINGSERVANT_H
 #define BOOKINGSERVANT_H
+
+#include "Booking.hpp"
 
 class BookingServant : public Booking
 {

@@ -1,7 +1,8 @@
-#include "../marshall/Serializable.hpp"
-
 #ifndef BOOKING_H
 #define BOOKING_H
+
+#include "../marshall/Serializable.hpp"
+
 class Booking : public Serializable
 {
 public:
