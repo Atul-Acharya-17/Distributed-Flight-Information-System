@@ -1,5 +1,8 @@
 package entities;
 import java.io.IOException;
+import java.sql.Time;
+import java.time.LocalTime;
+import java.util.Date;
 
 import marshall.SerializePOD;
 import utils.PrimitiveSizes;
@@ -11,6 +14,8 @@ public class FlightServant implements Flight {
     private int seatsAvailable;
     private int seatsBooked;
     private float price;
+    private LocalTime departureTime;
+    private LocalTime duration;
 
     @Override
     public long size() {
@@ -24,13 +29,15 @@ public class FlightServant implements Flight {
         );
     }
 
-    public FlightServant(char[] flightId, char[] source, char[] destination, int seatsAvailable, int seatsBooked, float price) {
+    public FlightServant(char[] flightId, char[] source, char[] destination, int seatsAvailable, int seatsBooked, float price, LocalTime departureTime, LocalTime duration) {
         this.flightId = flightId;
         this.source = source;
         this.destination = destination;
         this.seatsAvailable = seatsAvailable;
         this.seatsBooked = seatsBooked;
         this.price = price;
+        this.duration = duration;
+        this.departureTime = departureTime;
     }
 
     public char[] getFlightId() {
@@ -81,10 +88,26 @@ public class FlightServant implements Flight {
         this.price = price;
     }
 
+    public LocalTime getDepartureTime() {
+        return this.departureTime;
+    }
+    public void setDepartureTime(LocalTime departureTime) {
+        this.departureTime = departureTime;
+    }
+
+    public LocalTime getDuration() {
+        return this.duration;
+    }
+
+    public void setDuration(LocalTime duration) {
+        this.duration = duration;
+    }
+
     @Override
     public void display() {
         System.out.print(new String(flightId) + " @ " + new String(source) + " --> " + new String(destination) + "\n");
         System.out.print(seatsAvailable + " - " + seatsBooked + " # " + price + "\n");
+        System.out.println(departureTime + " " + duration);
     }
 
     @Override
@@ -115,8 +138,6 @@ public class FlightServant implements Flight {
 
     public byte[] serialize() throws IOException {
         byte[] buffer = new byte[(int)this.size()];
-
-        System.out.println(flightId);
 
         byte[] flightIdBuffer = SerializePOD.serialize(flightId);
         byte[] sourceBuffer = SerializePOD.serialize(source);

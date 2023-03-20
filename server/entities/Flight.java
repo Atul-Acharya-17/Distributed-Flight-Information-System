@@ -1,4 +1,6 @@
 package entities;
+import java.time.LocalTime;
+
 import marshall.Serialization;
 
 public interface Flight extends Serialization {
@@ -20,6 +22,9 @@ public interface Flight extends Serialization {
     
     public float getPrice(); //Price per seat
     public void setPrice(float price);
+
+    public LocalTime getDepartureTime();
+    public LocalTime getDuration();
 
     public void display();
 

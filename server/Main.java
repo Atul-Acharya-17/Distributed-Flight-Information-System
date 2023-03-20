@@ -1,10 +1,14 @@
 import java.net.*;
+import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.io.*;
 
 import communication.Communication;
 import communication.Request;
 import entities.FlightFactoryServant;
+import entities.TripServant;
 import marshall.SerializePOD;
 import skeleton.FlightLocationSkeleton;
 import skeleton.FlightQuerySkeleton;
@@ -12,7 +16,7 @@ import utils.PrimitiveSizes;
 
 public class Main{
 
-    public static void main(String args[]) throws IOException {
+    public static void main(String args[]) throws IOException, ParseException {
         FlightFactoryServant ffs = new FlightFactoryServant();
         ffs.populateFlights();
 
@@ -67,6 +71,14 @@ public class Main{
                     default:
                       // code block
                 }
+                // FlightFactoryServant fs = new FlightFactoryServant();
+                // ArrayList<TripServant> result = fs.planTrip("Muscat", "Singapore", 5, 10000);
+                // Collections.sort(result);
+                // for (TripServant tripServant : result) {
+                //   tripServant.display();
+                //   System.out.println();
+                // }
+                // break;
                 
             }
         } finally {if (aSocket != null) aSocket.close();}
