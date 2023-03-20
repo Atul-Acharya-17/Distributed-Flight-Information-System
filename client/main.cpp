@@ -60,14 +60,14 @@ int main(int argc, char** argv) {
             if (choice==2) {
                 c.queryFlight();
             }
-
-            switch(choice)
-            {
-                case 1:
-                case 2:
-                case 3:
-                case 4:
-                default: break;
+            if (choice==3) {
+                c.reserveSeats();
+            }
+            if (choice==4) {
+                c.cancelBooking();
+            }
+            if (choice==5) {
+                c.checkBooking();
             }
 
             // Communication::send((const char *)functionalities[choice]);

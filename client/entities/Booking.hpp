@@ -9,8 +9,8 @@ public:
     virtual char *getBookingId() = 0;
     void setBookingId(char *bookingId);
 
-    virtual char *getFlightID() = 0;
-    void setFlightID(char *flightID);
+    virtual char *getFlightId() = 0;
+    void setFlightId(char *flightID);
 
     virtual char *getClientId() = 0;
     void setClientId(char *clientId);
@@ -18,8 +18,7 @@ public:
     virtual int getNumSeatsBooked() = 0;
     void setNumSeatsBooked(int seatsBooked);
 
-    virtual float getSeatPrice() = 0;
-    void setSeatPrice(float price);
+    virtual void display() = 0;
 };
 
 #endif

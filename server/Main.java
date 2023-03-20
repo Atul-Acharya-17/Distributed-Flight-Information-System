@@ -7,20 +7,28 @@ import java.io.*;
 
 import communication.Communication;
 import communication.Request;
+import entities.BookingFactory;
+import entities.FlightFactory;
 import entities.FlightFactoryServant;
 import entities.TripServant;
+import entities.BookingFactoryServant;
 import marshall.SerializePOD;
+import skeleton.CancelReservationSkeleton;
+import skeleton.CheckReservationSkeleton;
 import skeleton.FlightLocationSkeleton;
 import skeleton.FlightQuerySkeleton;
+import skeleton.NewReservationSkeleton;
 import utils.PrimitiveSizes;
 
 public class Main{
 
-    public static void main(String args[]) throws IOException, ParseException {
-        FlightFactoryServant ffs = new FlightFactoryServant();
+    public static void main(String args[]) throws IOException {
+        FlightFactory ffs = new FlightFactoryServant();
         ffs.populateFlights();
-
-        ffs.displayFlights();
+        // ffs.displayFlights();
+        
+        BookingFactory bfs = new BookingFactoryServant();
+        bfs.populateBookings();
 
         DatagramSocket aSocket = null;
         try{
@@ -49,27 +57,23 @@ public class Main{
 
                 switch(serviceId) {
                     case 1:
-                      // code block
                       FlightLocationSkeleton.handle(contentBuffer, clientIp, clientPort, requestId);
                       break;
                     case 2:
-                      // code block
                       FlightQuerySkeleton.handle(contentBuffer, clientIp, clientPort, requestId);
                       break;
-                    case 3:
-                      // code block
+                      case 3:
+                      NewReservationSkeleton.handle(contentBuffer, clientIp, clientPort, requestId);
                       break;
-                    case 4:
-                      // code block
+                      case 4:
+                      CancelReservationSkeleton.handle(contentBuffer, clientIp, clientPort, requestId);
                       break;
-                    case 5:
-                      // code block
+                      case 5:
+                      CheckReservationSkeleton.handle(contentBuffer, clientIp, clientPort, requestId);
                       break;
                     case 6:
-                      // code block
                       break;
                     default:
-                      // code block
                 }
                 // FlightFactoryServant fs = new FlightFactoryServant();
                 // ArrayList<TripServant> result = fs.planTrip("Muscat", "Singapore", 5, 10000);

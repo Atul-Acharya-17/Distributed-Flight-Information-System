@@ -9,6 +9,7 @@
 
 #include "../communication/comms.hpp"
 #include "../entities/FlightServant.hpp"
+#include "../entities/BookingServant.hpp"
 
 #include "../marshall/SerializablePOD.hpp"
 
@@ -128,41 +129,151 @@ void Proxy::handleLocationQuery(std::string ip, int message_id, std::string sour
 }
 
 
-void Proxy::handleReservation(std::string ip, int message_id, std::string flight_id, int num_seats)
+void Proxy::handleReservation(std::string ip, int message_id, std::string flight_id, std::string customer_name, int num_seats)
 {
-    // char* message_type_buff = marshall_int(0);
-    // char* client_ip_size = marshall_int(ip.size());
-    // char* client_ip = marshall_string(ip);
-    // char* message_id_buff = marshall_int(message_id);
-    // char* service_id_buff = marshall_int(1);
-    // char* flight_id_buff = marshall_string(flight_id);
-    // char* flight_id_size_buff = marshall_int(flight_id.size());
-    // char* num_seats_buff = marshall_int(num_seats);
+    int request_type = 0;
+    char* client_ip = string_to_array(ip);
 
-    // char* byte_string = new char[sizeof(uint32_t) * 6 + ip.size() + flight_id.size() + 1];
+    // Service type, 2 * type of length, length of flight_id, length of customer_name, num_seats
+    size_t content_size = sizeof(int) + 2 * sizeof(size_t) + flight_id.size() + customer_name.size() + sizeof(num_seats);
+
+    char* content_buffer = new char[content_size + 1];
+
+    content_buffer[content_size] = '\0';
+
+    int service_type = 3;
+
+    SerializablePOD<int>::serialize(content_buffer, service_type);
+
+    SerializablePOD<char*>::serialize(content_buffer, string_to_array(flight_id));
+    SerializablePOD<char*>::serialize(content_buffer, string_to_array(customer_name));
+    SerializablePOD<int>::serialize(content_buffer, num_seats);
+
+    content_buffer -= content_size;
+
+    CommunicationMessage comm_message(request_type, message_id, client_ip, content_buffer, content_size);
+    char* message_buffer = comm_message.serialize();
+
+    Communication::send(message_buffer, comm_message.serialization_size() + 1);
+
+    char* message = Communication::receive();
     
-    // uint32_t size = 0;
+    short status;
+    SerializablePOD<short>::deserialize(message, status);
+    
+    long reply_size;
+    SerializablePOD<long>::deserialize(message, reply_size);
 
-    // memcpy(byte_string, message_type_buff, sizeof(uint32_t));
-    // size += sizeof(uint32_t);
+    if (status == 1)
+    {
+        char* error_message;
+        SerializablePOD<char*>::deserialize(message, error_message);
+        std::cout << error_message << '\n';
+        return;
+    }
+    else 
+    {
+        BookingServant bs = BookingServant();
+        bs.deserialize(message);
+        bs.display();
+        std::cout << '\n';
+    }
+}
 
-    // memcpy(byte_string + size, client_ip_size, sizeof(uint32_t));
-    // size += sizeof(uint32_t);
+void Proxy::handleCancelReservation(std::string ip, int message_id, std::string booking_id)
+{
+    int request_type = 0;
+    char* client_ip = string_to_array(ip);
 
-    // memcpy(byte_string + size, client_ip, ip.size());
-    // size += ip.size();
+    // Service type, type of length, length of booking_id
+    size_t content_size = sizeof(int) + 2 * sizeof(size_t) + booking_id.size();
 
-    // memcpy(byte_string + size, service_id_buff, sizeof(uint32_t));
-    // size += sizeof(uint32_t);
+    char* content_buffer = new char[content_size + 1];
 
-    // memcpy(byte_string + size, flight_id_size_buff, sizeof(uint32_t));
-    // size += sizeof(uint32_t);
+    content_buffer[content_size] = '\0';
 
-    // memcpy(byte_string + size, flight_id_buff, flight_id.size());
-    // size += flight_id.size();
+    int service_type = 4;
 
-    // memcpy(byte_string + size, num_seats_buff, sizeof(uint32_t));
-    // size += sizeof(uint32_t);
+    SerializablePOD<int>::serialize(content_buffer, service_type);
 
-    // byte_string[size] = '\0';
+    SerializablePOD<char*>::serialize(content_buffer, string_to_array(booking_id));
+
+    content_buffer -= content_size;
+
+    CommunicationMessage comm_message(request_type, message_id, client_ip, content_buffer, content_size);
+    char* message_buffer = comm_message.serialize();
+
+    Communication::send(message_buffer, comm_message.serialization_size() + 1);
+
+    char* message = Communication::receive();
+    
+    short status;
+    SerializablePOD<short>::deserialize(message, status);
+    
+    long reply_size;
+    SerializablePOD<long>::deserialize(message, reply_size);
+
+    if (status == 1)
+    {
+        char* error_message;
+        SerializablePOD<char*>::deserialize(message, error_message);
+        std::cout << error_message << '\n';
+        return;
+    }
+    else 
+    {
+        char* confirmation_message;
+        SerializablePOD<char*>::deserialize(message, confirmation_message);
+        std::cout << confirmation_message << '\n';
+        return;
+    }
+
+}
+void Proxy::handleCheckReservation(std::string ip, int message_id, std::string booking_id)
+{
+    int request_type = 0;
+    char* client_ip = string_to_array(ip);
+
+    // Service type, type of length, length of booking_id
+    size_t content_size = sizeof(int) + 2 * sizeof(size_t) + booking_id.size();
+
+    char* content_buffer = new char[content_size + 1];
+
+    content_buffer[content_size] = '\0';
+
+    int service_type = 5;
+
+    SerializablePOD<int>::serialize(content_buffer, service_type);
+
+    SerializablePOD<char*>::serialize(content_buffer, string_to_array(booking_id));
+
+    content_buffer -= content_size;
+
+    CommunicationMessage comm_message(request_type, message_id, client_ip, content_buffer, content_size);
+    char* message_buffer = comm_message.serialize();
+
+    Communication::send(message_buffer, comm_message.serialization_size() + 1);
+
+    char* message = Communication::receive();
+    
+    short status;
+    SerializablePOD<short>::deserialize(message, status);
+    
+    long reply_size;
+    SerializablePOD<long>::deserialize(message, reply_size);
+
+    if (status == 1)
+    {
+        char* error_message;
+        SerializablePOD<char*>::deserialize(message, error_message);
+        std::cout << error_message << '\n';
+        return;
+    }
+    else 
+    {
+        BookingServant bs = BookingServant();
+        bs.deserialize(message);
+        bs.display();
+        std::cout << '\n';
+    }
 }
