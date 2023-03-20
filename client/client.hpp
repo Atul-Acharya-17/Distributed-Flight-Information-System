@@ -16,6 +16,8 @@ class Client
         void queryLocation();
         void queryFlight();
         void reserveSeats();
+        void cancelBooking();
+        void checkBooking();
         void monitorUpdates();
 };
 

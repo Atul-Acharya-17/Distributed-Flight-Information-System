@@ -12,18 +12,6 @@ public class FlightServant implements Flight {
     private int seatsBooked;
     private float price;
 
-    @Override
-    public long size() {
-        return (
-            PrimitiveSizes.sizeof((long)flightId.length) + flightId.length + 
-            PrimitiveSizes.sizeof((long)source.length) + source.length +
-            PrimitiveSizes.sizeof((long)destination.length) + destination.length +
-            PrimitiveSizes.sizeof(seatsAvailable) + 
-            PrimitiveSizes.sizeof(seatsBooked) + 
-            PrimitiveSizes.sizeof(price)
-        );
-    }
-
     public FlightServant(char[] flightId, char[] source, char[] destination, int seatsAvailable, int seatsBooked, float price) {
         this.flightId = flightId;
         this.source = source;
@@ -85,6 +73,18 @@ public class FlightServant implements Flight {
     public void display() {
         System.out.print(new String(flightId) + " @ " + new String(source) + " --> " + new String(destination) + "\n");
         System.out.print(seatsAvailable + " - " + seatsBooked + " # " + price + "\n");
+    }
+    
+    @Override
+    public long size() {
+        return (
+            PrimitiveSizes.sizeof((long)flightId.length) + flightId.length + 
+            PrimitiveSizes.sizeof((long)source.length) + source.length +
+            PrimitiveSizes.sizeof((long)destination.length) + destination.length +
+            PrimitiveSizes.sizeof(seatsAvailable) + 
+            PrimitiveSizes.sizeof(seatsBooked) + 
+            PrimitiveSizes.sizeof(price)
+        );
     }
 
     @Override

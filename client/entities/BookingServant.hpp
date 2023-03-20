@@ -10,11 +10,10 @@ private:
     char* flightId;
     char* clientId;
     int numSeatsBooked;
-    float seatPrice;
 
 public:
     BookingServant();
-    BookingServant(char *bookingId, char *flightId, char *clientId, int numSeatsBooked, float seatPrice);
+    BookingServant(char *bookingId, char *flightId, char *clientId, int numSeatsBooked);
     char* getBookingId();
     void setBookingId(char* bookingID);
     char* getFlightId();
@@ -23,8 +22,6 @@ public:
     void setClientId(char* clientId);
     int getNumSeatsBooked();
     void setNumSeatsBooked(int numSeatsBooked);
-    float getSeatPrice();
-    void setSeatPrice(float seatPrice);
 
     void display();
 

@@ -42,14 +42,16 @@ Client::Client(std::string ip)
 
 void Client::queryLocation()
 {
+	// Flush the buffer before taking next input
+	std::cin.ignore(256, '\n');
 
 	std::string source, destination;
 
 	std::cout << "Enter the source location\n";
-	std::cin >> source;
+	std::getline(std::cin, source);
 
 	std::cout << "Enter the destination location\n";
-	std::cin >> destination;
+	std::getline(std::cin, destination);
 
 	Proxy p;
 	p.handleLocationQuery(this->ip_address, this->message_id, source, destination);
@@ -58,10 +60,13 @@ void Client::queryLocation()
 
 void Client::queryFlight()
 {
+	// Flush the buffer before taking next input
+	std::cin.ignore(256, '\n');
+
 	std::string flight_id;
 
 	std::cout << "Enter the flight id\n";
-	std::cin >> flight_id;
+	std::getline(std::cin, flight_id);
 
 	Proxy p;
 	p.handleFlightQuery(this->ip_address, this->message_id, flight_id);
@@ -69,11 +74,18 @@ void Client::queryFlight()
 
 void Client::reserveSeats()
 {
+	// Flush the buffer before taking next input
+	std::cin.ignore(256, '\n');
+
 	std::string flight_id;
+	std::string customer_name;
 	uint32_t num_seats;
 
 	std::cout << "Enter the flight id\n";
-	std::cin >> flight_id;
+	std::getline(std::cin, flight_id);
+
+	std::cout << "Enter customer full name\n";
+	std::getline(std::cin, customer_name);
 
 	std::cout << "Enter the nummber of seats to reserve\n";
 	std::cin >> num_seats;
@@ -83,6 +95,37 @@ void Client::reserveSeats()
 		std::cerr << "You should book atleast 1 seat\n";
 		return;
 	}
+
+	Proxy p;
+	p.handleReservation(this->ip_address, this->message_id, flight_id, customer_name, num_seats);
+}
+
+void Client::cancelBooking()
+{
+	// Flush the buffer before taking next input
+	std::cin.ignore(256, '\n');
+
+	std::string booking_id;
+
+	std::cout << "Enter the booking id\n";
+	std::getline(std::cin, booking_id);
+
+	Proxy p;
+	p.handleCancelReservation(this->ip_address, this->message_id, booking_id);
+}
+
+void Client::checkBooking()
+{
+	// Flush the buffer before taking next input
+	std::cin.ignore(256, '\n');
+
+	std::string booking_id;
+
+	std::cout << "Enter the booking id\n";
+	std::getline(std::cin, booking_id);
+
+	Proxy p;
+	p.handleCheckReservation(this->ip_address, this->message_id, booking_id);
 }
 
 void Client::monitorUpdates()

@@ -12,17 +12,32 @@ public class FlightFactoryServant implements FlightFactory {
         super();
     }
 
+    @Override
     public void createFlight(String flightID, String source, String destination, int seatsAvailable, int seatsBooked, float price) {
         Flight flight = new FlightServant(flightID.toCharArray(), source.toCharArray(), destination.toCharArray(), seatsAvailable, seatsBooked, price);
         flights.put(flightID, flight);
     }
 
-    public void bookSeat(String flightID) {
-        Flight flight = flights.get(flightID);
-        flight.setSeatsAvailable(flight.getSeatsAvailable() - 1);
-        flight.setSeatsBooked(flight.getSeatsBooked() + 1);
+    @Override
+    public boolean bookSeat(String flightID, int numSeatsBooked) {
+        Flight flight = this.getFlight(flightID);
+        if (flight.getSeatsAvailable() < numSeatsBooked) {
+            return false;
+        }
+        flight.setSeatsAvailable(flight.getSeatsAvailable() - numSeatsBooked);
+        flight.setSeatsBooked(flight.getSeatsBooked() + numSeatsBooked);
+
+        return true;
     }
 
+    @Override
+    public void cancelSeat(String flightID, int numSeatsBooked) {
+        Flight flight = this.getFlight(flightID);
+        flight.setSeatsAvailable(flight.getSeatsAvailable() + numSeatsBooked);
+        flight.setSeatsBooked(flight.getSeatsBooked() - numSeatsBooked);
+
+    }
+    
     public boolean checkFlight(String flightID)
     {
         this.displayFlights();
@@ -34,6 +49,7 @@ public class FlightFactoryServant implements FlightFactory {
         return flights.get(flightID);
     }
 
+    @Override
     public ArrayList<String> findFlights(String source, String destination)
     {
         ArrayList<String> result = new ArrayList<String>();
@@ -52,6 +68,8 @@ public class FlightFactoryServant implements FlightFactory {
         return result;
     }
 
+    
+    @Override
     public void sendNotification(String clientID) {
         //TODO: Which class is storing the clientID?
         
@@ -59,16 +77,19 @@ public class FlightFactoryServant implements FlightFactory {
         // client.notifyClient();
     }
 
+    @Override
     public void registerClientCallback(String clientID) {
         // ClientCallback client = ClientCallbackFactory.getClientCallback(clientID);
         // client.registerClientCallback();
     }
 
+    @Override
     public void unregisterClientCallback(String clientID) {
         // ClientCallback client = ClientCallbackFactory.getClientCallback(clientID);
         // client.unregisterClientCallback();
     }
 
+    @Override
     public void displayFlights() {
         Iterator<Map.Entry<String,Flight>> itr = flights.entrySet().iterator();
         Map.Entry<String, Flight> entry = null;
@@ -84,7 +105,7 @@ public class FlightFactoryServant implements FlightFactory {
     public void populateFlights() {
         try
         {
-            File fileObj = new File(System.getProperty("user.dir") + "/data/flights.txt");
+            File fileObj = new File(System.getProperty("user.dir") + "/server/data/flights.txt");
             Scanner scanner = new Scanner(fileObj);
             while(scanner.hasNextLine()){
                 String line = scanner.nextLine();

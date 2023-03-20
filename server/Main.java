@@ -4,19 +4,27 @@ import java.io.*;
 
 import communication.Communication;
 import communication.Request;
+import entities.BookingFactory;
+import entities.FlightFactory;
 import entities.FlightFactoryServant;
+import entities.BookingFactoryServant;
 import marshall.SerializePOD;
+import skeleton.CancelReservationSkeleton;
+import skeleton.CheckReservationSkeleton;
 import skeleton.FlightLocationSkeleton;
 import skeleton.FlightQuerySkeleton;
+import skeleton.NewReservationSkeleton;
 import utils.PrimitiveSizes;
 
 public class Main{
 
     public static void main(String args[]) throws IOException {
-        FlightFactoryServant ffs = new FlightFactoryServant();
+        FlightFactory ffs = new FlightFactoryServant();
         ffs.populateFlights();
-
         ffs.displayFlights();
+        
+        BookingFactory bfs = new BookingFactoryServant();
+        bfs.populateBookings();
 
         DatagramSocket aSocket = null;
         try{
@@ -45,27 +53,23 @@ public class Main{
 
                 switch(serviceId) {
                     case 1:
-                      // code block
                       FlightLocationSkeleton.handle(contentBuffer, clientIp, clientPort, requestId);
                       break;
                     case 2:
-                      // code block
                       FlightQuerySkeleton.handle(contentBuffer, clientIp, clientPort, requestId);
                       break;
-                    case 3:
-                      // code block
+                      case 3:
+                      NewReservationSkeleton.handle(contentBuffer, clientIp, clientPort, requestId);
                       break;
-                    case 4:
-                      // code block
+                      case 4:
+                      CancelReservationSkeleton.handle(contentBuffer, clientIp, clientPort, requestId);
                       break;
-                    case 5:
-                      // code block
+                      case 5:
+                      CheckReservationSkeleton.handle(contentBuffer, clientIp, clientPort, requestId);
                       break;
                     case 6:
-                      // code block
                       break;
                     default:
-                      // code block
                 }
                 
             }

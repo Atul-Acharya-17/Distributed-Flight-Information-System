@@ -9,6 +9,15 @@ public class Communication {
     public static void setup(int port) throws SocketException
     {
         aSocket = new DatagramSocket(port);
+        Socket s = new Socket();
+        try {
+            s.connect(new InetSocketAddress("google.com", 80));
+            System.out.print(s.getLocalAddress());
+            s.close();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 
     public static void send(String ip, int port, byte[]message) throws IOException
