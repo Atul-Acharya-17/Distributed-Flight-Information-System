@@ -17,9 +17,29 @@ public class TripServant implements Trip, Comparable<TripServant> {
     private ArrayList<String> cities;
     private ArrayList<LocalTime> durations;
 
-    public TripServant()
-    {
+    public TripServant() {}
 
+    @Override
+    public long size() {
+        long size = PrimitiveSizes.sizeof(numFlights) + PrimitiveSizes.sizeof(this.price);
+
+        for (String flight : this.flights) {
+            size += flight.length() + PrimitiveSizes.sizeof((long) flight.length());
+        }
+
+        for (String city : this.cities) {
+            size += city.length() + PrimitiveSizes.sizeof((long) city.length());
+        }
+
+        for (LocalTime time : this.departureTimes) {
+            size += PrimitiveSizes.sizeof(time.toSecondOfDay());
+        }
+
+        for (LocalTime time : this.durations) {
+            size += PrimitiveSizes.sizeof(time.toSecondOfDay());
+        }
+
+        return size;
     }
 
     public TripServant(ArrayList<String> flights, LinkedHashSet<String> cities, float price, ArrayList<LocalTime>departureTimes, ArrayList<LocalTime>durations)
@@ -49,6 +69,27 @@ public class TripServant implements Trip, Comparable<TripServant> {
             start += flightID.length + PrimitiveSizes.sizeof((long) flightID.length);
         }
 
+        for (int i=0; i<numFlights+1; ++i)
+        {
+            char[] city = SerializePOD.deserializeString(dataIn, start);
+            this.cities.add(new String(city));
+            start += city.length + PrimitiveSizes.sizeof((long) city.length);
+        }
+
+        for (int i=0; i<numFlights+1; ++i)
+        {
+            int depTimeInSeconds = SerializePOD.deserializeInt(dataIn, start);
+            this.departureTimes.add(LocalTime.ofSecondOfDay(depTimeInSeconds));
+            start += PrimitiveSizes.sizeof(depTimeInSeconds);
+        }
+
+        for (int i=0; i<numFlights; ++i)
+        {
+            int durationInSeconds = SerializePOD.deserializeInt(dataIn, start);
+            this.durations.add(LocalTime.ofSecondOfDay(durationInSeconds));
+            start += PrimitiveSizes.sizeof(durationInSeconds);
+        }
+
         this.price = SerializePOD.deserializeFloat(dataIn, start);
         start += PrimitiveSizes.sizeof(price);
     }
@@ -69,22 +110,29 @@ public class TripServant implements Trip, Comparable<TripServant> {
             i += flightBuffer.length;
         }
 
+        for (String city : this.cities) {
+            byte[] cityBuffer = SerializePOD.serialize(city);
+            System.arraycopy(cityBuffer, 0, buffer, i, cityBuffer.length);
+            i += cityBuffer.length;
+        }
+
+        for (LocalTime time : this.departureTimes) {
+            byte[] depTimeBuffer = SerializePOD.serialize(time.toSecondOfDay());
+            System.arraycopy(depTimeBuffer, 0, buffer, i, depTimeBuffer.length);
+            i += depTimeBuffer.length;
+        }
+
+        for (LocalTime time : this.durations) {
+            byte[] durationBuffer = SerializePOD.serialize(time.toSecondOfDay());
+            System.arraycopy(durationBuffer, 0, buffer, i, durationBuffer.length);
+            i += durationBuffer.length;
+        }
+
         byte[] priceBuffer = SerializePOD.serialize(price);
 
         System.arraycopy(priceBuffer, 0, buffer, i, priceBuffer.length);
 
         return buffer;
-    }
-
-    @Override
-    public long size() {
-        long size = PrimitiveSizes.sizeof(this.flights.size()) + PrimitiveSizes.sizeof(this.price);
-
-        for (String flight : this.flights) {
-            size += (flight.length() + PrimitiveSizes.sizeof((long) flight.length()));
-        }
-
-        return size;
     }
 
     @Override

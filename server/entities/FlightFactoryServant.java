@@ -6,6 +6,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
@@ -103,7 +104,7 @@ public class FlightFactoryServant implements FlightFactory {
 
         LocalTime currentTime = LocalTime.of(0, 0, 0);
         graphSearch(trips, flightNums, placesVisited, departureTimes, durations, currentTime, source, destination, numFlights, 0.0f, maxCost);
-
+        Collections.sort(trips);
         return trips;
     }
 

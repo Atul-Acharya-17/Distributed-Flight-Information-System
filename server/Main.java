@@ -18,6 +18,7 @@ import skeleton.CheckReservationSkeleton;
 import skeleton.FlightLocationSkeleton;
 import skeleton.FlightQuerySkeleton;
 import skeleton.NewReservationSkeleton;
+import skeleton.TripPlanSkeleton;
 import utils.PrimitiveSizes;
 
 public class Main{
@@ -72,6 +73,7 @@ public class Main{
                       CheckReservationSkeleton.handle(contentBuffer, clientIp, clientPort, requestId);
                       break;
                     case 6:
+                      TripPlanSkeleton.handle(contentBuffer, clientIp, clientPort, requestId);
                       break;
                     default:
                 }

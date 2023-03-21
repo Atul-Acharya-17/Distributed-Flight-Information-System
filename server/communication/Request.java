@@ -38,17 +38,12 @@ public class Request implements Serialization {
         int i = 0;
         System.arraycopy(messageBuffer, 0, buffer, i, messageBuffer.length);
         i += messageBuffer.length;
-        System.out.println("CUR: " + i);
         System.arraycopy(requestIdBuffer, 0, buffer, i, requestIdBuffer.length);
         i += requestIdBuffer.length;
-        System.out.println("CUR: " + i);
         System.arraycopy(clientIpBuffer, 0, buffer, i, clientIpBuffer.length);
         i += clientIpBuffer.length;
-        System.out.println("CUR: " + i);
         System.arraycopy(contentSizeBuffer, 0, buffer, i, contentSizeBuffer.length);
         i += contentSizeBuffer.length;
-        System.out.println("CUR: " + i);
-
         System.out.println("Length: " + contentsBuffer.length);
         System.arraycopy(contentsBuffer, 0, buffer, i, contentsBuffer.length);
         i += contentsBuffer.length;

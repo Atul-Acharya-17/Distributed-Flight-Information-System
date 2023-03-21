@@ -25,14 +25,14 @@ public class TripPlanSkeleton extends Skeleton {
         String destination = new String(SerializePOD.deserializeString(content, idx));
         idx += destination.length() + PrimitiveSizes.sizeof((long) destination.length());
 
-        int numFlights = SerializePOD.deserializeInt(content, idx);
-        idx += PrimitiveSizes.sizeof(numFlights);
+        // int numFlights = SerializePOD.deserializeInt(content, idx);
+        // idx += PrimitiveSizes.sizeof(numFlights);
 
-        float maxCost = SerializePOD.deserializeFloat(content, idx);
-        idx += PrimitiveSizes.sizeof(maxCost);
+        // float maxCost = SerializePOD.deserializeFloat(content, idx);
+        // idx += PrimitiveSizes.sizeof(maxCost);
 
         FlightFactoryServant fm = new FlightFactoryServant();
-        ArrayList<TripServant> result = fm.planTrip(source, destination, numFlights, maxCost);
+        ArrayList<TripServant> result = fm.planTrip(source, destination, 3, Float.MAX_VALUE);
 
         short status = 0;
         byte[] replyContent;
@@ -44,14 +44,33 @@ public class TripPlanSkeleton extends Skeleton {
         }
 
         else {
-            // encode num trips
-            // encode each trip
+            int numResults = result.size();
+            int replySize = (int) PrimitiveSizes.sizeof(numResults);
+
+            for (TripServant trip : result) {
+                replySize += trip.size();
+            }
+
+            replyContent = new byte[replySize];
+
+            int i = 0;
+
+            byte[] numTripsBuffer = SerializePOD.serialize(numResults);
+
+            System.arraycopy(numTripsBuffer, 0, replyContent, i, numTripsBuffer.length);
+            i += numTripsBuffer.length;
+
+            for (TripServant tripServant : result) {
+                byte[] tripBuffer = tripServant.serialize();
+                System.arraycopy(tripBuffer, 0, replyContent, i, tripBuffer.length);
+                i += tripBuffer.length;
+            }
         }
         
-        // Reply reply = new Reply(status, replyContent);
+        Reply reply = new Reply(status, replyContent);
 
-        // byte[] replyBuffer = reply.serialize();
+        byte[] replyBuffer = reply.serialize();
 
-        // communication.Communication.send(new String(clientIP), port, replyBuffer);
+        communication.Communication.send(new String(clientIP), port, replyBuffer);
     }
 }
