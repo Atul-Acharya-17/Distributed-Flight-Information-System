@@ -5,7 +5,7 @@
 
 std::map<int, char*> functionalities = {
     {1, "Query Flights"},
-    {2, "Query Flight Informtion"},
+    {2, "Query Flight Information"},
     {3, "Make Booking"},
     {4, "Cancel Booking"},
     {5, "Check Booking"},

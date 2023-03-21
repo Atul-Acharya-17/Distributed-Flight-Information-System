@@ -25,7 +25,7 @@ public class Main{
     public static void main(String args[]) throws IOException {
         FlightFactory ffs = new FlightFactoryServant();
         ffs.populateFlights();
-        // ffs.displayFlights();
+        ffs.displayFlights();
         
         BookingFactory bfs = new BookingFactoryServant();
         bfs.populateBookings();

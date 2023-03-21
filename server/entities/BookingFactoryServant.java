@@ -10,17 +10,20 @@ public class BookingFactoryServant implements BookingFactory {
     }
 
     @Override
-    public Booking createBooking(String flightId, String clientId, int numSeatsBooked) {
-        Booking booking = new BookingServant(flightId.toCharArray(), clientId.toCharArray(), numSeatsBooked);
+    public String createBooking(String flightId, String clientId, int numSeatsBooked) {
         FlightFactoryServant ffs = new FlightFactoryServant();
+        if(!ffs.checkFlight(flightId)) {
+            return "Flight not found";
+        }
+        Booking booking = new BookingServant(flightId.toCharArray(), clientId.toCharArray(), numSeatsBooked);
         boolean isBooked = ffs.bookSeat(flightId, numSeatsBooked);
         if (isBooked) {
             bookings.put(new String(booking.getBookingId()), booking);
         }
         else {
-            return null;
+            return (numSeatsBooked + " seats unavailable on flight " + flightId);
         }
-        return booking;
+        return new String(booking.getBookingId());
     }
 
     @Override

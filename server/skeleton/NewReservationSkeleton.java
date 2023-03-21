@@ -20,20 +20,20 @@ public class NewReservationSkeleton extends Skeleton {
         int num_seats = SerializePOD.deserializeInt(content, idx);
 
         BookingFactoryServant fm = new BookingFactoryServant();
-        Booking result = fm.createBooking(flight_id, customer_name, num_seats);
+        String result = fm.createBooking(flight_id, customer_name, num_seats);
 
         short status = 0;
         byte[] replyContent;
 
-        if (result==null)
+        if (result.length() > 6)    // Means an error message, not a booking id
         {
             status = 1;
-            String rep = num_seats + " seats unavailable on selected flight";
-            replyContent = SerializePOD.serialize(rep.toCharArray());
+            replyContent = SerializePOD.serialize(result.toCharArray());
         }
         
         else {
-            replyContent = result.serialize(); 
+            Booking booking = fm.getBooking(result);
+            replyContent = booking.serialize(); 
         }
         
         Reply reply = new Reply(status, replyContent);
