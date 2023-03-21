@@ -14,7 +14,8 @@
 
 #include "../marshall/SerializablePOD.hpp"
 
-void Proxy::handleFlightQuery(std::string ip, int message_id, std::string flight_id)
+
+void Proxy::handleFlightQuery(std::string ip, int request_id, std::string flight_id)
 {
     int request_type = 0;
     char* client_ip = string_to_array(ip);
@@ -33,7 +34,7 @@ void Proxy::handleFlightQuery(std::string ip, int message_id, std::string flight
 
     content_buffer -= content_size;
 
-    CommunicationMessage comm_message(request_type, message_id, client_ip, content_buffer, content_size);
+    CommunicationMessage comm_message(request_type, request_id, client_ip, content_buffer, content_size);
     char* message_buffer = comm_message.serialize();
 
     Communication::send(message_buffer, comm_message.serialization_size() + 1);
@@ -66,7 +67,7 @@ void Proxy::handleFlightQuery(std::string ip, int message_id, std::string flight
 }
 
 
-void Proxy::handleLocationQuery(std::string ip, int message_id, std::string source, std::string destination)
+void Proxy::handleLocationQuery(std::string ip, int request_id, std::string source, std::string destination)
 {
 
     int request_type = 0;
@@ -87,7 +88,7 @@ void Proxy::handleLocationQuery(std::string ip, int message_id, std::string sour
 
     content_buffer -= content_size;
 
-    CommunicationMessage comm_message(request_type, message_id, client_ip, content_buffer, content_size);
+    CommunicationMessage comm_message(request_type, request_id, client_ip, content_buffer, content_size);
     char* message_buffer = comm_message.serialize();
 
     Communication::send(message_buffer, comm_message.serialization_size() + 1);
@@ -128,7 +129,7 @@ void Proxy::handleLocationQuery(std::string ip, int message_id, std::string sour
 }
 
 
-void Proxy::handlePlanTrip(std::string ip, int message_id, std::string source, std::string destination)
+void Proxy::handlePlanTrip(std::string ip, int request_id, std::string source, std::string destination)
 {
 
     int request_type = 0;
@@ -149,7 +150,7 @@ void Proxy::handlePlanTrip(std::string ip, int message_id, std::string source, s
 
     content_buffer -= content_size;
 
-    CommunicationMessage comm_message(request_type, message_id, client_ip, content_buffer, content_size);
+    CommunicationMessage comm_message(request_type, request_id, client_ip, content_buffer, content_size);
     char* message_buffer = comm_message.serialize();
 
     Communication::send(message_buffer, comm_message.serialization_size() + 1);
@@ -192,7 +193,7 @@ void Proxy::handlePlanTrip(std::string ip, int message_id, std::string source, s
 }
 
 
-void Proxy::handleReservation(std::string ip, int message_id, std::string flight_id, std::string customer_name, int num_seats)
+void Proxy::handleReservation(std::string ip, int request_id, std::string flight_id, std::string customer_name, int num_seats)
 {
     int request_type = 0;
     char* client_ip = string_to_array(ip);
@@ -214,7 +215,7 @@ void Proxy::handleReservation(std::string ip, int message_id, std::string flight
 
     content_buffer -= content_size;
 
-    CommunicationMessage comm_message(request_type, message_id, client_ip, content_buffer, content_size);
+    CommunicationMessage comm_message(request_type, request_id, client_ip, content_buffer, content_size);
     char* message_buffer = comm_message.serialize();
 
     Communication::send(message_buffer, comm_message.serialization_size() + 1);
@@ -243,7 +244,8 @@ void Proxy::handleReservation(std::string ip, int message_id, std::string flight
     }
 }
 
-void Proxy::handleCancelReservation(std::string ip, int message_id, std::string booking_id)
+
+void Proxy::handleCancelReservation(std::string ip, int request_id, std::string booking_id)
 {
     int request_type = 0;
     char* client_ip = string_to_array(ip);
@@ -263,7 +265,7 @@ void Proxy::handleCancelReservation(std::string ip, int message_id, std::string 
 
     content_buffer -= content_size;
 
-    CommunicationMessage comm_message(request_type, message_id, client_ip, content_buffer, content_size);
+    CommunicationMessage comm_message(request_type, request_id, client_ip, content_buffer, content_size);
     char* message_buffer = comm_message.serialize();
 
     Communication::send(message_buffer, comm_message.serialization_size() + 1);
@@ -292,7 +294,9 @@ void Proxy::handleCancelReservation(std::string ip, int message_id, std::string 
     }
 
 }
-void Proxy::handleCheckReservation(std::string ip, int message_id, std::string booking_id)
+
+
+void Proxy::handleCheckReservation(std::string ip, int request_id, std::string booking_id)
 {
     int request_type = 0;
     char* client_ip = string_to_array(ip);
@@ -312,7 +316,7 @@ void Proxy::handleCheckReservation(std::string ip, int message_id, std::string b
 
     content_buffer -= content_size;
 
-    CommunicationMessage comm_message(request_type, message_id, client_ip, content_buffer, content_size);
+    CommunicationMessage comm_message(request_type, request_id, client_ip, content_buffer, content_size);
     char* message_buffer = comm_message.serialize();
 
     Communication::send(message_buffer, comm_message.serialization_size() + 1);
