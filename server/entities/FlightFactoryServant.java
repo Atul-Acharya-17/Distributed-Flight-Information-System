@@ -47,7 +47,6 @@ public class FlightFactoryServant implements FlightFactory {
     
     public boolean checkFlight(String flightID)
     {
-        this.displayFlights();
         return flights.containsKey(flightID);
     }
 

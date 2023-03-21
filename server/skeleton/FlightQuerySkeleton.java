@@ -6,13 +6,12 @@ import entities.FlightFactoryServant;
 import entities.FlightServant;
 import marshall.SerializePOD;
 
-public class FlightQuerySkeleton extends Skeleton{
+public class FlightQuerySkeleton extends Skeleton {
 
     public static void handle(byte[] content, String clientIP, int port, int requestId) throws IOException
     {
         //content = Arrays.copyOfRange(content, (int)PrimitiveSizes.sizeof(flightIdSize), (int)(PrimitiveSizes.sizeof(flightIdSize) + content.length - PrimitiveSizes.sizeof(flightIdSize)));
-        if (Skeleton.checkandRespondToDuplicate(content, clientIP, port, requestId)) {
-            return;
+        if (Skeleton.checkandRespondToDuplicate(content, clientIP, port, requestId)) return;
         
         char[] flightID = SerializePOD.deserializeString(content, 0);
         FlightFactoryServant fm = new FlightFactoryServant();

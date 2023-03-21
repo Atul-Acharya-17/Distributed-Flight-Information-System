@@ -12,8 +12,7 @@ public class NewReservationSkeleton extends Skeleton {
     
     public static void handle(byte[] content, String clientIP, int port, int requestId) throws IOException
     {
-        if (Skeleton.checkandRespondToDuplicate(content, clientIP, port, requestId)) {
-            return;
+        if (Skeleton.checkandRespondToDuplicate(content, clientIP, port, requestId)) return;
         
         int idx = 0;
         String flight_id = new String(SerializePOD.deserializeString(content, idx));

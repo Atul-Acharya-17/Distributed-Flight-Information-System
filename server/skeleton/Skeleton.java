@@ -11,6 +11,7 @@ public abstract class Skeleton {
     public static boolean checkandRespondToDuplicate(byte[] content, String clientIP, int port, int requestId) throws IOException {
         String key = requestId + "@" + clientIP + ":" + port;
         if (history.containsKey(key)) {
+            System.out.println("Sending Duplicate Reply");
             communication.Communication.send(clientIP, port, history.get(key));
             return true;
         }
