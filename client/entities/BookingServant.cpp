@@ -85,7 +85,7 @@ char *BookingServant::serialize() const
     return dataOut;
 }
 
-void BookingServant::deserialize(char *dataIn)
+void BookingServant::deserialize(char* &dataIn)
 {
     char *bookingId;
     char *flightId;

@@ -27,7 +27,7 @@ public:
 
     size_t serialization_size() const;
     char* serialize() const;
-    void deserialize(char* dataIn);
+    void deserialize(char* &dataIn);
 };
 
 #endif

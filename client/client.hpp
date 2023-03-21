@@ -19,6 +19,7 @@ class Client
         void cancelBooking();
         void checkBooking();
         void monitorUpdates();
+        void planTrip();
 };
 
 #endif

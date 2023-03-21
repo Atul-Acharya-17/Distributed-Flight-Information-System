@@ -132,3 +132,17 @@ void Client::monitorUpdates()
 {
 
 }
+
+void Client::planTrip()
+{
+	std::string source, destination;
+
+	std::cout << "Enter the source location\n";
+	std::cin >> source;
+
+	std::cout << "Enter the destination location\n";
+	std::cin >> destination;
+
+	Proxy p;
+	p.handlePlanTrip(this->ip_address, this->message_id, source, destination);
+}

@@ -76,12 +76,12 @@ void FlightServant::setPrice(float price)
 
 void FlightServant::display()
 {
-    std::cout << std::left << std::setw(20) << "Flight Number" << ':' << '\t' << this->flightId << '\n';
-    std::cout << std::left << std::setw(20) << "Source" << ':' << '\t' << this->source << '\n';
-    std::cout << std::left << std::setw(20) << "Destination" << ':' << '\t' << this->destination << '\n';
-    std::cout << std::left << std::setw(20) << "Available Seats" << ':' << '\t' << this->seatsAvailable << '\n';
-    std::cout << std::left << std::setw(20) << "Booked Seats" << ':' << '\t' << this->seatsBooked << '\n';
-    std::cout << std::left << std::setw(20) << "Price" << ':' << '\t' << this->price << '\n';
+    std::cout << std::left << std::setw(19) << "Flight Number" << ':' << '\t' << this->flightId << '\n';
+    std::cout << std::left << std::setw(19) << "Source" << ':' << '\t' << this->source << '\n';
+    std::cout << std::left << std::setw(19) << "Destination" << ':' << '\t' << this->destination << '\n';
+    std::cout << std::left << std::setw(19) << "Available Seats" << ':' << '\t' << this->seatsAvailable << '\n';
+    std::cout << std::left << std::setw(19) << "Booked Seats" << ':' << '\t' << this->seatsBooked << '\n';
+    std::cout << std::left << std::setw(19) << "Price" << ':' << '\t' << this->price << '\n';
 
     // std::cout << this->flightId << "@" << this->source << "->" << this->destination << std::endl;
     // std::cout << this->seatsAvailable << "-" << this->seatsBooked << "#" << this->price << std::endl;
@@ -116,7 +116,7 @@ char* FlightServant::serialize() const
     return dataOut;
 }
 
-void FlightServant::deserialize(char* dataIn)
+void FlightServant::deserialize(char* &dataIn)
 {
     char* flightId;
     char* source;

@@ -10,6 +10,7 @@
 #include "../communication/comms.hpp"
 #include "../entities/FlightServant.hpp"
 #include "../entities/BookingServant.hpp"
+#include "../entities/TripServant.hpp"
 
 #include "../marshall/SerializablePOD.hpp"
 
@@ -124,7 +125,69 @@ void Proxy::handleLocationQuery(std::string ip, int message_id, std::string sour
         std::cout << '\n';
     }
 
+}
 
+
+void Proxy::handlePlanTrip(std::string ip, int message_id, std::string source, std::string destination)
+{
+
+    int request_type = 0;
+    char* client_ip = string_to_array(ip);
+
+    // Service type, type of length x 2, length of source, length of destination
+    size_t content_size = sizeof(int) + 2 * sizeof(size_t) + source.size() + destination.size();
+
+    char* content_buffer = new char[content_size + 1];
+
+    content_buffer[content_size] = '\0';
+
+    int service_type = 6;
+
+    SerializablePOD<int>::serialize(content_buffer, service_type);
+    SerializablePOD<char*>::serialize(content_buffer, string_to_array(source));
+    SerializablePOD<char*>::serialize(content_buffer, string_to_array(destination));
+
+    content_buffer -= content_size;
+
+    CommunicationMessage comm_message(request_type, message_id, client_ip, content_buffer, content_size);
+    char* message_buffer = comm_message.serialize();
+
+    Communication::send(message_buffer, comm_message.serialization_size() + 1);
+
+    char* message = Communication::receive();
+    
+    short status;
+    SerializablePOD<short>::deserialize(message, status);
+    
+    long reply_size;
+    SerializablePOD<long>::deserialize(message, reply_size);
+
+
+    if (status == 1)
+    {
+        char* error_message;
+        SerializablePOD<char*>::deserialize(message, error_message);
+        std::cout << error_message << '\n';
+        return;
+    }
+
+    else 
+    {
+        int num_trips;
+        SerializablePOD<int>::deserialize(message, num_trips);
+
+        std::cout << "Num Trips: " << num_trips << '\n';
+
+        for (int t=0; t<num_trips; ++t)
+        {
+
+            TripServant ts;
+            ts.deserialize(message);
+            ts.display();
+            std::cout << '\n';
+        }
+
+    }
 
 }
 

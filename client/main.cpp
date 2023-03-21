@@ -70,11 +70,19 @@ int main(int argc, char** argv) {
                 c.checkBooking();
             }
 
-            // Communication::send((const char *)functionalities[choice]);
-            // std::cout<<"Hello message sent."<<std::endl;
-                
-            // char* reply = Communication::receive();
-            // std::cout<<"Server : "<<reply<<std::endl;
+            if (choice == 7)
+            {
+                c.planTrip();
+            }
+
+            switch(choice)
+            {
+                case 1:
+                case 2:
+                case 3:
+                case 4:
+                default: break;
+            }
         }
 
     }

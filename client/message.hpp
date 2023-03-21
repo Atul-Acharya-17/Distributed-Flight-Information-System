@@ -56,7 +56,7 @@ class CommunicationMessage : public Serializable  {
 
     }
 
-    void deserialize(char* dataIn)
+    void deserialize(char* &dataIn)
     {
         // dataIn = SerializablePOD<int>::deserialize(dataIn, messageType);
         // dataIn = SerializablePOD<int>::deserialize(dataIn, requestId);
