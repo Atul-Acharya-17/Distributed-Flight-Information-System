@@ -1,8 +1,5 @@
 import java.net.*;
-import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.io.*;
 
 import communication.Communication;
@@ -10,7 +7,6 @@ import communication.Request;
 import entities.BookingFactory;
 import entities.FlightFactory;
 import entities.FlightFactoryServant;
-import entities.TripServant;
 import entities.BookingFactoryServant;
 import marshall.SerializePOD;
 import skeleton.CancelReservationSkeleton;
@@ -48,7 +44,7 @@ public class Main{
                 System.out.println(x.length);
                 request.deserialize(x);
 
-                char[] clientIp = request.getClientIp();
+                String clientIp = new String(request.getClientIp());
                 int requestId = request.getRequestId();
 
                 byte[] contentBuffer = request.getContents();

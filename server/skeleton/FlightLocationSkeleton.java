@@ -2,20 +2,18 @@ package skeleton;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
-
-import javax.lang.model.type.PrimitiveType;
-
 import communication.Reply;
 import entities.FlightFactoryServant;
-import entities.FlightServant;
 import marshall.SerializePOD;
 import utils.PrimitiveSizes;
 
 public class FlightLocationSkeleton extends Skeleton {
     
-    public static void handle(byte[] content, char[] clientIP, int port, int requestId) throws IOException
+    public static void handle(byte[] content, String clientIP, int port, int requestId) throws IOException
     {
+        if (Skeleton.checkandRespondToDuplicate(content, clientIP, port, requestId)) {
+            return;
+        
         int idx = 0;
         String source = new String(SerializePOD.deserializeString(content, idx));
         idx += source.length() + PrimitiveSizes.sizeof((long) source.length());
@@ -60,6 +58,8 @@ public class FlightLocationSkeleton extends Skeleton {
 
         byte[] replyBuffer = reply.serialize();
 
-        communication.Communication.send(new String(clientIP), port, replyBuffer);
+        Skeleton.storeResponse(replyBuffer, clientIP, port, requestId);
+        
+        communication.Communication.send(clientIP, port, replyBuffer);
     }
 }

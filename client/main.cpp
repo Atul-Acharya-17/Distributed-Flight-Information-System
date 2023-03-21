@@ -74,15 +74,6 @@ int main(int argc, char** argv) {
             {
                 c.planTrip();
             }
-
-            switch(choice)
-            {
-                case 1:
-                case 2:
-                case 3:
-                case 4:
-                default: break;
-            }
         }
 
     }

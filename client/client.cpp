@@ -35,7 +35,7 @@
 
 Client::Client(std::string ip)
 {
-	this->message_id = 1;
+	this->request_id = 0;
 	this->ip_address = ip;
 }
 
@@ -44,6 +44,7 @@ void Client::queryLocation()
 {
 	// Flush the buffer before taking next input
 	std::cin.ignore(256, '\n');
+	this->request_id++;
 
 	std::string source, destination;
 
@@ -54,7 +55,7 @@ void Client::queryLocation()
 	std::getline(std::cin, destination);
 
 	Proxy p;
-	p.handleLocationQuery(this->ip_address, this->message_id, source, destination);
+	p.handleLocationQuery(this->ip_address, this->request_id, source, destination);
 
 }
 
@@ -62,6 +63,7 @@ void Client::queryFlight()
 {
 	// Flush the buffer before taking next input
 	std::cin.ignore(256, '\n');
+	this->request_id++;
 
 	std::string flight_id;
 
@@ -69,13 +71,14 @@ void Client::queryFlight()
 	std::getline(std::cin, flight_id);
 
 	Proxy p;
-	p.handleFlightQuery(this->ip_address, this->message_id, flight_id);
+	p.handleFlightQuery(this->ip_address, this->request_id, flight_id);
 }
 
 void Client::reserveSeats()
 {
 	// Flush the buffer before taking next input
 	std::cin.ignore(256, '\n');
+	this->request_id++;
 
 	std::string flight_id;
 	std::string customer_name;
@@ -97,13 +100,14 @@ void Client::reserveSeats()
 	}
 
 	Proxy p;
-	p.handleReservation(this->ip_address, this->message_id, flight_id, customer_name, num_seats);
+	p.handleReservation(this->ip_address, this->request_id, flight_id, customer_name, num_seats);
 }
 
 void Client::cancelBooking()
 {
 	// Flush the buffer before taking next input
 	std::cin.ignore(256, '\n');
+	this->request_id++;
 
 	std::string booking_id;
 
@@ -111,13 +115,14 @@ void Client::cancelBooking()
 	std::getline(std::cin, booking_id);
 
 	Proxy p;
-	p.handleCancelReservation(this->ip_address, this->message_id, booking_id);
+	p.handleCancelReservation(this->ip_address, this->request_id, booking_id);
 }
 
 void Client::checkBooking()
 {
 	// Flush the buffer before taking next input
 	std::cin.ignore(256, '\n');
+	this->request_id++;
 
 	std::string booking_id;
 
@@ -125,7 +130,7 @@ void Client::checkBooking()
 	std::getline(std::cin, booking_id);
 
 	Proxy p;
-	p.handleCheckReservation(this->ip_address, this->message_id, booking_id);
+	p.handleCheckReservation(this->ip_address, this->request_id, booking_id);
 }
 
 void Client::monitorUpdates()
@@ -135,14 +140,17 @@ void Client::monitorUpdates()
 
 void Client::planTrip()
 {
-	std::string source, destination;
+	// Flush the buffer before taking next input
+	std::cin.ignore(256, '\n');
+	this->request_id++;
 
+	std::string source, destination;
 	std::cout << "Enter the source location\n";
-	std::cin >> source;
+	std::getline(std::cin, source);
 
 	std::cout << "Enter the destination location\n";
-	std::cin >> destination;
+	std::getline(std::cin, destination);
 
 	Proxy p;
-	p.handlePlanTrip(this->ip_address, this->message_id, source, destination);
+	p.handlePlanTrip(this->ip_address, this->request_id, source, destination);
 }

@@ -7,7 +7,7 @@ class Client
 {
     private:
         int client_id;
-        int message_id;
+        int request_id;
         std::string host_name;
         std::string ip_address;
 

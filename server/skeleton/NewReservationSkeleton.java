@@ -10,8 +10,11 @@ import utils.PrimitiveSizes;
 
 public class NewReservationSkeleton extends Skeleton {
     
-    public static void handle(byte[] content, char[] clientIP, int port, int requestId) throws IOException
+    public static void handle(byte[] content, String clientIP, int port, int requestId) throws IOException
     {
+        if (Skeleton.checkandRespondToDuplicate(content, clientIP, port, requestId)) {
+            return;
+        
         int idx = 0;
         String flight_id = new String(SerializePOD.deserializeString(content, idx));
         idx += flight_id.length() + PrimitiveSizes.sizeof((long) flight_id.length());
@@ -40,6 +43,8 @@ public class NewReservationSkeleton extends Skeleton {
 
         byte[] replyBuffer = reply.serialize();
 
-        communication.Communication.send(new String(clientIP), port, replyBuffer);
+        Skeleton.storeResponse(replyBuffer, clientIP, port, requestId);
+        
+        communication.Communication.send(clientIP, port, replyBuffer);
     }
 }

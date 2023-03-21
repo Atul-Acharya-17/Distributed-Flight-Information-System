@@ -8,10 +8,12 @@ import marshall.SerializePOD;
 
 public class FlightQuerySkeleton extends Skeleton{
 
-    public static void handle(byte[] content, char[] clientIP, int port, int requestId) throws IOException
+    public static void handle(byte[] content, String clientIP, int port, int requestId) throws IOException
     {
         //content = Arrays.copyOfRange(content, (int)PrimitiveSizes.sizeof(flightIdSize), (int)(PrimitiveSizes.sizeof(flightIdSize) + content.length - PrimitiveSizes.sizeof(flightIdSize)));
-
+        if (Skeleton.checkandRespondToDuplicate(content, clientIP, port, requestId)) {
+            return;
+        
         char[] flightID = SerializePOD.deserializeString(content, 0);
         FlightFactoryServant fm = new FlightFactoryServant();
         FlightServant fs = (FlightServant) fm.getFlight(new String(flightID));
@@ -33,6 +35,8 @@ public class FlightQuerySkeleton extends Skeleton{
 
         byte[] replyBuffer = reply.serialize();
 
-        communication.Communication.send(new String(clientIP), port, replyBuffer);
+        Skeleton.storeResponse(replyBuffer, clientIP, port, requestId);
+        
+        communication.Communication.send(clientIP, port, replyBuffer);
     }
 }

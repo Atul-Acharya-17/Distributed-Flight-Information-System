@@ -2,26 +2,23 @@ package skeleton;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
-
-import javax.lang.model.type.PrimitiveType;
-
 import communication.Reply;
 import entities.FlightFactoryServant;
-import entities.FlightServant;
 import entities.TripServant;
 import marshall.SerializePOD;
 import utils.PrimitiveSizes;
 
 public class TripPlanSkeleton extends Skeleton {
     
-    public static void handle(byte[] content, char[] clientIP, int port, int requestId) throws IOException
+    public static void handle(byte[] content, String clientIP, int port, int requestId) throws IOException
     {
-        int idx = 0;
+        if (Skeleton.checkandRespondToDuplicate(content, clientIP, port, requestId)) {
+            return;
+        }
 
+        int idx = 0;
         String source = new String(SerializePOD.deserializeString(content, idx));
         idx += source.length() + PrimitiveSizes.sizeof((long) source.length());
-
         String destination = new String(SerializePOD.deserializeString(content, idx));
         idx += destination.length() + PrimitiveSizes.sizeof((long) destination.length());
 
@@ -71,6 +68,8 @@ public class TripPlanSkeleton extends Skeleton {
 
         byte[] replyBuffer = reply.serialize();
 
-        communication.Communication.send(new String(clientIP), port, replyBuffer);
+        Skeleton.storeResponse(replyBuffer, clientIP, port, requestId);
+        
+        communication.Communication.send(clientIP, port, replyBuffer);
     }
 }
