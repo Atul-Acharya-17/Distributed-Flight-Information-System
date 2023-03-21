@@ -251,7 +251,7 @@ void Proxy::handleCancelReservation(std::string ip, int request_id, std::string 
     char* client_ip = string_to_array(ip);
 
     // Service type, type of length, length of booking_id
-    size_t content_size = sizeof(int) + 2 * sizeof(size_t) + booking_id.size();
+    size_t content_size = sizeof(int) + sizeof(size_t) + booking_id.size();
 
     char* content_buffer = new char[content_size + 1];
 
@@ -302,7 +302,7 @@ void Proxy::handleCheckReservation(std::string ip, int request_id, std::string b
     char* client_ip = string_to_array(ip);
 
     // Service type, type of length, length of booking_id
-    size_t content_size = sizeof(int) + 2 * sizeof(size_t) + booking_id.size();
+    size_t content_size = sizeof(int) + sizeof(size_t) + booking_id.size();
 
     char* content_buffer = new char[content_size + 1];
 
