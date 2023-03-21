@@ -29,6 +29,11 @@ public class FlightServant implements Flight {
         );
     }
 
+    public FlightServant()
+    {
+        
+    }
+
     public FlightServant(char[] flightId, char[] source, char[] destination, int seatsAvailable, int seatsBooked, float price, LocalTime departureTime, LocalTime duration) {
         this.flightId = flightId;
         this.source = source;
