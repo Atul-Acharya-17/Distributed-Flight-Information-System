@@ -12,10 +12,11 @@ private:
     std::vector<Time> departureTimes;
     std::vector<Time> durations;
     float cost;
+    long travelTime;
 
 public:
     TripServant();
-    TripServant(std::vector<std::string>, std::vector<std::string>, std::vector<Time>, std::vector<Time>, float price);
+    TripServant(std::vector<std::string>, std::vector<std::string>, std::vector<Time>, std::vector<Time>, float price, long travelTime);
     
     std::vector<std::string> getFlights();
     void setFlighs(std::vector<std::string> flightID);
