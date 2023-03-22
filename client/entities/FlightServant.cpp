@@ -81,7 +81,7 @@ void FlightServant::display()
     std::cout << std::left << std::setw(19) << "Destination" << ':' << '\t' << this->destination << '\n';
     std::cout << std::left << std::setw(19) << "Available Seats" << ':' << '\t' << this->seatsAvailable << '\n';
     std::cout << std::left << std::setw(19) << "Booked Seats" << ':' << '\t' << this->seatsBooked << '\n';
-    std::cout << std::left << std::setw(19) << "Price" << ':' << '\t' << this->price << '\n';
+    std::cout << std::left << std::setw(19) << "Price" << ':' << '\t' << this->price << "$" << '\n';
 
     // std::cout << this->flightId << "@" << this->source << "->" << this->destination << std::endl;
     // std::cout << this->seatsAvailable << "-" << this->seatsBooked << "#" << this->price << std::endl;
