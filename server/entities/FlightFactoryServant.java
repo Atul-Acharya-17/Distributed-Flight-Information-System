@@ -131,32 +131,29 @@ public class FlightFactoryServant implements FlightFactory {
 
             if (placesVisited.contains(nextCountry)) continue; // Avoid travelling to same place in same tri
 
+            // if (currentTime.isAfter(departureTime)) continue; // cannot board flight when it has already left
+            
+
             LocalTime departureTime = flight.getDepartureTime();
             LocalTime flightDuration = flight.getDuration();
 
-            if (currentTime.isAfter(departureTime)) continue; // cannot board flight when it has already left
-            
-            else 
-            {
-                placesVisited.add(nextCountry);
-                flightNums.add(fID);
+            placesVisited.add(nextCountry);
+            flightNums.add(fID);
 
-                departureTimes.add(departureTime);
-                durations.add(flightDuration);
+            departureTimes.add(departureTime);
+            durations.add(flightDuration);
 
-                float cost = flight.getPrice();
+            float cost = flight.getPrice();
 
-                currentTime = departureTime.plusHours(flightDuration.getHour()).plusMinutes(flightDuration.getMinute());
+            currentTime = departureTime.plusHours(flightDuration.getHour()).plusMinutes(flightDuration.getMinute());
 
-                graphSearch(trips, flightNums, placesVisited, departureTimes, durations, currentTime, nextCountry, destination, flightsRemaining - 1, spent + cost, budget);
+            graphSearch(trips, flightNums, placesVisited, departureTimes, durations, currentTime, nextCountry, destination, flightsRemaining - 1, spent + cost, budget);
 
-                placesVisited.remove(nextCountry);
-                flightNums.remove(fID);
+            placesVisited.remove(nextCountry);
+            flightNums.remove(fID);
 
-                departureTimes.remove(departureTime);
-                durations.remove(flightDuration);
-
-            }
+            departureTimes.remove(departureTime);
+            durations.remove(flightDuration);
         }
     }
 
