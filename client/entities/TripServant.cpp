@@ -13,13 +13,14 @@ TripServant::TripServant()
 
 }
 
-TripServant::TripServant(std::vector<std::string> flights, std::vector<std::string>cities, std::vector<Time> departureTimes, std::vector<Time> durations, float cost)
+TripServant::TripServant(std::vector<std::string> flights, std::vector<std::string>cities, std::vector<Time> departureTimes, std::vector<Time> durations, float cost, long travelTime)
 {
     this->flights = flights;
     this->cities = cities;
     this->cost = cost;
     this->departureTimes = departureTimes;
     this->durations = durations;
+    this->travelTime = travelTime;
 }
     
 std::vector<std::string> TripServant::getFlights()
@@ -76,7 +77,9 @@ void TripServant::display()
 {
     if ( this->flights.size() ==0 ) return;
 
-    std::cout << "Price: " << this->cost<<'\n';
+    Time travelTime(this->travelTime);
+
+    std::cout << "Price: " << this->cost<< " , Travel Time: "  << travelTime.to_string()<<'\n';
 
     std::cout << this->cities[0];
 
@@ -139,5 +142,7 @@ void TripServant::deserialize(char* &dataIn)
     }
 
     SerializablePOD<float>::deserialize(dataIn, this->cost);
+
+    SerializablePOD<long>::deserialize(dataIn, this->travelTime);
 }
 
