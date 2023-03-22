@@ -1,5 +1,7 @@
 import java.net.*;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.io.*;
 
 import communication.Communication;
@@ -7,6 +9,7 @@ import communication.Request;
 import entities.BookingFactory;
 import entities.FlightFactory;
 import entities.FlightFactoryServant;
+import entities.TripServant;
 import entities.BookingFactoryServant;
 import marshall.SerializePOD;
 import skeleton.CancelReservationSkeleton;
@@ -78,7 +81,7 @@ public class Main{
                     default:
                 }
                 // FlightFactoryServant fs = new FlightFactoryServant();
-                // ArrayList<TripServant> result = fs.planTrip("Muscat", "Singapore", 5, 10000);
+                // ArrayList<TripServant> result = fs.planTrip("Muscat", "Singapore", 2, 10000);
                 // Collections.sort(result);
                 // for (TripServant tripServant : result) {
                 //   tripServant.display();
