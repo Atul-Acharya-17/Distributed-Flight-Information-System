@@ -1,12 +1,10 @@
 ### Running Client
 
-For now type
+`g++ main.cpp constants.hpp marshall/* proxy/* communication/* entities/* client.hpp client.cpp -o client.o`  
+`./client.o <server_ip> <client_ip>`
 
-g++ -std = c++17 -o client.o main.cpp constants.hpp marshall/* proxy/* communication/* entities/* client.hpp client.cpp 
+### Running Server
 
-./client.o serverip clientip
+`javac Main.java`  
+`java Main`
 
-There is a dummy server to test the client
-
-g++ server.cpp marshall/* -o server.o
-./server.o

@@ -1,10 +1,6 @@
 package entities;
 import java.io.File;
-import java.util.Date;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Hashtable;
@@ -12,8 +8,6 @@ import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Scanner;
-import java.sql.Time;
-import entities.PublishFactoryServant;
 
 public class FlightFactoryServant implements FlightFactory {
     private static Hashtable<String, Flight> flights = new Hashtable<>();

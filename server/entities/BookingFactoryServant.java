@@ -13,7 +13,7 @@ public class BookingFactoryServant implements BookingFactory {
     public String createBooking(String flightId, String clientId, int numSeatsBooked) {
         FlightFactoryServant ffs = new FlightFactoryServant();
         if(!ffs.checkFlight(flightId)) {
-            return "Flight not found";
+            return ("Flight ID " + flightId + " not found");
         }
         Booking booking = new BookingServant(flightId.toCharArray(), clientId.toCharArray(), numSeatsBooked);
         boolean isBooked = ffs.bookSeat(flightId, numSeatsBooked);
@@ -21,7 +21,9 @@ public class BookingFactoryServant implements BookingFactory {
             bookings.put(new String(booking.getBookingId()), booking);
         }
         else {
-            return (numSeatsBooked + " seats unavailable on flight " + flightId);
+            int seatsAvailable = ffs.getFlight(flightId).getSeatsAvailable();
+            return (numSeatsBooked + " seats cannot be book on flight " + flightId + 
+                    ". Only " + seatsAvailable + " are available.");
         }
         return new String(booking.getBookingId());
     }

@@ -1,9 +1,6 @@
 package entities;
 import java.io.IOException;
-import java.sql.Time;
 import java.time.LocalTime;
-import java.util.Date;
-
 import marshall.SerializePOD;
 import utils.PrimitiveSizes;
 
@@ -25,7 +22,9 @@ public class FlightServant implements Flight {
             PrimitiveSizes.sizeof((long)destination.length) + destination.length +
             PrimitiveSizes.sizeof(seatsAvailable) + 
             PrimitiveSizes.sizeof(seatsBooked) + 
-            PrimitiveSizes.sizeof(price)
+            PrimitiveSizes.sizeof(price) +
+            PrimitiveSizes.sizeof(departureTime.toSecondOfDay()) +
+            PrimitiveSizes.sizeof(duration.toSecondOfDay())
         );
     }
 
@@ -139,6 +138,14 @@ public class FlightServant implements Flight {
 
         price = SerializePOD.deserializeFloat(dataIn, start);
         start += PrimitiveSizes.sizeof(price);
+
+        int int_departureTime = SerializePOD.deserializeInt(dataIn, start);
+        departureTime = LocalTime.ofSecondOfDay(int_departureTime);
+        start += PrimitiveSizes.sizeof(int_departureTime);
+        
+        int int_duration = SerializePOD.deserializeInt(dataIn, start);
+        duration = LocalTime.ofSecondOfDay(int_duration);
+        start += PrimitiveSizes.sizeof(int_duration);
     }
 
     public byte[] serialize() throws IOException {
@@ -150,6 +157,8 @@ public class FlightServant implements Flight {
         byte[] seatsAvailableBuffer = SerializePOD.serialize(seatsAvailable);
         byte[] seatsBookedBuffer = SerializePOD.serialize(seatsBooked);
         byte[] priceBuffer = SerializePOD.serialize(price);
+        byte[] departureTimeBuffer = SerializePOD.serialize(departureTime.toSecondOfDay());
+        byte[] durationBuffer = SerializePOD.serialize(duration.toSecondOfDay());
 
         int i = 0;
         System.arraycopy(flightIdBuffer, 0, buffer, i, flightIdBuffer.length);
@@ -164,6 +173,10 @@ public class FlightServant implements Flight {
         i += seatsBookedBuffer.length;
         System.arraycopy(priceBuffer, 0, buffer, i, priceBuffer.length);
         i += priceBuffer.length;
+        System.arraycopy(departureTimeBuffer, 0, buffer, i, departureTimeBuffer.length);
+        i += departureTimeBuffer.length;
+        System.arraycopy(durationBuffer, 0, buffer, i, durationBuffer.length);
+        i += durationBuffer.length;
 
         return buffer;
     }

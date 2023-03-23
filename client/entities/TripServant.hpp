@@ -1,8 +1,8 @@
-#include "Trip.hpp"
-#include "../marshall/SerializablePOD.hpp"
-
 #ifndef TRIP_SERVANT_H
 #define TRIP_SERVANT_H
+
+#include "Trip.hpp"
+#include "../marshall/SerializablePOD.hpp"
 
 class TripServant : public Trip
 {

@@ -5,8 +5,6 @@
 #include <iostream>
 #include <iomanip>
 
-#include "../marshall/SerializablePOD.hpp"
-
 FlightServant::FlightServant()
 {
     this->flightId = "";
@@ -15,8 +13,10 @@ FlightServant::FlightServant()
     this->seatsAvailable = -1;
     this->seatsBooked = -1;
     this->price = -1;
+    this->departureTime = Time(0);
+    this->duration = Time(0);
 }
-FlightServant::FlightServant(char* flightId, char* source, char* destination, int seatsAvailable, int seatsBooked, float price)
+FlightServant::FlightServant(char* flightId, char* source, char* destination, int seatsAvailable, int seatsBooked, float price, int departureTime, int duration)
 {
     this->flightId = flightId;
     this->source = source;
@@ -24,6 +24,8 @@ FlightServant::FlightServant(char* flightId, char* source, char* destination, in
     this->seatsAvailable = seatsAvailable;
     this->seatsBooked = seatsBooked;
     this->price = price;
+    this->departureTime = Time(departureTime);
+    this->duration = Time(duration);
 }
 char* FlightServant::getFlightID()
 {
@@ -73,12 +75,30 @@ void FlightServant::setPrice(float price)
 {
     this->price = price;
 }
+Time FlightServant::getDepartureTime()
+{
+    return this->departureTime;
+}
+void FlightServant::setDepartureTime(Time time)
+{
+    this->departureTime = time;
+}
+Time FlightServant::getDuration()
+{
+    return this->duration;
+}
+void FlightServant::setDuration(Time time)
+{
+    this->duration = time;
+}
 
 void FlightServant::display()
 {
     std::cout << std::left << std::setw(19) << "Flight Number" << ':' << '\t' << this->flightId << '\n';
     std::cout << std::left << std::setw(19) << "Source" << ':' << '\t' << this->source << '\n';
     std::cout << std::left << std::setw(19) << "Destination" << ':' << '\t' << this->destination << '\n';
+    std::cout << std::left << std::setw(19) << "Departure Time" << ':' << '\t' << this->departureTime.to_string("%H:%M:%S") << '\n';
+    std::cout << std::left << std::setw(19) << "Duration" << ':' << '\t' << this->duration.to_string("%H:%M hrs") << '\n';
     std::cout << std::left << std::setw(19) << "Available Seats" << ':' << '\t' << this->seatsAvailable << '\n';
     std::cout << std::left << std::setw(19) << "Booked Seats" << ':' << '\t' << this->seatsBooked << '\n';
     std::cout << std::left << std::setw(19) << "Price" << ':' << '\t' << this->price << "$" << '\n';
@@ -110,6 +130,8 @@ char* FlightServant::serialize() const
     SerializablePOD<int>::serialize(dataOut, seatsAvailable);
     SerializablePOD<int>::serialize(dataOut, seatsBooked);
     SerializablePOD<float>::serialize(dataOut, price);
+    SerializablePOD<int>::serialize(dataOut, departureTime.toSecondOfDay());
+    SerializablePOD<int>::serialize(dataOut, duration.toSecondOfDay());
 
     // Reset pointer to start of serialized string and return
     dataOut -= size;
@@ -124,6 +146,8 @@ void FlightServant::deserialize(char* &dataIn)
     int seatsAvailable;
     int seatsBooked;
     float price;
+    int int_departureTime;
+    int int_duration;
 
     SerializablePOD<char*>::deserialize(dataIn, flightId);
     SerializablePOD<char*>::deserialize(dataIn, source);
@@ -131,6 +155,8 @@ void FlightServant::deserialize(char* &dataIn)
     SerializablePOD<int>::deserialize(dataIn, seatsAvailable);
     SerializablePOD<int>::deserialize(dataIn, seatsBooked);
     SerializablePOD<float>::deserialize(dataIn, price);
+    SerializablePOD<int>::deserialize(dataIn, int_departureTime);
+    SerializablePOD<int>::deserialize(dataIn, int_duration);
 
     this->flightId = flightId;
     this->source = source;
@@ -138,4 +164,6 @@ void FlightServant::deserialize(char* &dataIn)
     this->seatsAvailable = seatsAvailable;
     this->seatsBooked = seatsBooked;
     this->price = price;
+    this->departureTime = Time(int_departureTime);
+    this->duration = Time(int_duration);
 }

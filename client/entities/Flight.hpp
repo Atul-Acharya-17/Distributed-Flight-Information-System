@@ -2,6 +2,7 @@
 #define FLIGHT_H
 
 #include "../marshall/Serializable.hpp"
+#include "../utils/utils.hpp"
 
 class Flight : public Serializable 
 {
@@ -23,6 +24,12 @@ public:
     
     virtual float getPrice() = 0;
     void setPrice(float price);
+
+    virtual Time getDepartureTime() = 0;
+    void setDepartureTime(Time time);
+
+    virtual Time getDuration() = 0;
+    void setDuration(Time time);
 
     virtual void display() = 0;
 };

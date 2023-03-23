@@ -79,15 +79,15 @@ void TripServant::display()
 
     Time travelTime(this->travelTime);
 
-    std::cout << "Price: " << this->cost << "$" << " , Travel Time: "  << travelTime.to_string()<<'\n';
+    std::cout << "Price: " << this->cost << "$" << " , Travel Time: "  << travelTime.to_string("%H:%M:%S hrs")<<'\n';
 
     std::cout << this->cities[0];
 
     for(int i=0; i<this->flights.size(); ++i)
     {
-        std::cout << "(" + this->departureTimes[i].to_string() << ")" << " ---" << this->flights[i]<<"(" << this->durations[i].to_string() << ")" << "---> " << this->cities[i+1];
+        std::cout << "(" + this->departureTimes[i].to_string("%H:%M:%S") << ")" << " ---" << this->flights[i]<<"(" << this->durations[i].to_string("%H:%M hrs") << ")" << "---> " << this->cities[i+1];
 
-        if (i==this->flights.size()-1) std::cout << "(" << this->departureTimes[i+1].to_string() << ")\n";
+        if (i==this->flights.size()-1) std::cout << "(" << this->departureTimes[i+1].to_string("%H:%M:%S") << ")\n";
     }
 
 }
