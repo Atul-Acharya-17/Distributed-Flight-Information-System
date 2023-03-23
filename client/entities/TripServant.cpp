@@ -79,7 +79,7 @@ void TripServant::display()
 
     Time travelTime(this->travelTime);
 
-    std::cout << "Price: " << this->cost<< " , Travel Time: "  << travelTime.to_string()<<'\n';
+    std::cout << "Price: " << this->cost << "$" << " , Travel Time: "  << travelTime.to_string()<<'\n';
 
     std::cout << this->cities[0];
 
