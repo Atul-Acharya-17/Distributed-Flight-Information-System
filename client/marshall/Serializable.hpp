@@ -1,7 +1,7 @@
-#include <stddef.h>
-
 #ifndef SERIALIZABLE_H
 #define SERIALIZABLE_H
+
+#include <stddef.h>
 
 class Serializable
 {

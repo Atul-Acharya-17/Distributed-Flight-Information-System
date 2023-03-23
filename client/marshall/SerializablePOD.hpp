@@ -1,9 +1,9 @@
+#ifndef SERIALIZABLEPOD_H
+#define SERIALIZABLEPOD_H
+
 #include <string>
 #include <bits/stdc++.h>
 #include <stddef.h>
-
-#ifndef SERIALIZABLEPOD_H
-#define SERIALIZABLEPOD_H
 
 template <typename POD>
 class SerializablePOD

@@ -45,13 +45,32 @@ struct Time
         this->seconds = seconds % 60;
     }
 
-    std::string to_string()
+    int toSecondOfDay() const
+    {
+        int result = this->hours * 3600;
+        result += this->minutes * 60;
+        result += this->seconds;
+        return result;
+    }
+
+    std::string to_string(char* format = "%H:%M:%S")
     {
         std::string h = this->hours >= 10? std::to_string(this->hours) : "0" + std::to_string(this->hours);
         std::string m = this->minutes >= 10? std::to_string(this->minutes) : "0" + std::to_string(this->minutes);
         std::string s = this->seconds >= 10? std::to_string(this->seconds) : "0" + std::to_string(this->seconds);
 
-       return h + ":" + m + ":" + s ;
+        std::string result;
+        for(int i = 0; i < sizeof(format); i++) {
+            if(format[i]=='%') {
+                if (format[i+1]=='H' || format[i+1]=='h') result.append(h);
+                if (format[i+1]=='M' || format[i+1]=='m') result.append(m);
+                if (format[i+1]=='S' || format[i+1]=='s') result.append(s);
+                i++;
+            }
+            else result.append(1, format[i]);           
+        }
+
+       return result;
     }
 };
 

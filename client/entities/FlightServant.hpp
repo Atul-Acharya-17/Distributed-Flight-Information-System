@@ -1,8 +1,8 @@
-#include "Flight.hpp"
-#include "../marshall/SerializablePOD.hpp"
-
 #ifndef FLIGHTSERVANT_H
 #define FLIGHTSERVANT_H
+
+#include "Flight.hpp"
+#include "../marshall/SerializablePOD.hpp"
 
 class FlightServant : public Flight
 {
@@ -13,10 +13,12 @@ private:
     int seatsAvailable;
     int seatsBooked;
     float price;
+    Time departureTime;
+    Time duration;
 
 public:
     FlightServant();
-    FlightServant(char* flightId, char* source, char* destination, int seatsAvailable, int seatsBooked, float price);
+    FlightServant(char* flightId, char* source, char* destination, int seatsAvailable, int seatsBooked, float price, int departureTime, int duration);
     char* getFlightID();
     void setFlightID(char* flightID);
     char* getSource();
@@ -29,6 +31,10 @@ public:
     void setSeatsBooked(int seatsBooked);
     float getPrice();
     void setPrice(float price);
+    Time getDepartureTime();
+    void setDepartureTime(Time time);
+    Time getDuration();
+    void setDuration(Time time);
 
     void display();
 
