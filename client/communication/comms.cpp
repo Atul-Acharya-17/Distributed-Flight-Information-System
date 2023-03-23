@@ -18,6 +18,12 @@ void Communication::setup(char* server_ip)
 	Communication::servaddr.sin_family = AF_INET;
 	Communication::servaddr.sin_port = htons(PORT);
 	Communication::servaddr.sin_addr.s_addr = inet_addr(server_ip);
+
+    struct timeval timeout;
+    timeout.tv_sec = 3;
+    timeout.tv_usec = 0;
+
+    setsockopt(Communication::sockfd, SOL_SOCKET, SO_RCVTIMEO, &timeout, sizeof(timeout));
 }
 
 void Communication::send(const char* message)
@@ -34,15 +40,15 @@ void Communication::send(const char* message, size_t message_size)
                 sizeof(Communication::servaddr));
 }
 
-char* Communication::receive()
+int Communication::receive(char* &buffer)
 {
+    buffer = new char[MAXLINE];
 	len = sizeof(Communication::servaddr);
-    int n = recvfrom(Communication::sockfd, (char *)Communication::buffer, MAXLINE,
+    int n = recvfrom(Communication::sockfd, (char *)buffer, MAXLINE,
                     MSG_WAITALL, (struct sockaddr *) &Communication::servaddr,
                     &Communication::len);
-    Communication::buffer[n] = '\0';
 
-    return (char*) Communication::buffer;
+    return n;
 }
 
 void Communication::terminate()

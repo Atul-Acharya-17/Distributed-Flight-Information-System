@@ -24,7 +24,7 @@ class Communication
         static void setup(char* server_address);
         static void send(const char* message);
         static void send(const char* message, size_t message_size);
-        static char* receive();
+        static int receive(char* &buffer);
         static void terminate();
     
 };
