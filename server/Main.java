@@ -18,12 +18,31 @@ import skeleton.FlightLocationSkeleton;
 import skeleton.FlightPublisher;
 import skeleton.FlightQuerySkeleton;
 import skeleton.NewReservationSkeleton;
+import skeleton.Skeleton;
 import skeleton.TripPlanSkeleton;
 import utils.PrimitiveSizes;
 
 public class Main{
-
+  
     public static void main(String args[]) throws IOException {
+    
+        int serverType = Integer.parseInt(args[0]);
+
+        // Type 0 for Atmost Once and any other number of Atleast Once
+
+        if (serverType != 0)
+        {
+          System.out.println("Using Atleast Once Server\n");
+          Skeleton.setServertype(Skeleton.ServerType.ATLEAST_ONCE);
+        }
+
+        else
+        {
+          System.out.println("Using Atmost Once Server\n");
+          Skeleton.setServertype(Skeleton.ServerType.ATMOST_ONCE);
+
+        }
+      
         FlightFactory ffs = new FlightFactoryServant();
         ffs.populateFlights();
         ffs.displayFlights();
@@ -40,7 +59,7 @@ public class Main{
                 double probability = Math.random();
                 System.out.println("Probability: " + probability);
 
-                if (probability <= 0.1) 
+                if (probability < 0.1) 
                 {
                   System.out.println("Dropping Message");
                   continue;
