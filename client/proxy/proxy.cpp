@@ -42,12 +42,16 @@ void Proxy::handleFlightQuery(std::string ip, int request_id, std::string flight
 
     char *message;
     int n = Communication::receive(message);
-
-    while (n == -1)
+    
+    double probability = ((double) rand() / (RAND_MAX));
+    
+    while (n == -1 || probability < 0.1)
     {
+        std::cout << "Probability: " << probability << '\n';
         std::cout << "Timeout : Did not receive anything from server... Retransmitting Message\n";
         Communication::send(message_buffer, comm_message.serialization_size() + 1);
         n = Communication::receive(message);
+        probability = ((double) rand() / (RAND_MAX));
     }
 
     short status;
@@ -102,11 +106,14 @@ void Proxy::handleLocationQuery(std::string ip, int request_id, std::string sour
     char *message;
     int n = Communication::receive(message);
 
-    while (n == -1)
+    double probability = ((double) rand() / (RAND_MAX));
+    
+    while (n == -1 || probability < 0.1)
     {
         std::cout << "Timeout : Did not receive anything from server... Retransmitting Message\n";
         Communication::send(message_buffer, comm_message.serialization_size() + 1);
         n = Communication::receive(message);
+        probability = ((double) rand() / (RAND_MAX));
     }
 
     short status;
@@ -169,11 +176,14 @@ void Proxy::handlePlanTrip(std::string ip, int request_id, std::string source, s
     char *message;
     int n = Communication::receive(message);
 
-    while (n == -1)
+    double probability = ((double) rand() / (RAND_MAX));
+    
+    while (n == -1 || probability < 0.1)
     {
         std::cout << "Timeout : Did not receive anything from server... Retransmitting Message\n";
         Communication::send(message_buffer, comm_message.serialization_size() + 1);
         n = Communication::receive(message);
+        probability = ((double) rand() / (RAND_MAX));
     }
 
     short status;
@@ -199,7 +209,6 @@ void Proxy::handlePlanTrip(std::string ip, int request_id, std::string source, s
 
         for (int t = 0; t < num_trips; ++t)
         {
-
             TripServant ts;
             ts.deserialize(message);
             ts.display();
@@ -238,11 +247,14 @@ void Proxy::handleReservation(std::string ip, int request_id, std::string flight
     char *message;
     int n = Communication::receive(message);
 
-    while (n == -1)
+    double probability = ((double) rand() / (RAND_MAX));
+    
+    while (n == -1 || probability < 0.1)
     {
         std::cout << "Timeout : Did not receive anything from server... Retransmitting Message\n";
         Communication::send(message_buffer, comm_message.serialization_size() + 1);
         n = Communication::receive(message);
+        probability = ((double) rand() / (RAND_MAX));
     }
 
     short status;
@@ -295,11 +307,14 @@ void Proxy::handleCancelReservation(std::string ip, int request_id, std::string 
     char *message;
     int n = Communication::receive(message);
 
-    while (n == -1)
+    double probability = ((double) rand() / (RAND_MAX));
+    
+    while (n == -1 || probability < 0.1)
     {
         std::cout << "Timeout : Did not receive anything from server... Retransmitting Message\n";
         Communication::send(message_buffer, comm_message.serialization_size() + 1);
         n = Communication::receive(message);
+        probability = ((double) rand() / (RAND_MAX));
     }
 
     short status;
@@ -352,11 +367,14 @@ void Proxy::handleCheckReservation(std::string ip, int request_id, std::string b
     char *message;
     int n = Communication::receive(message);
 
-    while (n == -1)
+    double probability = ((double) rand() / (RAND_MAX));
+    
+    while (n == -1 || probability < 0.1)
     {
         std::cout << "Timeout : Did not receive anything from server... Retransmitting Message\n";
         Communication::send(message_buffer, comm_message.serialization_size() + 1);
         n = Communication::receive(message);
+        probability = ((double) rand() / (RAND_MAX));
     }
 
     short status;
