@@ -29,7 +29,7 @@ public class TripPlanSkeleton extends Skeleton {
         // idx += PrimitiveSizes.sizeof(maxCost);
 
         FlightFactoryServant fm = new FlightFactoryServant();
-        ArrayList<TripServant> result = fm.planTrip(source, destination, 3, Float.MAX_VALUE);
+        ArrayList<TripServant> result = fm.planTrip(source, destination, 2, Float.MAX_VALUE);
 
         short status = 0;
         byte[] replyContent;
