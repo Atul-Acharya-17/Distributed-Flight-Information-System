@@ -39,7 +39,15 @@ void Proxy::handleFlightQuery(std::string ip, int request_id, std::string flight
 
     Communication::send(message_buffer, comm_message.serialization_size() + 1);
 
-    char* message = Communication::receive();
+    char* message;
+    int n = Communication::receive(message);
+
+    while (n == -1)
+    {
+        std::cout << "Timeout : Did not receive anything from server... Retransmitting Message\n";
+        Communication::send(message_buffer, comm_message.serialization_size() + 1);
+        n = Communication::receive(message);
+    }
     
     short status;
     SerializablePOD<short>::deserialize(message, status);
@@ -93,7 +101,15 @@ void Proxy::handleLocationQuery(std::string ip, int request_id, std::string sour
 
     Communication::send(message_buffer, comm_message.serialization_size() + 1);
 
-    char* message = Communication::receive();
+    char* message;
+    int n = Communication::receive(message);
+
+    while (n == -1)
+    {
+        std::cout << "Timeout : Did not receive anything from server... Retransmitting Message\n";
+        Communication::send(message_buffer, comm_message.serialization_size() + 1);
+        n = Communication::receive(message);
+    }
     
     short status;
     SerializablePOD<short>::deserialize(message, status);
@@ -155,7 +171,15 @@ void Proxy::handlePlanTrip(std::string ip, int request_id, std::string source, s
 
     Communication::send(message_buffer, comm_message.serialization_size() + 1);
 
-    char* message = Communication::receive();
+    char* message;
+    int n = Communication::receive(message);
+
+    while (n == -1)
+    {
+        std::cout << "Timeout : Did not receive anything from server... Retransmitting Message\n";
+        Communication::send(message_buffer, comm_message.serialization_size() + 1);
+        n = Communication::receive(message);
+    }
     
     short status;
     SerializablePOD<short>::deserialize(message, status);
@@ -220,7 +244,15 @@ void Proxy::handleReservation(std::string ip, int request_id, std::string flight
 
     Communication::send(message_buffer, comm_message.serialization_size() + 1);
 
-    char* message = Communication::receive();
+    char* message;
+    int n = Communication::receive(message);
+
+    while (n == -1)
+    {
+        std::cout << "Timeout : Did not receive anything from server... Retransmitting Message\n";
+        Communication::send(message_buffer, comm_message.serialization_size() + 1);
+        n = Communication::receive(message);
+    }
     
     short status;
     SerializablePOD<short>::deserialize(message, status);
@@ -270,7 +302,15 @@ void Proxy::handleCancelReservation(std::string ip, int request_id, std::string 
 
     Communication::send(message_buffer, comm_message.serialization_size() + 1);
 
-    char* message = Communication::receive();
+    char* message;
+    int n = Communication::receive(message);
+
+    while (n == -1)
+    {
+        std::cout << "Timeout : Did not receive anything from server... Retransmitting Message\n";
+        Communication::send(message_buffer, comm_message.serialization_size() + 1);
+        n = Communication::receive(message);
+    }
     
     short status;
     SerializablePOD<short>::deserialize(message, status);
@@ -321,7 +361,15 @@ void Proxy::handleCheckReservation(std::string ip, int request_id, std::string b
 
     Communication::send(message_buffer, comm_message.serialization_size() + 1);
 
-    char* message = Communication::receive();
+    char* message;
+    int n = Communication::receive(message);
+
+    while (n == -1)
+    {
+        std::cout << "Timeout : Did not receive anything from server... Retransmitting Message\n";
+        Communication::send(message_buffer, comm_message.serialization_size() + 1);
+        n = Communication::receive(message);
+    }
     
     short status;
     SerializablePOD<short>::deserialize(message, status);
