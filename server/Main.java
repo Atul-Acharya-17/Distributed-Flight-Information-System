@@ -37,6 +37,15 @@ public class Main{
             while(true) {
                 DatagramPacket messagePacket = Communication.receive();
 
+                double probability = Math.random();
+                System.out.println("Probability: " + probability);
+
+                if (probability <= 0.1) 
+                {
+                  System.out.println("Dropping Message");
+                  continue;
+                }
+
                 byte[] messageByteString = messagePacket.getData();
 
                 int clientPort = messagePacket.getPort();
