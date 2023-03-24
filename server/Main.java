@@ -12,6 +12,7 @@ import marshall.SerializePOD;
 import skeleton.CancelReservationSkeleton;
 import skeleton.CheckReservationSkeleton;
 import skeleton.FlightLocationSkeleton;
+import skeleton.FlightPublisher;
 import skeleton.FlightQuerySkeleton;
 import skeleton.NewReservationSkeleton;
 import skeleton.TripPlanSkeleton;
@@ -70,6 +71,9 @@ public class Main{
                       break;
                     case 6:
                       TripPlanSkeleton.handle(contentBuffer, clientIp, clientPort, requestId);
+                      break;
+                    case 7:
+                      FlightPublisher.handle(contentBuffer, clientIp, clientPort, requestId);
                       break;
                     default:
                 }

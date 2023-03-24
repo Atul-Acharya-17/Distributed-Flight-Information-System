@@ -343,7 +343,7 @@ void Proxy::handleMonitor(std::string ip, int request_id, std::string flight_id,
     char *content_buffer = new char[content_size + 1];
 
     content_buffer[content_size] = '\0';
-    int service_type = 6;
+    int service_type = 7;
 
     SerializablePOD<int>::serialize(content_buffer, service_type);
 
