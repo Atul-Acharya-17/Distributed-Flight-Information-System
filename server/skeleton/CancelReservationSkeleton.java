@@ -3,6 +3,7 @@ package skeleton;
 import java.io.IOException;
 
 import communication.Reply;
+import entities.Booking;
 import entities.BookingFactoryServant;
 import marshall.SerializePOD;
 import utils.PrimitiveSizes;
@@ -33,7 +34,9 @@ public class CancelReservationSkeleton extends Skeleton {
         
         else {
             String rep = "Booking " + booking_id + " cancelled succesfully";
-            replyContent = SerializePOD.serialize(rep.toCharArray()); 
+            replyContent = SerializePOD.serialize(rep.toCharArray());
+            Booking booking = fm.getBooking(booking_id);
+            FlightPublisher.publish(booking.getFlightId().toString());
         }
         
         Reply reply = new Reply(status, replyContent);

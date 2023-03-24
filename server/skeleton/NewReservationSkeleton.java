@@ -35,7 +35,8 @@ public class NewReservationSkeleton extends Skeleton {
         
         else {
             Booking booking = fm.getBooking(result);
-            replyContent = booking.serialize(); 
+            replyContent = booking.serialize();
+            FlightPublisher.publish(flight_id);
         }
         
         Reply reply = new Reply(status, replyContent);

@@ -2,9 +2,9 @@
 
 For now type
 
-g++ main.cpp constants.hpp marshall/* proxy/* communication/* client.hpp client.cpp -o client.o
+g++ -std = c++17 -o client.o main.cpp constants.hpp marshall/* proxy/* communication/* entities/* client.hpp client.cpp 
 
-./client.o
+./client.o serverip clientip
 
 There is a dummy server to test the client
 
