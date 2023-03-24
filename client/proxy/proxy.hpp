@@ -1,8 +1,6 @@
 #ifndef PROXY_H
 #define PROXY_H
 
-#include <string>
-
 class Proxy
 {
 public:
