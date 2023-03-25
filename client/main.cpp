@@ -33,7 +33,7 @@ int main(int argc, char **argv)
     {
         while (true)
         {
-            std::cout << "Enter Functionality\n";
+            std::cout << "\nEnter Functionality\n";
 
             for (auto it = functionalities.begin(); it != functionalities.end(); ++it)
             {

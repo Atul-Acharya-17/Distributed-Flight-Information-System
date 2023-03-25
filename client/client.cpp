@@ -88,7 +88,7 @@ void Client::reserveSeats()
 	std::cout << "Enter customer full name\n";
 	std::getline(std::cin, customer_name);
 
-	std::cout << "Enter the nummber of seats to reserve\n";
+	std::cout << "Enter the number of seats to reserve\n";
 	std::cin >> num_seats;
 
 	if (num_seats <= 0)
@@ -142,9 +142,9 @@ void Client::monitorUpdates()
 
 	std::cout << "Enter the Flight ID for monitoring seat updates\n";
 	std::getline(std::cin, flight_id);
-	std::cout << "For how many seconds would you like to monitor this flight?\n";
+	std::cout << "For how many second(s) would you like to monitor this flight?\n";
 	std::cin >> monitoringDuration;
-	std::cout << "You are now monitoring seat avail updates for flight " << flight_id << "\n";
+	std::cout << "You are now monitoring seat avail updates for flight " << flight_id << std::endl;
 
 	Proxy p;
 	p.handleMonitor(this->ip_address, this->request_id, flight_id, monitoringDuration);

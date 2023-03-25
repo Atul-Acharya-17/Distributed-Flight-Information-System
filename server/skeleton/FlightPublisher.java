@@ -41,7 +41,7 @@ public class FlightPublisher extends Skeleton {
             subscribers = new ArrayList<Subscriber>();
         }
         subscribers.add(new Subscriber(flightID, clientIp, port, requestID, lifetime, timestamp));
-        System.out.println(clientIp + " " + port + " Subscribed");
+        System.out.println(clientIp + " " + port + " Subscribed for " + lifetime + " at " + timestamp + " to " + flightID);
         return 0;
     }
 
@@ -68,16 +68,20 @@ public class FlightPublisher extends Skeleton {
         Publish publish = PublishFactoryServant.getPublish();
         System.out.println(publish.getMsg());
         replyContent = publish.serialize();
-        if (subscribers.size() > 0)
-            for (Subscriber subscriber : subscribers) {
+
+        
+        if (subscribers!=null && subscribers.size() > 0) {
+            ArrayList<Subscriber> subscribers_temp = (ArrayList<Subscriber>) subscribers.clone();
+            for (Subscriber subscriber : subscribers_temp) {
                 if (isSubscriberAlive(subscriber)) {
                     // Send via Communication
-                    if (subscriber.getMonitorFlight() == flightID)
+                    if (subscriber.getMonitorFlight().compareTo(flightID)==0)
                     {
                         Reply reply = new Reply(status, replyContent);
 
                         byte[] replyBuffer = reply.serialize();
 
+                        System.out.println("Sent update message to " + subscriber.getClientIp() + ":" + subscriber.getPort() + "---" + publish.getMsg().toString());
                         communication.Communication.send(subscriber.getClientIp(), subscriber.getPort(), replyBuffer);
                     }
                 } else {
@@ -87,7 +91,7 @@ public class FlightPublisher extends Skeleton {
                         break;
                 }
             }
-        
+        }       
         
     }
 }
