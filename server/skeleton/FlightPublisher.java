@@ -66,6 +66,7 @@ public class FlightPublisher extends Skeleton {
         byte[] replyContent;
         
         Publish publish = PublishFactoryServant.getPublish();
+        System.out.println(publish.getMsg());
         replyContent = publish.serialize();
         if (subscribers.size() > 0)
             for (Subscriber subscriber : subscribers) {
@@ -77,13 +78,13 @@ public class FlightPublisher extends Skeleton {
 
                         byte[] replyBuffer = reply.serialize();
 
-                        Skeleton.storeResponse(replyBuffer, subscriber.getClientIp(), subscriber.getPort(), subscriber.getRequestId());
-
                         communication.Communication.send(subscriber.getClientIp(), subscriber.getPort(), replyBuffer);
                     }
                 } else {
                     // Remove subscriber from the list
                     unsubscribe(subscriber);
+                    if (subscribers == null)
+                        break;
                 }
             }
         
