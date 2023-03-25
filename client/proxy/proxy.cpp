@@ -428,8 +428,18 @@ void Proxy::handleMonitor(std::string ip, int request_id, std::string flight_id,
     time(&startMonitoring);
     while (difftime(time(&currTime), startMonitoring) < monitoringDuration)
     {
-        char *message = Communication::receive();
+        char *message;
+        int n = Communication::receive(message);
 
+        double probability = ((double)rand() / (RAND_MAX));
+
+        while (n == -1 || probability < 0.1)
+        {
+            std::cout << "Timeout : Did not receive anything from server... Retransmitting Message\n";
+            Communication::send(message_buffer, comm_message.serialization_size() + 1);
+            n = Communication::receive(message);
+            probability = ((double)rand() / (RAND_MAX));
+        }
         short status;
         SerializablePOD<short>::deserialize(message, status);
 

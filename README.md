@@ -7,3 +7,7 @@ g++ -std = c++17 -o client.o main.cpp constants.hpp marshall/* proxy/* communica
 
 ./client.o serverip clientip
 
+Running Server
+javac Main.java
+java Main.java 0
+

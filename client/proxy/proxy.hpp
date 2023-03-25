@@ -1,5 +1,7 @@
 #ifndef PROXY_H
 #define PROXY_H
+#include <bits/stdc++.h>
+#include <iostream>
 
 class Proxy
 {
