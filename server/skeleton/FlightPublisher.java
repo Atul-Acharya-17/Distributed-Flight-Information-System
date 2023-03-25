@@ -30,12 +30,16 @@ public class FlightPublisher extends Skeleton {
         String flight_id = new String(SerializePOD.deserializeString(content, idx));
         idx += flight_id.length() + PrimitiveSizes.sizeof((long) flight_id.length());
         int lifetime = SerializePOD.deserializeInt(content, idx);
-        
-        status = subscribe(flight_id, clientIP, port, requestId, lifetime, lifetime);
+        long timestamp = System.currentTimeMillis();
+        status = subscribe(flight_id, clientIP, port, requestId, lifetime, timestamp);
     }
 
     public static short subscribe(String flightID, String clientIp, int port, int requestID, int lifetime, long timestamp)
     {
+        if (subscribers == null)
+        {
+            subscribers = new ArrayList<Subscriber>();
+        }
         subscribers.add(new Subscriber(flightID, clientIp, port, requestID, lifetime, timestamp));
         System.out.println(clientIp + " " + port + " Subscribed");
         return 0;
@@ -64,24 +68,25 @@ public class FlightPublisher extends Skeleton {
         {
             Publish publish = PublishFactoryServant.getPublish();
             replyContent = publish.serialize();
-            for (Subscriber subscriber : subscribers) {
-                if (isSubscriberAlive(subscriber)) {
-                    // Send via Communication
-                    if (subscriber.getMonitorFlight() == flightID)
-                    {
-                        Reply reply = new Reply(status, replyContent);
+            if (subscribers.size() > 0)
+                for (Subscriber subscriber : subscribers) {
+                    if (isSubscriberAlive(subscriber)) {
+                        // Send via Communication
+                        if (subscriber.getMonitorFlight() == flightID)
+                        {
+                            Reply reply = new Reply(status, replyContent);
 
-                        byte[] replyBuffer = reply.serialize();
+                            byte[] replyBuffer = reply.serialize();
 
-                        Skeleton.storeResponse(replyBuffer, subscriber.getClientIp(), subscriber.getPort(), subscriber.getRequestId());
+                            Skeleton.storeResponse(replyBuffer, subscriber.getClientIp(), subscriber.getPort(), subscriber.getRequestId());
 
-                        communication.Communication.send(subscriber.getClientIp(), subscriber.getPort(), replyBuffer);
+                            communication.Communication.send(subscriber.getClientIp(), subscriber.getPort(), replyBuffer);
+                        }
+                    } else {
+                        // Remove subscriber from the list
+                        unsubscribe(subscriber);
                     }
-                } else {
-                    // Remove subscriber from the list
-                    unsubscribe(subscriber);
                 }
-            }
         }
         
     }

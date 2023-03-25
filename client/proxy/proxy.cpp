@@ -1,6 +1,7 @@
 #include "proxy.hpp"
 #include <bits/stdc++.h>
 #include <iostream>
+#include <ctime>
 
 #include "../utils/utils.hpp"
 
@@ -357,26 +358,32 @@ void Proxy::handleMonitor(std::string ip, int request_id, std::string flight_id,
 
     Communication::send(message_buffer, comm_message.serialization_size() + 1);
 
-    char *message = Communication::receive();
-
-    short status;
-    SerializablePOD<short>::deserialize(message, status);
-
-    long reply_size;
-    SerializablePOD<long>::deserialize(message, reply_size);
-
-    if (status == 1)
+    time_t startMonitoring, currTime;
+    time(&startMonitoring);
+    while (difftime(time(&currTime), startMonitoring) > monitoringDuration)
     {
-        char *error_message;
-        SerializablePOD<char *>::deserialize(message, error_message);
-        std::cout << error_message << '\n';
-        return;
+        char *message = Communication::receive();
+
+        short status;
+        SerializablePOD<short>::deserialize(message, status);
+
+        long reply_size;
+        SerializablePOD<long>::deserialize(message, reply_size);
+
+        if (status == 1)
+        {
+            char *error_message;
+            SerializablePOD<char *>::deserialize(message, error_message);
+            std::cout << error_message << '\n';
+            return;
+        }
+        else
+        {
+            CallbackServant cs = CallbackServant();
+            cs.deserialize(message);
+            cs.displayUpdates();
+            std::cout << '\n';
+        }
     }
-    else
-    {
-        CallbackServant cs = CallbackServant();
-        cs.deserialize(message);
-        cs.displayUpdates();
-        std::cout << '\n';
-    }
+    return;
 }
