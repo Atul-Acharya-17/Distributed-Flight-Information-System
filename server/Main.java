@@ -1,7 +1,5 @@
 import java.net.*;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.io.*;
 
 import communication.Communication;
@@ -9,7 +7,6 @@ import communication.Request;
 import entities.BookingFactory;
 import entities.FlightFactory;
 import entities.FlightFactoryServant;
-import entities.TripServant;
 import entities.BookingFactoryServant;
 import marshall.SerializePOD;
 import skeleton.CancelReservationSkeleton;
@@ -91,13 +88,13 @@ public class Main{
                     case 2:
                       FlightQuerySkeleton.handle(contentBuffer, clientIp, clientPort, requestId);
                       break;
-                      case 3:
+                    case 3:
                       NewReservationSkeleton.handle(contentBuffer, clientIp, clientPort, requestId);
                       break;
-                      case 4:
+                    case 4:
                       CancelReservationSkeleton.handle(contentBuffer, clientIp, clientPort, requestId);
                       break;
-                      case 5:
+                    case 5:
                       CheckReservationSkeleton.handle(contentBuffer, clientIp, clientPort, requestId);
                       break;
                     case 6:
@@ -108,14 +105,6 @@ public class Main{
                       break;
                     default:
                 }
-                // FlightFactoryServant fs = new FlightFactoryServant();
-                // ArrayList<TripServant> result = fs.planTrip("Muscat", "Singapore", 2, 10000);
-                // Collections.sort(result);
-                // for (TripServant tripServant : result) {
-                //   tripServant.display();
-                //   System.out.println();
-                // }
-                // break;
                 
             }
         } finally {if (aSocket != null) aSocket.close();}
