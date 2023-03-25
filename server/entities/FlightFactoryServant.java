@@ -13,6 +13,7 @@ import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Scanner;
 import java.sql.Time;
+import entities.PublishFactoryServant;
 
 public class FlightFactoryServant implements FlightFactory {
     private static Hashtable<String, Flight> flights = new Hashtable<>();
@@ -33,7 +34,7 @@ public class FlightFactoryServant implements FlightFactory {
         }
         flight.setSeatsAvailable(flight.getSeatsAvailable() - numSeatsBooked);
         flight.setSeatsBooked(flight.getSeatsBooked() + numSeatsBooked);
-
+        PublishFactoryServant.publishBooking(flightID, numSeatsBooked, flight.getSeatsAvailable() - numSeatsBooked);
         return true;
     }
 
@@ -42,7 +43,7 @@ public class FlightFactoryServant implements FlightFactory {
         Flight flight = this.getFlight(flightID);
         flight.setSeatsAvailable(flight.getSeatsAvailable() + numSeatsBooked);
         flight.setSeatsBooked(flight.getSeatsBooked() - numSeatsBooked);
-
+        PublishFactoryServant.publishCancellation(flightID, numSeatsBooked, flight.getSeatsAvailable() + numSeatsBooked);
     }
     
     public boolean checkFlight(String flightID)

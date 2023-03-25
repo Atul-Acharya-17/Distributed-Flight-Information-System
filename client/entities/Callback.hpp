@@ -2,6 +2,7 @@
 
 #ifndef CALLBACK_H
 #define CALLBACK_H
+#include "../marshall/Serializable.hpp"
 
 class Callback : public Serializable
 {
