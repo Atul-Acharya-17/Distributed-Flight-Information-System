@@ -82,6 +82,10 @@ int main(int argc, char **argv)
             {
                 c.planTrip();
             }
+            if (choice == 8)
+            {
+                exit(0);
+            }
         }
     }
 

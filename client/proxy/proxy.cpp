@@ -360,7 +360,7 @@ void Proxy::handleMonitor(std::string ip, int request_id, std::string flight_id,
 
     time_t startMonitoring, currTime;
     time(&startMonitoring);
-    while (difftime(time(&currTime), startMonitoring) > monitoringDuration)
+    while (difftime(time(&currTime), startMonitoring) < monitoringDuration)
     {
         char *message = Communication::receive();
 
@@ -385,5 +385,9 @@ void Proxy::handleMonitor(std::string ip, int request_id, std::string flight_id,
             std::cout << '\n';
         }
     }
-    return;
+    if (difftime(time(&currTime), startMonitoring) > monitoringDuration)
+    {
+        std::cout << "Thank you for monitoring flights \n";
+        return;
+    }
 }

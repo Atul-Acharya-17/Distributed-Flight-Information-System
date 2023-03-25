@@ -64,30 +64,29 @@ public class FlightPublisher extends Skeleton {
     public static void publish(String flightID) throws IOException
     {
         byte[] replyContent;
-        while (true)
-        {
-            Publish publish = PublishFactoryServant.getPublish();
-            replyContent = publish.serialize();
-            if (subscribers.size() > 0)
-                for (Subscriber subscriber : subscribers) {
-                    if (isSubscriberAlive(subscriber)) {
-                        // Send via Communication
-                        if (subscriber.getMonitorFlight() == flightID)
-                        {
-                            Reply reply = new Reply(status, replyContent);
+        
+        Publish publish = PublishFactoryServant.getPublish();
+        replyContent = publish.serialize();
+        if (subscribers.size() > 0)
+            for (Subscriber subscriber : subscribers) {
+                if (isSubscriberAlive(subscriber)) {
+                    // Send via Communication
+                    if (subscriber.getMonitorFlight() == flightID)
+                    {
+                        Reply reply = new Reply(status, replyContent);
 
-                            byte[] replyBuffer = reply.serialize();
+                        byte[] replyBuffer = reply.serialize();
 
-                            Skeleton.storeResponse(replyBuffer, subscriber.getClientIp(), subscriber.getPort(), subscriber.getRequestId());
+                        Skeleton.storeResponse(replyBuffer, subscriber.getClientIp(), subscriber.getPort(), subscriber.getRequestId());
 
-                            communication.Communication.send(subscriber.getClientIp(), subscriber.getPort(), replyBuffer);
-                        }
-                    } else {
-                        // Remove subscriber from the list
-                        unsubscribe(subscriber);
+                        communication.Communication.send(subscriber.getClientIp(), subscriber.getPort(), replyBuffer);
                     }
+                } else {
+                    // Remove subscriber from the list
+                    unsubscribe(subscriber);
                 }
-        }
+            }
+        
         
     }
 }
