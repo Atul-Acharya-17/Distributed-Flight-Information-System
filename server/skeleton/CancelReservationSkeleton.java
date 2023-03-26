@@ -33,7 +33,7 @@ public class CancelReservationSkeleton extends Skeleton {
             //Publish cancellation to subscribers
             String rep = "Booking " + booking_id + " cancelled succesfully";
             replyContent = SerializePOD.serialize(rep.toCharArray());
-            FlightPublisher.publish(flight_id);
+            FlightPublisherSkeleton.publish(flight_id);
         }
         else
         {

@@ -12,7 +12,7 @@ import entities.FlightFactoryServant;
 import entities.Publish;
 import entities.PublishFactoryServant;
 
-public class FlightPublisher extends Skeleton {
+public class FlightPublisherSkeleton extends Skeleton {
     private static ArrayList<Subscriber> subscribers;
 
     private static short status;
