@@ -18,6 +18,7 @@ size_t CallbackServant::serialization_size() const
 {
     return SerializablePOD<char *>::serialization_size(msg);
 }
+
 char *CallbackServant::serialize() const
 {
     int size = serialization_size();
@@ -36,12 +37,6 @@ char *CallbackServant::serialize() const
 void CallbackServant::deserialize(char *&dataIn)
 {
     char *msg;
-    // int monitorDuration;
-
     SerializablePOD<char *>::deserialize(dataIn, msg);
-    // SerializablePOD<int>::deserialize(dataIn, monitorDuration);
-
     this->msg = msg;
-    // this->flightId = flightId;
-    // this->monitorDuration = monitorDuration;
 }
