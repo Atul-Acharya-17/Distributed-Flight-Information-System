@@ -98,10 +98,10 @@ public class Main{
                       CheckReservationSkeleton.handle(contentBuffer, clientIp, clientPort, requestId);
                       break;
                     case 6:
-                      TripPlanSkeleton.handle(contentBuffer, clientIp, clientPort, requestId);
+                      FlightPublisherSkeleton.handle(contentBuffer, clientIp, clientPort, requestId);
                       break;
                     case 7:
-                      FlightPublisherSkeleton.handle(contentBuffer, clientIp, clientPort, requestId);
+                      TripPlanSkeleton.handle(contentBuffer, clientIp, clientPort, requestId);                      
                       break;
                     default:
                 }

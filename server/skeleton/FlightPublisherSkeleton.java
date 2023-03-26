@@ -44,6 +44,7 @@ public class FlightPublisherSkeleton extends Skeleton {
     {
         FlightFactoryServant ffs = new FlightFactoryServant();
         if (!ffs.checkFlight(flightID)) {
+            System.out.println("flight not found");
             return 1;
         }
         if (subscribers == null)

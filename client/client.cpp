@@ -144,7 +144,7 @@ void Client::monitorUpdates()
 	std::getline(std::cin, flight_id);
 	std::cout << "For how many second(s) would you like to monitor this flight?\n";
 	std::cin >> monitoringDuration;
-	std::cout << "You are now monitoring seat avail updates for flight " << flight_id << std::endl;
+	std::cout << std::endl;
 
 	Proxy p;
 	p.handleMonitor(this->ip_address, this->request_id, flight_id, monitoringDuration);

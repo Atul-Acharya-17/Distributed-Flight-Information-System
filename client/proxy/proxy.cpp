@@ -433,9 +433,10 @@ void Proxy::handleMonitor(std::string ip, int request_id, std::string flight_id,
 
         if (n == -1)
         {
-            std::cout << "Timeout : Did not receive anything from server... Retransmitting Message\n";
-            Communication::send(message_buffer, comm_message.serialization_size() + 1);
-            n = Communication::receive(message);
+            continue;
+            // std::cout << "Timeout : Did not receive anything from server... Retransmitting Message\n";
+            // Communication::send(message_buffer, comm_message.serialization_size() + 1);
+            // n = Communication::receive(message);
         }
 
         short status;
