@@ -10,8 +10,6 @@ import java.lang.System;
 import entities.Subscriber;
 import marshall.SerializePOD;
 import utils.PrimitiveSizes;
-import entities.Flight;
-import entities.FlightFactoryServant;
 import entities.Publish;
 import entities.PublishFactoryServant;
 
