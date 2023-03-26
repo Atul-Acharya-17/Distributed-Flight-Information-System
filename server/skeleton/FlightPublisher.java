@@ -8,6 +8,7 @@ import java.lang.System;
 import entities.Subscriber;
 import marshall.SerializePOD;
 import utils.PrimitiveSizes;
+import entities.FlightFactoryServant;
 import entities.Publish;
 import entities.PublishFactoryServant;
 
@@ -28,7 +29,11 @@ public class FlightPublisher extends Skeleton {
         int lifetime = SerializePOD.deserializeInt(content, idx);
         long timestamp = System.currentTimeMillis();
         status = subscribe(flight_id, clientIP, port, requestId, lifetime, timestamp);
-        byte[] replyContent = SerializePOD.serialize(clientIP + " " + port + " subscribed to updates successfully");
+        byte[] replyContent;
+        if (status == 0)
+            replyContent = SerializePOD.serialize(clientIP + " " + port + " subscribed to updates successfully");
+        else
+            replyContent = SerializePOD.serialize("Requested flight not found");
         Reply reply = new Reply(status, replyContent);
 
         byte[] replyBuffer = reply.serialize();
@@ -37,6 +42,10 @@ public class FlightPublisher extends Skeleton {
 
     public static short subscribe(String flightID, String clientIp, int port, int requestID, int lifetime, long timestamp)
     {
+        FlightFactoryServant ffs = new FlightFactoryServant();
+        if (!ffs.checkFlight(flightID)) {
+            return 1;
+        }
         if (subscribers == null)
         {
             subscribers = new ArrayList<Subscriber>();
