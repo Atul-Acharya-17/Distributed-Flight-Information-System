@@ -5,4 +5,5 @@ public interface BookingFactory {
     String createBooking(String flightID, String clientId, int numSeatsBooked);
     boolean cancelBooking(String bookingid);
     void populateBookings();
+    boolean checkBookingExists(String bookingId);
 }

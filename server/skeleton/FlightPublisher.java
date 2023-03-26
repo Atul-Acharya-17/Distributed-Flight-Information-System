@@ -1,6 +1,4 @@
 package skeleton;
-
-import java.sql.Timestamp;
 import java.util.ArrayList;
 
 import communication.Reply;
@@ -30,6 +28,11 @@ public class FlightPublisher extends Skeleton {
         int lifetime = SerializePOD.deserializeInt(content, idx);
         long timestamp = System.currentTimeMillis();
         status = subscribe(flight_id, clientIP, port, requestId, lifetime, timestamp);
+        byte[] replyContent = SerializePOD.serialize(clientIP + " " + port + " subscribed to updates successfully");
+        Reply reply = new Reply(status, replyContent);
+
+        byte[] replyBuffer = reply.serialize();
+        communication.Communication.send(clientIP, port, replyBuffer);
     }
 
     public static short subscribe(String flightID, String clientIp, int port, int requestID, int lifetime, long timestamp)
@@ -52,8 +55,8 @@ public class FlightPublisher extends Skeleton {
 
     public static Boolean isSubscriberAlive(Subscriber sub) {
         long currTime = System.currentTimeMillis();
-        long subLife = sub.getStartTimestamp() + sub.getLifetime() * 1000; // converting seconds to ms
-        if (currTime < subLife)
+        long endLife = sub.getStartTimestamp() + sub.getLifetime() * 1000; // converting seconds to ms
+        if (currTime < endLife)
             return true;
         else
             return false;

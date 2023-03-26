@@ -28,7 +28,7 @@ public class FlightFactoryServant implements FlightFactory {
         }
         flight.setSeatsAvailable(flight.getSeatsAvailable() - numSeatsBooked);
         flight.setSeatsBooked(flight.getSeatsBooked() + numSeatsBooked);
-        PublishFactoryServant.publishBooking(flightID, numSeatsBooked, flight.getSeatsAvailable() - numSeatsBooked);
+        PublishFactoryServant.publishBooking(flightID, numSeatsBooked, flight.getSeatsAvailable());
         return true;
     }
 
@@ -37,7 +37,7 @@ public class FlightFactoryServant implements FlightFactory {
         Flight flight = this.getFlight(flightID);
         flight.setSeatsAvailable(flight.getSeatsAvailable() + numSeatsBooked);
         flight.setSeatsBooked(flight.getSeatsBooked() - numSeatsBooked);
-        PublishFactoryServant.publishCancellation(flightID, numSeatsBooked, flight.getSeatsAvailable() + numSeatsBooked);
+        PublishFactoryServant.publishCancellation(flightID, numSeatsBooked, flight.getSeatsAvailable());
     }
     
     public boolean checkFlight(String flightID)
