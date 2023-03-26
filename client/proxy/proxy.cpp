@@ -160,7 +160,7 @@ void Proxy::handlePlanTrip(std::string ip, int request_id, std::string source, s
 
     content_buffer[content_size] = '\0';
 
-    int service_type = 6;
+    int service_type = 7;
 
     SerializablePOD<int>::serialize(content_buffer, service_type);
     SerializablePOD<char *>::serialize(content_buffer, string_to_array(source));
@@ -410,7 +410,7 @@ void Proxy::handleMonitor(std::string ip, int request_id, std::string flight_id,
     char *content_buffer = new char[content_size + 1];
 
     content_buffer[content_size] = '\0';
-    int service_type = 7;
+    int service_type = 6;
 
     SerializablePOD<int>::serialize(content_buffer, service_type);
 
@@ -432,17 +432,12 @@ void Proxy::handleMonitor(std::string ip, int request_id, std::string flight_id,
         int n = Communication::receive(message);
 
         if (n == -1)
-            continue;
-        // double probability = ((double)rand() / (RAND_MAX));
+        {
+            std::cout << "Timeout : Did not receive anything from server... Retransmitting Message\n";
+            Communication::send(message_buffer, comm_message.serialization_size() + 1);
+            n = Communication::receive(message);
+        }
 
-        // while (n == -1)
-        // {
-        //     continue;
-        //     // std::cout << "Timeout : Did not receive anything from server... Retransmitting Message\n";
-        //     // Communication::send(message_buffer, comm_message.serialization_size() + 1);
-        //     // n = Communication::receive(message);
-        //     // probability = ((double)rand() / (RAND_MAX));
-        // }
         short status;
         SerializablePOD<short>::deserialize(message, status);
 
