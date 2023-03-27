@@ -19,15 +19,21 @@ public class FlightPublisherSkeleton extends Skeleton {
 
     public static void handle(byte[] content, String clientIP, int port, int requestId) throws IOException
     {
-        // 
-        if (Skeleton.checkandRespondToDuplicate(content, clientIP, port, requestId))
-            return;
-        
         int idx = 0;
         String flight_id = new String(SerializePOD.deserializeString(content, idx));
         idx += flight_id.length() + PrimitiveSizes.sizeof((long) flight_id.length());
         int lifetime = SerializePOD.deserializeInt(content, idx);
         long timestamp = System.currentTimeMillis();
+
+        if (Skeleton.checkandRespondToDuplicate(content, clientIP, port, requestId)) 
+        {
+            Subscriber subscriber = new Subscriber(flight_id, clientIP, port, requestId, lifetime, timestamp);
+            subscribers.stream().filter(obj -> subscriber.getSubscriberId().equals(obj.getSubscriberId()))
+                    .forEach(s -> s.setStartTimestamp(timestamp));
+
+            return;
+        }
+
         status = subscribe(flight_id, clientIP, port, requestId, lifetime, timestamp);
         byte[] replyContent;
         if (status == 0)
@@ -51,9 +57,17 @@ public class FlightPublisherSkeleton extends Skeleton {
         {
             subscribers = new ArrayList<Subscriber>();
         }
-        subscribers.add(new Subscriber(flightID, clientIp, port, requestID, lifetime, timestamp));
-        System.out.println(clientIp + " " + port + " Subscribed for " + lifetime + " at " + timestamp + " to " + flightID);
+        Subscriber subscriber = new Subscriber(flightID, clientIp, port, requestID, lifetime, timestamp);
+        // if (!subscribers.stream().map(Subscriber::getSubscriberId).filter(subscriber::equals).findFirst().isPresent())
+        if (!subscribers.stream().anyMatch(obj -> subscriber.getSubscriberId().equals(obj.getSubscriberId())))
+        {
+            subscribers.add(subscriber);
+            System.out.println(
+                    clientIp + " " + port + " Subscribed for " + lifetime + " at " + timestamp + " to " + flightID);
+
+        }
         return 0;
+        
     }
 
     public static short unsubscribe(Subscriber sub)
@@ -80,7 +94,6 @@ public class FlightPublisherSkeleton extends Skeleton {
         System.out.println(publish.getMsg());
         replyContent = publish.serialize();
 
-        
         if (subscribers!=null && subscribers.size() > 0) {
             ArrayList<Subscriber> subscribers_temp = (ArrayList<Subscriber>) subscribers.clone();
             for (Subscriber subscriber : subscribers_temp) {

@@ -413,7 +413,6 @@ void Proxy::handleMonitor(std::string ip, int request_id, std::string flight_id,
     int service_type = 6;
 
     SerializablePOD<int>::serialize(content_buffer, service_type);
-
     SerializablePOD<char *>::serialize(content_buffer, string_to_array(flight_id));
     SerializablePOD<int>::serialize(content_buffer, monitoringDuration);
 
@@ -423,21 +422,40 @@ void Proxy::handleMonitor(std::string ip, int request_id, std::string flight_id,
     char *message_buffer = comm_message.serialize();
 
     Communication::send(message_buffer, comm_message.serialization_size() + 1);
+    char *ACKmessage;
+    int n = Communication::receive(ACKmessage);
+    while (n == -1)
+    {
+        std::cout << "Timeout : Did not receive anything from server... Retransmitting Message\n";
+        Communication::send(message_buffer, comm_message.serialization_size() + 1);
+        n = Communication::receive(ACKmessage);
+    }
+    short status;
+    SerializablePOD<short>::deserialize(ACKmessage, status);
 
+    long reply_size;
+    SerializablePOD<long>::deserialize(ACKmessage, reply_size);
+
+    if (status == 1)
+    {
+        char *error_message;
+        SerializablePOD<char *>::deserialize(ACKmessage, error_message);
+        std::cout << error_message << '\n';
+        return;
+    }
+    else
+    {
+        std::cout << "Client subscribed successfully \n";
+    }
+
+    // Timer starts only after subscription is ACK
     time_t startMonitoring, currTime;
     time(&startMonitoring);
-    while (difftime(time(&currTime), startMonitoring) < monitoringDuration)
+
+    while (difftime(time(&currTime), startMonitoring) <= monitoringDuration)
     {
         char *message;
         int n = Communication::receive(message);
-
-        if (n == -1)
-        {
-            continue;
-            // std::cout << "Timeout : Did not receive anything from server... Retransmitting Message\n";
-            // Communication::send(message_buffer, comm_message.serialization_size() + 1);
-            // n = Communication::receive(message);
-        }
 
         short status;
         SerializablePOD<short>::deserialize(message, status);

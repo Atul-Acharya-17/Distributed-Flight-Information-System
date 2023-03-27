@@ -7,6 +7,7 @@ public class Subscriber {
     private int requestID;
     private int lifetime;
     private long startTimestamp;
+    private String subscriberId;
 
     public Subscriber(String flightID, String clientIp, int port, int requestId, int lifetime, long startTimestamp)
     {
@@ -16,6 +17,7 @@ public class Subscriber {
         this.requestID = requestId;
         this.lifetime = lifetime;
         this.startTimestamp = startTimestamp;
+        this.subscriberId = this.clientIp + this.port + this.monitorFlight;
     }
 
     public String getMonitorFlight()
@@ -40,8 +42,18 @@ public class Subscriber {
         return startTimestamp;
     }
 
+    public void setStartTimestamp(long timestamp)
+    {
+        this.startTimestamp = timestamp;
+    }
+
     public int getRequestId()
     {
         return requestID;
+    }
+
+    public String getSubscriberId()
+    {
+        return subscriberId;
     }
 }
