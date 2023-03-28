@@ -17,22 +17,23 @@
 #include "communication/comms.hpp"
 #include "client.hpp"
 
-
 // Driver code
-int main(int argc, char** argv) {
-	
-    char* server_ip = argv[1];
-    char* client_ip = argv[2];
+int main(int argc, char **argv)
+{
+
+    char *server_ip = argv[1];
+    char *client_ip = argv[2];
 
     Communication::setup(server_ip);
 
-	uint32_t choice;
+    uint32_t choice;
     Client c = Client(std::string(client_ip));
 
-    try{
+    try
+    {
         while (true)
-        {	
-            std::cout << "Enter Functionality\n";
+        {
+            std::cout << "\nEnter Functionality\n";
 
             for (auto it = functionalities.begin(); it != functionalities.end(); ++it)
             {
@@ -57,33 +58,43 @@ int main(int argc, char** argv) {
             {
                 c.queryLocation();
             }
-            if (choice==2) {
+            if (choice == 2)
+            {
                 c.queryFlight();
             }
-            if (choice==3) {
+            if (choice == 3)
+            {
                 c.reserveSeats();
             }
-            if (choice==4) {
+            if (choice == 4)
+            {
                 c.cancelBooking();
             }
-            if (choice==5) {
+            if (choice == 5)
+            {
                 c.checkBooking();
             }
-
+            if (choice == 6)
+            {
+                c.monitorUpdates();
+            }
             if (choice == 7)
             {
                 c.planTrip();
             }
+            if (choice == 8)
+            {
+                exit(0);
+            }
         }
-
     }
 
-    catch(const std::exception &exec)
+    catch (const std::exception &exec)
     {
         std::cerr << "Exception " << exec.what();
     }
 
     Communication::terminate();
-	
+
     return 0;
 }

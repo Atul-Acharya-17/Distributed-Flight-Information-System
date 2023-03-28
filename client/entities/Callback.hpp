@@ -1,11 +1,16 @@
+#include <string>
+
 #ifndef CALLBACK_H
 #define CALLBACK_H
+#include "../marshall/Serializable.hpp"
 
-#include "Flight.hpp"
-
-class Callback
+class Callback : public Serializable
 {
-    // virtual void flightAdded(Flight f) = 0;
+private:
+    char *msg;
+
+public:
+    virtual void displayUpdates() = 0;
 };
 
 #endif

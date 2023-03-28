@@ -67,20 +67,28 @@ public class BookingFactoryServant implements BookingFactory {
 
     @Override
     public void populateBookings() {
-        try
-        {
+        try {
             File fileObj = new File(System.getProperty("user.dir") + "/data/bookings.txt");
             Scanner scanner = new Scanner(fileObj);
-            while(scanner.hasNextLine()){
+            while (scanner.hasNextLine()) {
                 String line = scanner.nextLine();
                 String[] bookingDetails = line.split(",");
-                createBookingWithBookingId(bookingDetails[0], bookingDetails[1], bookingDetails[2], Integer.parseInt(bookingDetails[3]));
+                createBookingWithBookingId(bookingDetails[0], bookingDetails[1], bookingDetails[2],
+                        Integer.parseInt(bookingDetails[3]));
             }
             scanner.close();
-        }
-        catch(Exception e)
-        {
+        } catch (Exception e) {
             System.out.println(e);
-        }        
+        }
+    }
+    
+    @Override
+    public boolean checkBookingExists(String bookingId)
+    {
+        if (bookings.containsKey(bookingId)) {
+            return true;
+        }
+        else
+            return false;
     }
 }    
