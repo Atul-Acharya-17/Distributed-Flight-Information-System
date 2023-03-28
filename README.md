@@ -9,7 +9,7 @@ g++ -std=c++17  main.cpp constants.hpp marshall/* proxy/* communication/* entiti
 
 ./client.o serverip clientip
 
-Running Server
+### Running Server
 javac Main.java
 java Main.java 0
 

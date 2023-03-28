@@ -53,7 +53,7 @@ void Proxy::handleFlightQuery(std::string ip, int request_id, std::string flight
         n = Communication::receive(message);
         probability = ((double)rand() / (RAND_MAX));
     }
-
+ 
     short status;
     SerializablePOD<short>::deserialize(message, status);
 
@@ -103,19 +103,19 @@ void Proxy::handleLocationQuery(std::string ip, int request_id, std::string sour
 
     Communication::send(message_buffer, comm_message.serialization_size() + 1);
 
-    char *message;
+    char* message;
     int n = Communication::receive(message);
 
-    double probability = ((double)rand() / (RAND_MAX));
-
+    double probability = ((double) rand() / (RAND_MAX));
+    
     while (n == -1 || probability < 0.1)
     {
         std::cout << "Timeout : Did not receive anything from server... Retransmitting Message\n";
         Communication::send(message_buffer, comm_message.serialization_size() + 1);
         n = Communication::receive(message);
-        probability = ((double)rand() / (RAND_MAX));
+        probability = ((double) rand() / (RAND_MAX));
     }
-
+    
     short status;
     SerializablePOD<short>::deserialize(message, status);
 
@@ -173,19 +173,19 @@ void Proxy::handlePlanTrip(std::string ip, int request_id, std::string source, s
 
     Communication::send(message_buffer, comm_message.serialization_size() + 1);
 
-    char *message;
+    char* message;
     int n = Communication::receive(message);
 
-    double probability = ((double)rand() / (RAND_MAX));
-
+    double probability = ((double) rand() / (RAND_MAX));
+    
     while (n == -1 || probability < 0.1)
     {
         std::cout << "Timeout : Did not receive anything from server... Retransmitting Message\n";
         Communication::send(message_buffer, comm_message.serialization_size() + 1);
         n = Communication::receive(message);
-        probability = ((double)rand() / (RAND_MAX));
+        probability = ((double) rand() / (RAND_MAX));
     }
-
+    
     short status;
     SerializablePOD<short>::deserialize(message, status);
 
@@ -244,19 +244,19 @@ void Proxy::handleReservation(std::string ip, int request_id, std::string flight
 
     Communication::send(message_buffer, comm_message.serialization_size() + 1);
 
-    char *message;
+    char* message;
     int n = Communication::receive(message);
 
-    double probability = ((double)rand() / (RAND_MAX));
-
+    double probability = ((double) rand() / (RAND_MAX));
+    
     while (n == -1 || probability < 0.1)
     {
         std::cout << "Timeout : Did not receive anything from server... Retransmitting Message\n";
         Communication::send(message_buffer, comm_message.serialization_size() + 1);
         n = Communication::receive(message);
-        probability = ((double)rand() / (RAND_MAX));
+        probability = ((double) rand() / (RAND_MAX));
     }
-
+    
     short status;
     SerializablePOD<short>::deserialize(message, status);
 
@@ -304,19 +304,19 @@ void Proxy::handleCancelReservation(std::string ip, int request_id, std::string 
 
     Communication::send(message_buffer, comm_message.serialization_size() + 1);
 
-    char *message;
+    char* message;
     int n = Communication::receive(message);
 
-    double probability = ((double)rand() / (RAND_MAX));
-
+    double probability = ((double) rand() / (RAND_MAX));
+    
     while (n == -1 || probability < 0.1)
     {
         std::cout << "Timeout : Did not receive anything from server... Retransmitting Message\n";
         Communication::send(message_buffer, comm_message.serialization_size() + 1);
         n = Communication::receive(message);
-        probability = ((double)rand() / (RAND_MAX));
+        probability = ((double) rand() / (RAND_MAX));
     }
-
+    
     short status;
     SerializablePOD<short>::deserialize(message, status);
 
@@ -364,19 +364,19 @@ void Proxy::handleCheckReservation(std::string ip, int request_id, std::string b
 
     Communication::send(message_buffer, comm_message.serialization_size() + 1);
 
-    char *message;
+    char* message;
     int n = Communication::receive(message);
 
-    double probability = ((double)rand() / (RAND_MAX));
-
+    double probability = ((double) rand() / (RAND_MAX));
+    
     while (n == -1 || probability < 0.1)
     {
         std::cout << "Timeout : Did not receive anything from server... Retransmitting Message\n";
         Communication::send(message_buffer, comm_message.serialization_size() + 1);
         n = Communication::receive(message);
-        probability = ((double)rand() / (RAND_MAX));
+        probability = ((double) rand() / (RAND_MAX));
     }
-
+    
     short status;
     SerializablePOD<short>::deserialize(message, status);
 

@@ -48,7 +48,6 @@ int Communication::receive(char *&buffer)
     int n = recvfrom(Communication::sockfd, (char *)buffer, MAXLINE,
                      MSG_WAITALL, (struct sockaddr *)&Communication::servaddr,
                      &Communication::len);
-
     return n;
 }
 

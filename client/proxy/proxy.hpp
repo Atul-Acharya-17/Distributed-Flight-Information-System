@@ -2,8 +2,9 @@
 #define PROXY_H
 #include <bits/stdc++.h>
 #include <iostream>
+#include <string>
 
-class Proxy
+class Proxy 
 {
 public:
     void handleLocationQuery(std::string ip, int request_id, std::string source, std::string destination);
