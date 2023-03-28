@@ -21,7 +21,6 @@ Client::Client(std::string ip)
 	this->ip_address = ip;
 }
 
-
 void Client::queryLocation()
 {
 	// Flush the buffer before taking next input
@@ -72,7 +71,7 @@ void Client::reserveSeats()
 	std::cout << "Enter customer full name\n";
 	std::getline(std::cin, customer_name);
 
-	std::cout << "Enter the nummber of seats to reserve\n";
+	std::cout << "Enter the number of seats to reserve\n";
 	std::cin >> num_seats;
 
 	if (num_seats <= 0)
@@ -117,7 +116,21 @@ void Client::checkBooking()
 
 void Client::monitorUpdates()
 {
+	// Flush the buffer before taking next input
+	std::cin.ignore(256, '\n');
+	this->request_id++;
 
+	std::string flight_id;
+	std::uint32_t monitoringDuration; // in terms of minutes
+
+	std::cout << "Enter the Flight ID for monitoring seat updates\n";
+	std::getline(std::cin, flight_id);
+	std::cout << "For how many second(s) would you like to monitor this flight?\n";
+	std::cin >> monitoringDuration;
+	std::cout << std::endl;
+
+	Proxy proxy;
+	proxy.handleMonitor(this->ip_address, this->request_id, flight_id, monitoringDuration);
 }
 
 void Client::planTrip()

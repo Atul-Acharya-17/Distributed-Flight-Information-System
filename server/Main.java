@@ -15,6 +15,7 @@ import marshall.SerializePOD;
 import skeleton.CancelReservationSkeleton;
 import skeleton.CheckReservationSkeleton;
 import skeleton.FlightLocationSkeleton;
+import skeleton.FlightPublisherSkeleton;
 import skeleton.FlightQuerySkeleton;
 import skeleton.NewReservationSkeleton;
 import skeleton.Skeleton;
@@ -90,20 +91,23 @@ public class Main{
                     case 2:
                       FlightQuerySkeleton.handle(contentBuffer, clientIp, clientPort, requestId);
                       break;
-                      case 3:
+                    case 3:
                       NewReservationSkeleton.handle(contentBuffer, clientIp, clientPort, requestId);
                       break;
-                      case 4:
+                    case 4:
                       CancelReservationSkeleton.handle(contentBuffer, clientIp, clientPort, requestId);
                       break;
-                      case 5:
+                    case 5:
                       CheckReservationSkeleton.handle(contentBuffer, clientIp, clientPort, requestId);
                       break;
                     case 6:
-                      TripPlanSkeleton.handle(contentBuffer, clientIp, clientPort, requestId);
+                      FlightPublisherSkeleton.handle(contentBuffer, clientIp, clientPort, requestId);
+                      break;
+                    case 7:
+                      TripPlanSkeleton.handle(contentBuffer, clientIp, clientPort, requestId);                      
                       break;
                     default:
-                }
+                }                
             }
         } finally {if (aSocket != null) aSocket.close();}
     } 

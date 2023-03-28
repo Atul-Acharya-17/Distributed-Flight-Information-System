@@ -46,7 +46,8 @@ public class NewReservationSkeleton extends Skeleton {
         // Marshall reply contents
         else {
             Booking booking = fm.getBooking(result);
-            replyContent = booking.serialize(); 
+            replyContent = booking.serialize();
+            FlightPublisherSkeleton.publish(flight_id);
         }
         
         Reply reply = new Reply(status, replyContent);
