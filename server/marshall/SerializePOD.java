@@ -5,6 +5,10 @@ import utils.PrimitiveSizes;
 import utils.Utils;
 
 
+/*
+    Class that handles marshalling and unmarshalling of Primitive Data Types
+    Uses polymorphism (function overloading) to marshall different data types
+*/
 public class SerializePOD {
     
     public static byte[] serialize(int value)
@@ -31,7 +35,8 @@ public class SerializePOD {
     {
         return Utils.reverse(ByteBuffer.allocate((int)(PrimitiveSizes.sizeof(value))).putDouble(value).array());
     }
-
+    
+    // For strings we encode the length along with the string contents
     public static byte[] serialize(char[] value)
     {
         byte [] sizeBuffer = serialize((long) value.length);
@@ -98,6 +103,7 @@ public class SerializePOD {
         return asDouble;
     }
 
+    // we deserialize the length first and then the actual string itself
     public static char[] deserializeString(byte[] buffer, int start)
     {
         long stringLength = deserializeLong(buffer, start);

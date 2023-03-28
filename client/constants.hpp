@@ -11,7 +11,7 @@ std::map<int, char*> functionalities = {
     {5, "Check Booking"},
     {6, "Monitor Updates"},
     {7, "Plan Trip"},
-    {8, "Terminate"}
+    {0, "Terminate"}
 };
 
 

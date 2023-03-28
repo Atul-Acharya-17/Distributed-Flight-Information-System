@@ -15,11 +15,13 @@
 #include "../marshall/SerializablePOD.hpp"
 
 
+// Proxy handler for querying flight number
 void Proxy::handleFlightQuery(std::string ip, int request_id, std::string flight_id)
 {
     int request_type = 0;
     char* client_ip = string_to_array(ip);
 
+    // Marshall request contents
     size_t content_size = sizeof(int) + sizeof(size_t) + flight_id.size(); // Service type, type of length, length of string
 
     char* content_buffer = new char[content_size + 1];
@@ -32,7 +34,7 @@ void Proxy::handleFlightQuery(std::string ip, int request_id, std::string flight
 
     SerializablePOD<char*>::serialize(content_buffer, string_to_array(flight_id));
 
-    content_buffer -= content_size;
+    content_buffer -= content_size; // Bring back pointer to start address
 
     CommunicationMessage comm_message(request_type, request_id, client_ip, content_buffer, content_size);
     char* message_buffer = comm_message.serialize();
@@ -42,17 +44,18 @@ void Proxy::handleFlightQuery(std::string ip, int request_id, std::string flight
     char* message;
     int n = Communication::receive(message);
     
-    double probability = ((double) rand() / (RAND_MAX));
+    double probability = ((double) rand() / (RAND_MAX));  // Probability to drop reply for simulation purposes
     
+    // Retrasmit request if no reply received
     while (n == -1 || probability < 0.1)
     {
-        std::cout << "Probability: " << probability << '\n';
         std::cout << "Timeout : Did not receive anything from server... Retransmitting Message\n";
         Communication::send(message_buffer, comm_message.serialization_size() + 1);
         n = Communication::receive(message);
         probability = ((double) rand() / (RAND_MAX));
     }
     
+    // Unmarshall reply
     short status;
     SerializablePOD<short>::deserialize(message, status);
     
@@ -78,14 +81,15 @@ void Proxy::handleFlightQuery(std::string ip, int request_id, std::string flight
 
 }
 
-
+// Proxy handler for querying flight locations
 void Proxy::handleLocationQuery(std::string ip, int request_id, std::string source, std::string destination)
 {
-
     int request_type = 0;
     char* client_ip = string_to_array(ip);
 
-    // Service type, type of length x 2, length of source, length of destination
+    // Marshall request contents
+
+    // Service type, type of length * 2, length of source, length of destination
     size_t content_size = sizeof(int) + 2 * sizeof(size_t) + source.size() + destination.size();
 
     char* content_buffer = new char[content_size + 1];
@@ -98,7 +102,7 @@ void Proxy::handleLocationQuery(std::string ip, int request_id, std::string sour
     SerializablePOD<char*>::serialize(content_buffer, string_to_array(source));
     SerializablePOD<char*>::serialize(content_buffer, string_to_array(destination));
 
-    content_buffer -= content_size;
+    content_buffer -= content_size; // Bring pointer back to start address
 
     CommunicationMessage comm_message(request_type, request_id, client_ip, content_buffer, content_size);
     char* message_buffer = comm_message.serialize();
@@ -110,6 +114,7 @@ void Proxy::handleLocationQuery(std::string ip, int request_id, std::string sour
 
     double probability = ((double) rand() / (RAND_MAX));
     
+    // Retrasmit request if no reply received
     while (n == -1 || probability < 0.1)
     {
         std::cout << "Timeout : Did not receive anything from server... Retransmitting Message\n";
@@ -118,6 +123,7 @@ void Proxy::handleLocationQuery(std::string ip, int request_id, std::string sour
         probability = ((double) rand() / (RAND_MAX));
     }
     
+    // Unmarshall reply
     short status;
     SerializablePOD<short>::deserialize(message, status);
     
@@ -151,14 +157,16 @@ void Proxy::handleLocationQuery(std::string ip, int request_id, std::string sour
 
 }
 
-
+// Proxy handler to handle trip planning
 void Proxy::handlePlanTrip(std::string ip, int request_id, std::string source, std::string destination)
 {
 
     int request_type = 0;
     char* client_ip = string_to_array(ip);
 
-    // Service type, type of length x 2, length of source, length of destination
+    // Marshall request contents
+
+    // Service type, type of length * 2, length of source, length of destination
     size_t content_size = sizeof(int) + 2 * sizeof(size_t) + source.size() + destination.size();
 
     char* content_buffer = new char[content_size + 1];
@@ -171,7 +179,7 @@ void Proxy::handlePlanTrip(std::string ip, int request_id, std::string source, s
     SerializablePOD<char*>::serialize(content_buffer, string_to_array(source));
     SerializablePOD<char*>::serialize(content_buffer, string_to_array(destination));
 
-    content_buffer -= content_size;
+    content_buffer -= content_size; // Bring pointer back to start address
 
     CommunicationMessage comm_message(request_type, request_id, client_ip, content_buffer, content_size);
     char* message_buffer = comm_message.serialize();
@@ -183,6 +191,7 @@ void Proxy::handlePlanTrip(std::string ip, int request_id, std::string source, s
 
     double probability = ((double) rand() / (RAND_MAX));
     
+    // Retrasmit request if no reply received
     while (n == -1 || probability < 0.1)
     {
         std::cout << "Timeout : Did not receive anything from server... Retransmitting Message\n";
@@ -191,6 +200,8 @@ void Proxy::handlePlanTrip(std::string ip, int request_id, std::string source, s
         probability = ((double) rand() / (RAND_MAX));
     }
     
+    // Unmarshall reply
+
     short status;
     SerializablePOD<short>::deserialize(message, status);
     
@@ -225,11 +236,13 @@ void Proxy::handlePlanTrip(std::string ip, int request_id, std::string source, s
 
 }
 
-
+// Proxy handler to reserve seats in a flight
 void Proxy::handleReservation(std::string ip, int request_id, std::string flight_id, std::string customer_name, int num_seats)
 {
     int request_type = 0;
     char* client_ip = string_to_array(ip);
+
+    // Marshall request contents
 
     // Service type, 2 * type of length, length of flight_id, length of customer_name, num_seats
     size_t content_size = sizeof(int) + 2 * sizeof(size_t) + flight_id.size() + customer_name.size() + sizeof(num_seats);
@@ -246,7 +259,7 @@ void Proxy::handleReservation(std::string ip, int request_id, std::string flight
     SerializablePOD<char*>::serialize(content_buffer, string_to_array(customer_name));
     SerializablePOD<int>::serialize(content_buffer, num_seats);
 
-    content_buffer -= content_size;
+    content_buffer -= content_size; // Bring pointer back to start address
 
     CommunicationMessage comm_message(request_type, request_id, client_ip, content_buffer, content_size);
     char* message_buffer = comm_message.serialize();
@@ -258,6 +271,7 @@ void Proxy::handleReservation(std::string ip, int request_id, std::string flight
 
     double probability = ((double) rand() / (RAND_MAX));
     
+    // Retrasmit request if no reply received
     while (n == -1 || probability < 0.1)
     {
         std::cout << "Timeout : Did not receive anything from server... Retransmitting Message\n";
@@ -265,6 +279,8 @@ void Proxy::handleReservation(std::string ip, int request_id, std::string flight
         n = Communication::receive(message);
         probability = ((double) rand() / (RAND_MAX));
     }
+
+    // Unmarshall reply
     
     short status;
     SerializablePOD<short>::deserialize(message, status);
@@ -289,10 +305,13 @@ void Proxy::handleReservation(std::string ip, int request_id, std::string flight
 }
 
 
+// Proxy handler to cancel reservation of seats
 void Proxy::handleCancelReservation(std::string ip, int request_id, std::string booking_id)
 {
     int request_type = 0;
     char* client_ip = string_to_array(ip);
+
+    // Marshall request contents
 
     // Service type, type of length, length of booking_id
     size_t content_size = sizeof(int) + sizeof(size_t) + booking_id.size();
@@ -319,6 +338,7 @@ void Proxy::handleCancelReservation(std::string ip, int request_id, std::string 
 
     double probability = ((double) rand() / (RAND_MAX));
     
+    // Retrasmit request if no reply received
     while (n == -1 || probability < 0.1)
     {
         std::cout << "Timeout : Did not receive anything from server... Retransmitting Message\n";
@@ -327,6 +347,7 @@ void Proxy::handleCancelReservation(std::string ip, int request_id, std::string 
         probability = ((double) rand() / (RAND_MAX));
     }
     
+    // Unmarshall reply
     short status;
     SerializablePOD<short>::deserialize(message, status);
     
@@ -350,11 +371,13 @@ void Proxy::handleCancelReservation(std::string ip, int request_id, std::string 
 
 }
 
-
+// Proxy handler to check if reservation exists
 void Proxy::handleCheckReservation(std::string ip, int request_id, std::string booking_id)
 {
     int request_type = 0;
     char* client_ip = string_to_array(ip);
+
+    // Marshall request contents
 
     // Service type, type of length, length of booking_id
     size_t content_size = sizeof(int) + sizeof(size_t) + booking_id.size();
@@ -369,7 +392,7 @@ void Proxy::handleCheckReservation(std::string ip, int request_id, std::string b
 
     SerializablePOD<char*>::serialize(content_buffer, string_to_array(booking_id));
 
-    content_buffer -= content_size;
+    content_buffer -= content_size; // Bring pointer back to start address
 
     CommunicationMessage comm_message(request_type, request_id, client_ip, content_buffer, content_size);
     char* message_buffer = comm_message.serialize();
@@ -381,6 +404,7 @@ void Proxy::handleCheckReservation(std::string ip, int request_id, std::string b
 
     double probability = ((double) rand() / (RAND_MAX));
     
+    // Retrasmit request if no reply received
     while (n == -1 || probability < 0.1)
     {
         std::cout << "Timeout : Did not receive anything from server... Retransmitting Message\n";
@@ -389,6 +413,7 @@ void Proxy::handleCheckReservation(std::string ip, int request_id, std::string b
         probability = ((double) rand() / (RAND_MAX));
     }
     
+    // Umarshall reply
     short status;
     SerializablePOD<short>::deserialize(message, status);
     

@@ -3,6 +3,11 @@
 
 #include <stddef.h>
 
+/* 
+    Abstract Class for every object to inherit and implement abstract methods
+    We make the objects responsible for marshalling and unmarshalling themselves
+*/ 
+
 class Serializable
 {
 public:

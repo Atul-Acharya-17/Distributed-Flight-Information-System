@@ -14,24 +14,6 @@
 #include "proxy/proxy.hpp"
 #include <string>
 
-// void check_host_name(int hostname) { //This function returns host name for local computer
-//    if (hostname == -1) {
-//       perror("gethostname");
-//       exit(1);
-//    }
-// }
-// void check_host_entry(struct hostent * hostentry) { //find host info from host name
-//    if (hostentry == NULL){
-//       perror("gethostbyname");
-//       exit(1);
-//    }
-// }
-// void IP_formatter(char *IPbuffer) { //convert IP string to dotted decimal format
-//    if (NULL == IPbuffer) {
-//       perror("inet_ntoa");
-//       exit(1);
-//    }
-// }
 
 Client::Client(std::string ip)
 {
@@ -54,8 +36,8 @@ void Client::queryLocation()
 	std::cout << "Enter the destination location\n";
 	std::getline(std::cin, destination);
 
-	Proxy p;
-	p.handleLocationQuery(this->ip_address, this->request_id, source, destination);
+	Proxy proxy;
+	proxy.handleLocationQuery(this->ip_address, this->request_id, source, destination);
 
 }
 
@@ -70,8 +52,8 @@ void Client::queryFlight()
 	std::cout << "Enter the flight id\n";
 	std::getline(std::cin, flight_id);
 
-	Proxy p;
-	p.handleFlightQuery(this->ip_address, this->request_id, flight_id);
+	Proxy proxy;
+	proxy.handleFlightQuery(this->ip_address, this->request_id, flight_id);
 }
 
 void Client::reserveSeats()
@@ -99,8 +81,8 @@ void Client::reserveSeats()
 		return;
 	}
 
-	Proxy p;
-	p.handleReservation(this->ip_address, this->request_id, flight_id, customer_name, num_seats);
+	Proxy proxy;
+	proxy.handleReservation(this->ip_address, this->request_id, flight_id, customer_name, num_seats);
 }
 
 void Client::cancelBooking()
@@ -114,8 +96,8 @@ void Client::cancelBooking()
 	std::cout << "Enter the booking id\n";
 	std::getline(std::cin, booking_id);
 
-	Proxy p;
-	p.handleCancelReservation(this->ip_address, this->request_id, booking_id);
+	Proxy proxy;
+	proxy.handleCancelReservation(this->ip_address, this->request_id, booking_id);
 }
 
 void Client::checkBooking()
@@ -129,8 +111,8 @@ void Client::checkBooking()
 	std::cout << "Enter the booking id\n";
 	std::getline(std::cin, booking_id);
 
-	Proxy p;
-	p.handleCheckReservation(this->ip_address, this->request_id, booking_id);
+	Proxy proxy;
+	proxy.handleCheckReservation(this->ip_address, this->request_id, booking_id);
 }
 
 void Client::monitorUpdates()
@@ -151,6 +133,6 @@ void Client::planTrip()
 	std::cout << "Enter the destination location\n";
 	std::getline(std::cin, destination);
 
-	Proxy p;
-	p.handlePlanTrip(this->ip_address, this->request_id, source, destination);
+	Proxy proxy;
+	proxy.handlePlanTrip(this->ip_address, this->request_id, source, destination);
 }

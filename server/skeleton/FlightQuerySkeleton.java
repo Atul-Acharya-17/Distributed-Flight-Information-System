@@ -6,13 +6,20 @@ import entities.FlightFactoryServant;
 import entities.FlightServant;
 import marshall.SerializePOD;
 
+
+/*
+    Skeleton to handle querying flight number.
+    Sends the client the flight details given the flight number.
+*/
+
 public class FlightQuerySkeleton extends Skeleton {
 
     public static void handle(byte[] content, String clientIP, int port, int requestId) throws IOException
     {
-        //content = Arrays.copyOfRange(content, (int)PrimitiveSizes.sizeof(flightIdSize), (int)(PrimitiveSizes.sizeof(flightIdSize) + content.length - PrimitiveSizes.sizeof(flightIdSize)));
+        // Check for duplicate request
         if (Skeleton.checkandRespondToDuplicate(content, clientIP, port, requestId)) return;
         
+        // Unmarshall Reply contents
         char[] flightID = SerializePOD.deserializeString(content, 0);
         FlightFactoryServant fm = new FlightFactoryServant();
         FlightServant fs = (FlightServant) fm.getFlight(new String(flightID));
@@ -20,6 +27,7 @@ public class FlightQuerySkeleton extends Skeleton {
         short status = 0;
         byte[] replyContent;
 
+        // Return error if no such flight exists
         if (fs == null)
         {
             status = 1;
@@ -27,6 +35,7 @@ public class FlightQuerySkeleton extends Skeleton {
         }
 
         else {
+            // Unmarshall reply contents
             replyContent = fs.serialize();
         }
         

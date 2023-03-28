@@ -27,7 +27,7 @@ int main(int argc, char** argv) {
     Communication::setup(server_ip);
 
 	uint32_t choice;
-    Client c = Client(std::string(client_ip));
+    Client client = Client(std::string(client_ip));
 
     try{
         while (true)
@@ -55,24 +55,24 @@ int main(int argc, char** argv) {
 
             if (choice == 1)
             {
-                c.queryLocation();
+                client.queryLocation();
             }
             if (choice==2) {
-                c.queryFlight();
+                client.queryFlight();
             }
             if (choice==3) {
-                c.reserveSeats();
+                client.reserveSeats();
             }
             if (choice==4) {
-                c.cancelBooking();
+                client.cancelBooking();
             }
             if (choice==5) {
-                c.checkBooking();
+                client.checkBooking();
             }
 
             if (choice == 7)
             {
-                c.planTrip();
+                client.planTrip();
             }
         }
 

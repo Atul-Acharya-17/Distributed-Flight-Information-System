@@ -7,23 +7,33 @@ import entities.FlightFactoryServant;
 import marshall.SerializePOD;
 import utils.PrimitiveSizes;
 
+
+/*
+    Skeleton to handle querying flight locations.
+    Sends the client the flights with specified source and destination.
+*/
+
 public class FlightLocationSkeleton extends Skeleton {
     
     public static void handle(byte[] content, String clientIP, int port, int requestId) throws IOException
     {
+        // Check for duplicates
         if (Skeleton.checkandRespondToDuplicate(content, clientIP, port, requestId)) return;
         
+        // Unmarshall Reply contents
         int idx = 0;
         String source = new String(SerializePOD.deserializeString(content, idx));
         idx += source.length() + PrimitiveSizes.sizeof((long) source.length());
         String destination = new String(SerializePOD.deserializeString(content, idx));
 
+        // Find flights
         FlightFactoryServant fm = new FlightFactoryServant();
         ArrayList<String> result = fm.findFlights(source, destination);
 
         short status = 0;
         byte[] replyContent;
 
+        // Return error if no flights found
         if (result.size() == 0)
         {
             status = 1;
@@ -31,7 +41,7 @@ public class FlightLocationSkeleton extends Skeleton {
         }
 
         else{
-            // Num flights, sizeof(long) x num flights, flights
+            // Marshall result
             int replySize = (int)(result.size() * PrimitiveSizes.sizeof((long) result.size()) + PrimitiveSizes.sizeof(result.size()));
             for (String flightId : result) {
                 replySize += flightId.length();

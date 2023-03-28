@@ -104,15 +104,6 @@ public class Main{
                       break;
                     default:
                 }
-                // FlightFactoryServant fs = new FlightFactoryServant();
-                // ArrayList<TripServant> result = fs.planTrip("Muscat", "Singapore", 2, 10000);
-                // Collections.sort(result);
-                // for (TripServant tripServant : result) {
-                //   tripServant.display();
-                //   System.out.println();
-                // }
-                // break;
-                
             }
         } finally {if (aSocket != null) aSocket.close();}
     } 

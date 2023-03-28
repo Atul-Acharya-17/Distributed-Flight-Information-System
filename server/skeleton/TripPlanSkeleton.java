@@ -8,32 +8,36 @@ import entities.TripServant;
 import marshall.SerializePOD;
 import utils.PrimitiveSizes;
 
+
+/*
+    Skeleton to handle trip plan.
+    Sends the client the required flights to take from source to destination.
+*/
+
 public class TripPlanSkeleton extends Skeleton {
     
     public static void handle(byte[] content, String clientIP, int port, int requestId) throws IOException
     {
+        // check duplicate request
         if (Skeleton.checkandRespondToDuplicate(content, clientIP, port, requestId)) {
             return;
         }
 
+        // Unmarshall Request contents
         int idx = 0;
         String source = new String(SerializePOD.deserializeString(content, idx));
         idx += source.length() + PrimitiveSizes.sizeof((long) source.length());
         String destination = new String(SerializePOD.deserializeString(content, idx));
         idx += destination.length() + PrimitiveSizes.sizeof((long) destination.length());
 
-        // int numFlights = SerializePOD.deserializeInt(content, idx);
-        // idx += PrimitiveSizes.sizeof(numFlights);
-
-        // float maxCost = SerializePOD.deserializeFloat(content, idx);
-        // idx += PrimitiveSizes.sizeof(maxCost);
-
+        // Find available trips
         FlightFactoryServant fm = new FlightFactoryServant();
         ArrayList<TripServant> result = fm.planTrip(source, destination, 2, Float.MAX_VALUE);
 
         short status = 0;
         byte[] replyContent;
 
+        // Return error if no trips found
         if (result.size() == 0)
         {
             status = 1;
@@ -41,6 +45,8 @@ public class TripPlanSkeleton extends Skeleton {
         }
 
         else {
+
+            // Marshall Trips
             int numResults = result.size();
             int replySize = (int) PrimitiveSizes.sizeof(numResults);
 
