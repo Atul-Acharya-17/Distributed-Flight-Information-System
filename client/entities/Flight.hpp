@@ -4,6 +4,10 @@
 #include "../marshall/Serializable.hpp"
 #include "../utils/utils.hpp"
 
+/* 
+    Interface for a Flight object containing information related to a flight.
+    Inherits from Serializable which allows to serialize objects.
+*/
 class Flight : public Serializable 
 {
 public:

@@ -3,6 +3,10 @@
 
 #include "../marshall/Serializable.hpp"
 
+/* 
+    Interface for a Booking object used to make reservations in flight.
+    Inherits from Serializable which allows to serialize objects.
+*/
 class Booking : public Serializable
 {
 public:

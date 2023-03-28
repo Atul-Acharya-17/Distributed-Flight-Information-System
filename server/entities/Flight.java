@@ -3,6 +3,10 @@ import java.time.LocalTime;
 
 import marshall.Serialization;
 
+/* 
+    Interface for a Flight object containing information related to a flight.
+    Inherits from Serializable which allows to serialize objects.
+*/
 public interface Flight extends Serialization {
 
     public char[] getFlightId();

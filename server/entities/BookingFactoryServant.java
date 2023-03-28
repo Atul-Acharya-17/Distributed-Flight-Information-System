@@ -3,6 +3,10 @@ import java.io.File;
 import java.util.Hashtable;
 import java.util.Scanner;
 
+/*
+ * Implementation of Booking Factory interface.
+ * Implements functions for reading bookings from file, creating new booking, deleting existing booking, and check for booking.
+ */
 public class BookingFactoryServant implements BookingFactory {
     private static Hashtable<String, Booking> bookings = new Hashtable<>();
     public BookingFactoryServant() {

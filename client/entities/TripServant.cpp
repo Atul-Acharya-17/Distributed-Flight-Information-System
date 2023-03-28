@@ -38,7 +38,7 @@ std::vector<std::string>  TripServant::getCities()
     return this->cities;
 }
     
-void TripServant::setCource(std::vector<std::string>  cities)
+void TripServant::setCities(std::vector<std::string> cities)
 {
     this->cities = cities;
 }

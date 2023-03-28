@@ -8,6 +8,11 @@ import java.util.LinkedHashSet;
 import marshall.SerializePOD;
 import utils.PrimitiveSizes;
 
+/* 
+    Servant class for Trip interface.
+    Defines state variables for class including array of flights, cities, departure time, and duration of flights in multi-city trip.
+    Implements methods including getters and setters, display, and marshalling-unmarshalling.
+*/
 public class TripServant implements Trip, Comparable<TripServant> {
     private ArrayList<String> flights;
     private float price;

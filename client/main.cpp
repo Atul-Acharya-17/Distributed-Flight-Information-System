@@ -60,23 +60,23 @@ int main(int argc, char **argv)
             }
             if (choice == 2)
             {
-                c.queryFlight();
+                client.queryFlight();
             }
             if (choice == 3)
             {
-                c.reserveSeats();
+                client.reserveSeats();
             }
             if (choice == 4)
             {
-                c.cancelBooking();
+                client.cancelBooking();
             }
             if (choice == 5)
             {
-                c.checkBooking();
+                client.checkBooking();
             }
             if (choice == 6)
             {
-                c.monitorUpdates();
+                client.monitorUpdates();
             }
             if (choice == 7)
             {

@@ -4,6 +4,12 @@
 #include "Flight.hpp"
 #include "../marshall/SerializablePOD.hpp"
 
+/* 
+    Servant class for Flight interface.
+    Defines state variables for class including flight ID, source, destination, number of seats currently available,
+    number of seats booked, price of seat, departure time, and duration.
+    Implements methods including getters and setters, display, and marshalling-unmarshalling.
+*/
 class FlightServant : public Flight
 {
 private:

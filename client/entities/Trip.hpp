@@ -8,6 +8,10 @@
 #include "../marshall/Serializable.hpp"
 #include "../utils/utils.hpp"
 
+/* 
+    Interface for a Trip object which contains travel information for multi-city trips.
+    Inherits from Serializable which allows to serialize objects.
+*/
 class Trip : public Serializable 
 {
 public:
@@ -15,7 +19,7 @@ public:
     void setFlighs(std::vector<std::string> flightID);
 
     virtual std::vector<std::string>  getCities() = 0;
-    void setCource(std::vector<std::string>  citie);
+    void setCities(std::vector<std::string>  cities);
 
     virtual std::vector<Time> getDeparturesTimes() = 0;
     void setDeparturesTimes(std::vector<Time> departureTimes);

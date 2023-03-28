@@ -7,6 +7,11 @@
 #include "../marshall/Serializable.hpp"
 #include "Callback.hpp"
 
+/* 
+    Servant class for Callback interface.
+    Defines state variable for class including callback message.
+    Implements methods including getter and setter, display updates, and marshalling-unmarshalling.
+*/
 class CallbackServant : public Callback
 {
 private:
@@ -17,12 +22,6 @@ public:
     CallbackServant(char *msg);
     char *getMsg();
     void setMsg(char *msg);
-    // char *getFlightId();
-    // void setFlightId(char *flightID);
-    // char *getClientId();
-    // void setClientId(char *clientId);
-    // int getmonitorDuration();
-    // void setmonitorDuration(int monitorDuration);
 
     void displayUpdates();
 

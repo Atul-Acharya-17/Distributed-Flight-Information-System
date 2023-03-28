@@ -3,6 +3,11 @@
 
 #include "Booking.hpp"
 
+/* 
+    Servant class for Booking interface.
+    Defines state variables for class including booking ID, flight ID, client ID, number seats booked.
+    Implements methods including getters and setters, display, and marshalling-unmarshalling.
+*/
 class BookingServant : public Booking
 {
 private:

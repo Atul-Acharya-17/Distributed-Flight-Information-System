@@ -4,6 +4,11 @@
 #include "Trip.hpp"
 #include "../marshall/SerializablePOD.hpp"
 
+/* 
+    Servant class for Trip interface.
+    Defines state variables for class including array of flights, cities, departure time, and duration of flights in multi-city trip.
+    Implements methods including getters and setters, display, and marshalling-unmarshalling.
+*/
 class TripServant : public Trip
 {
 private:
@@ -22,7 +27,7 @@ public:
     void setFlighs(std::vector<std::string> flightID);
 
     std::vector<std::string>  getCities();
-    void setCource(std::vector<std::string>  citie);
+    void setCities(std::vector<std::string>  cities);
 
     std::vector<Time> getDeparturesTimes();
     void setDeparturesTimes(std::vector<Time> departureTimes);

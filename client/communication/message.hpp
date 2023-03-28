@@ -1,8 +1,8 @@
 #ifndef MESSAGE_H
 #define MESSAGE_H
 
-#include "marshall/Serializable.hpp"
-#include "marshall/SerializablePOD.hpp"
+#include "../marshall/Serializable.hpp"
+#include "../marshall/SerializablePOD.hpp"
 #include <string>
 #include <iostream>
 
@@ -58,11 +58,6 @@ class CommunicationMessage : public Serializable  {
 
     void deserialize(char* &dataIn)
     {
-        // dataIn = SerializablePOD<int>::deserialize(dataIn, messageType);
-        // dataIn = SerializablePOD<int>::deserialize(dataIn, requestId);
-        // dataIn = SerializablePOD<char*>::deserialize(dataIn, clientId);
-        // dataIn = SerializablePOD<char*>::deserialize(dataIn, contents);
-
         int message_type;;
         int request_id;
         char* ip;
@@ -82,8 +77,7 @@ class CommunicationMessage : public Serializable  {
 	    char* location;
 
         SerializablePOD<int>::deserialize(contents, service_id);
-        SerializablePOD<char*>::deserialize(contents, location);
-             
+        SerializablePOD<char*>::deserialize(contents, location);       
     }
 
 };

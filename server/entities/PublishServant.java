@@ -5,6 +5,11 @@ import java.io.IOException;
 import marshall.SerializePOD;
 import utils.PrimitiveSizes;
 
+/* 
+    Servant class for Publisher interface.
+    Defines state variables for class including update message.
+    Implements methods including getters and setters, and marshalling-unmarshalling.
+*/
 public class PublishServant implements Publish{
     private char[] msg;
 

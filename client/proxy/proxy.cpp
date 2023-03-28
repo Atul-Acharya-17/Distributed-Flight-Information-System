@@ -6,7 +6,7 @@
 #include "../utils/utils.hpp"
 
 #include <bits/stdc++.h>
-#include "../message.hpp"
+#include "../communication/message.hpp"
 
 #include "../communication/comms.hpp"
 #include "../entities/FlightServant.hpp"
@@ -47,9 +47,6 @@ void Proxy::handleFlightQuery(std::string ip, int request_id, std::string flight
     double probability = ((double) rand() / (RAND_MAX));  // Probability to drop reply for simulation purposes
     
     // Retrasmit request if no reply received
-
-    double probability = ((double)rand() / (RAND_MAX));
-
     while (n == -1 || probability < 0.1)
     {
         std::cout << "Timeout : Did not receive anything from server... Retransmitting Message\n";

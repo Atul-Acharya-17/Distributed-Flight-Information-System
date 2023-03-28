@@ -3,6 +3,11 @@
 
 #include <string>
 
+/* 
+    Client class used to interact with the user.
+    Defines client state variables including client ID, request ID, and IP address and host name.
+    Each member function inputs arguments for a service, and invokes respective proxy function.
+*/
 class Client
 {
     private:

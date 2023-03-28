@@ -9,12 +9,18 @@ import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Scanner;
 
+/*
+ * Implementation of Booking Factory interface.
+ * Implements functions for reading flights from file, lookup flights based on source-destination or flight ID, 
+ * calculating multi-city trips using BFS, and displaying all flights.
+ */
 public class FlightFactoryServant implements FlightFactory {
     private static Hashtable<String, Flight> flights = new Hashtable<>();
     public FlightFactoryServant() {
         super();
     }
 
+    @Override
     public void createFlight(String flightID, String source, String destination, int seatsAvailable, int seatsBooked, float price, LocalTime departureTime, LocalTime duration) {
         Flight flight = new FlightServant(flightID.toCharArray(), source.toCharArray(), destination.toCharArray(), seatsAvailable, seatsBooked, price, departureTime, duration);
         flights.put(flightID, flight);
@@ -40,11 +46,13 @@ public class FlightFactoryServant implements FlightFactory {
         PublishFactoryServant.publishCancellation(flightID, numSeatsBooked, flight.getSeatsAvailable());
     }
     
+    @Override
     public boolean checkFlight(String flightID)
     {
         return flights.containsKey(flightID);
     }
 
+    @Override
     public Flight getFlight(String flightID)
     {
         return flights.get(flightID);
@@ -69,6 +77,7 @@ public class FlightFactoryServant implements FlightFactory {
         return result;
     }
 
+    @Override
     public ArrayList<String> findFlights(String source)
     {
         ArrayList<String> result = new ArrayList<String>();
@@ -87,6 +96,7 @@ public class FlightFactoryServant implements FlightFactory {
         return result;
     }
 
+    @Override
     public ArrayList<TripServant> planTrip(String source, String destination, int numFlights, float maxCost)
     {
         ArrayList<TripServant> trips = new ArrayList<TripServant>();
@@ -150,27 +160,6 @@ public class FlightFactoryServant implements FlightFactory {
             departureTimes.remove(departureTime);
             durations.remove(flightDuration);
         }
-    }
-
-    
-    @Override
-    public void sendNotification(String clientID) {
-        //TODO: Which class is storing the clientID?
-        
-        // ClientCallback client = ClientCallbackFactory.getClientCallback(clientID);
-        // client.notifyClient();
-    }
-
-    @Override
-    public void registerClientCallback(String clientID) {
-        // ClientCallback client = ClientCallbackFactory.getClientCallback(clientID);
-        // client.registerClientCallback();
-    }
-
-    @Override
-    public void unregisterClientCallback(String clientID) {
-        // ClientCallback client = ClientCallbackFactory.getClientCallback(clientID);
-        // client.unregisterClientCallback();
     }
 
     @Override

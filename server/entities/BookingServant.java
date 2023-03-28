@@ -5,6 +5,11 @@ import marshall.SerializePOD;
 import utils.PrimitiveSizes;
 import utils.Utils;
 
+/* 
+    Servant class for Booking interface.
+    Defines state variables for class including booking ID, flight ID, client ID, number seats booked.
+    Implements methods including getters and setters, display, and marshalling-unmarshalling.
+*/
 public class BookingServant implements Booking {
     private char[] bookingId;
     private char[] flightId;
