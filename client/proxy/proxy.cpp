@@ -477,6 +477,7 @@ void Proxy::handleMonitor(std::string ip, int request_id, std::string flight_id,
     {
         char* success_message;
         SerializablePOD<char*>::deserialize(ACKmessage, success_message);
+        std::cout << success_message << '\n';
     }
 
     // Timer starts only after subscription is ACK
