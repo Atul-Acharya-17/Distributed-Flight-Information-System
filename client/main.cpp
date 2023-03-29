@@ -24,6 +24,13 @@ int main(int argc, char **argv)
     char *server_ip = argv[1];
     char *client_ip = argv[2];
 
+    unsigned int i = 1;
+    char *c = (char*)&i;
+    if (*c)
+        std::cout<<"Little endian\n";
+    else
+        std::cout<<"Big endian\n";
+
     Communication::setup(server_ip);
 
 	uint32_t choice;
