@@ -37,7 +37,7 @@ public class FlightPublisherSkeleton extends Skeleton {
         status = subscribe(flight_id, clientIP, port, requestId, lifetime, timestamp);
         byte[] replyContent;
         if (status == 0)
-            replyContent = SerializePOD.serialize(clientIP + " " + port + " subscribed to updates successfully");
+            replyContent = SerializePOD.serialize(clientIP + ":" + port + " subscribed to updates successfully");
         else
             replyContent = SerializePOD.serialize("Requested flight not found");
         Reply reply = new Reply(status, replyContent);
