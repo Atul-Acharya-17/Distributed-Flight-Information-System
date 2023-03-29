@@ -1,4 +1,5 @@
 import java.net.*;
+import java.nio.ByteOrder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -25,7 +26,7 @@ import utils.PrimitiveSizes;
 public class Main{
   
     public static void main(String args[]) throws IOException {
-    
+
         int serverType = Integer.parseInt(args[0]);
 
         // Type 0 for Atmost Once and any other number of Atleast Once
@@ -45,7 +46,7 @@ public class Main{
       
         FlightFactory ffs = new FlightFactoryServant();
         ffs.populateFlights();
-        ffs.displayFlights();
+        // ffs.displayFlights();
         
         BookingFactory bfs = new BookingFactoryServant();
         bfs.populateBookings();
@@ -57,7 +58,6 @@ public class Main{
                 DatagramPacket messagePacket = Communication.receive();
 
                 double probability = Math.random();
-                System.out.println("Probability: " + probability);
 
                 if (probability < 0.1) 
                 {
@@ -73,7 +73,6 @@ public class Main{
                 request.deserialize(messageByteString);
 
                 byte[] x = request.serialize();
-                System.out.println(x.length);
                 request.deserialize(x);
 
                 String clientIp = new String(request.getClientIp());
@@ -90,6 +89,7 @@ public class Main{
                       break;
                     case 2:
                       FlightQuerySkeleton.handle(contentBuffer, clientIp, clientPort, requestId);
+                      // ffs.populateFlights();     // For experimentation purposes           
                       break;
                     case 3:
                       NewReservationSkeleton.handle(contentBuffer, clientIp, clientPort, requestId);
@@ -107,7 +107,7 @@ public class Main{
                       TripPlanSkeleton.handle(contentBuffer, clientIp, clientPort, requestId);                      
                       break;
                     default:
-                }                
+                } 
             }
         } finally {if (aSocket != null) aSocket.close();}
     } 

@@ -25,6 +25,7 @@ public class NewReservationSkeleton extends Skeleton {
         String flight_id = new String(SerializePOD.deserializeString(content, idx));
         idx += flight_id.length() + PrimitiveSizes.sizeof((long) flight_id.length());
         String customer_name = new String(SerializePOD.deserializeString(content, idx));
+        System.out.println("Getting num seats");
         idx += customer_name.length() + PrimitiveSizes.sizeof((long) customer_name.length());
         int num_seats = SerializePOD.deserializeInt(content, idx);
 

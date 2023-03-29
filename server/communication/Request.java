@@ -44,7 +44,6 @@ public class Request implements Serialization {
         i += clientIpBuffer.length;
         System.arraycopy(contentSizeBuffer, 0, buffer, i, contentSizeBuffer.length);
         i += contentSizeBuffer.length;
-        System.out.println("Length: " + contentsBuffer.length);
         System.arraycopy(contentsBuffer, 0, buffer, i, contentsBuffer.length);
         i += contentsBuffer.length;
 
@@ -57,6 +56,7 @@ public class Request implements Serialization {
         messageType = 0;
         
         messageType = SerializePOD.deserializeInt(buffer, start);
+
         start += PrimitiveSizes.sizeof(messageType);
 
         requestId = SerializePOD.deserializeInt(buffer, start);
