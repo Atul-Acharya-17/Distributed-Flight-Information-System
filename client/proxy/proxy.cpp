@@ -57,6 +57,9 @@ void Proxy::handleFlightQuery(std::string ip, int request_id, std::string flight
     
     // Unmarshall reply
  
+    int message_type;
+    SerializablePOD<int>::deserialize(message, message_type);
+
     short status;
     SerializablePOD<short>::deserialize(message, status);
 
@@ -123,6 +126,9 @@ void Proxy::handleLocationQuery(std::string ip, int request_id, std::string sour
     }
     
     // Unmarshall reply
+    int message_type;
+    SerializablePOD<int>::deserialize(message, message_type);
+
     short status;
     SerializablePOD<short>::deserialize(message, status);
 
@@ -198,6 +204,8 @@ void Proxy::handlePlanTrip(std::string ip, int request_id, std::string source, s
     }
     
     // Unmarshall reply
+    int message_type;
+    SerializablePOD<int>::deserialize(message, message_type);
 
     short status;
     SerializablePOD<short>::deserialize(message, status);
@@ -275,7 +283,9 @@ void Proxy::handleReservation(std::string ip, int request_id, std::string flight
     }
 
     // Unmarshall reply
-    
+    int message_type;
+    SerializablePOD<int>::deserialize(message, message_type);
+
     short status;
     SerializablePOD<short>::deserialize(message, status);
 
@@ -342,6 +352,9 @@ void Proxy::handleCancelReservation(std::string ip, int request_id, std::string 
     }
     
     // Unmarshall reply
+    int message_type;
+    SerializablePOD<int>::deserialize(message, message_type);
+
     short status;
     SerializablePOD<short>::deserialize(message, status);
 
@@ -407,6 +420,9 @@ void Proxy::handleCheckReservation(std::string ip, int request_id, std::string b
     }
     
     // Umarshall reply
+    int message_type;
+    SerializablePOD<int>::deserialize(message, message_type);
+
     short status;
     SerializablePOD<short>::deserialize(message, status);
 
@@ -460,6 +476,9 @@ void Proxy::handleMonitor(std::string ip, int request_id, std::string flight_id,
         Communication::send(message_buffer, comm_message.serialization_size() + 1);
         n = Communication::receive(ACKmessage);
     }
+    int message_type;
+    SerializablePOD<int>::deserialize(ACKmessage, message_type);
+
     short status;
     SerializablePOD<short>::deserialize(ACKmessage, status);
 
@@ -490,6 +509,9 @@ void Proxy::handleMonitor(std::string ip, int request_id, std::string flight_id,
         int n = Communication::receive(message);
         if (n==-1) continue;
 
+        int message_type;
+        SerializablePOD<int>::deserialize(message, message_type);
+        
         short status;
         SerializablePOD<short>::deserialize(message, status);
 
