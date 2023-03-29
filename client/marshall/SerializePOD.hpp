@@ -13,7 +13,7 @@
 */
 
 template <typename POD>
-class SerializablePOD
+class SerializePOD
 {
 public:
     static inline size_t serialization_size(POD str)
@@ -77,24 +77,24 @@ public:
     Function definitions for string datatype
 */
 template<>
-inline size_t SerializablePOD<char*>::serialization_size(char* str)
+inline size_t SerializePOD<char*>::serialization_size(char* str)
 {
     return sizeof(size_t) + strlen(str);
 }
 
 template<>
-inline void SerializablePOD<char*>::serialize(char*& target, char* value)
+inline void SerializePOD<char*>::serialize(char*& target, char* value)
 {
-    SerializablePOD<size_t>::serialize(target, strlen(value));
+    SerializePOD<size_t>::serialize(target, strlen(value));
     memcpy(target, value, strlen(value));
     target += strlen(value);    // Pointer moves forward
 }
 
 template<>
-inline void SerializablePOD<char*>::deserialize( char*& source, char*& target)
+inline void SerializePOD<char*>::deserialize( char*& source, char*& target)
 {
     size_t length;
-    SerializablePOD<size_t>::deserialize(source, length);
+    SerializePOD<size_t>::deserialize(source, length);
     target = new char[length + 1];
     memcpy( target, source, length );
     source += length;    // Pointer moves forward

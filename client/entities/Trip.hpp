@@ -5,7 +5,7 @@
 #include <vector>
 #include <string>
 
-#include "../marshall/Serializable.hpp"
+#include "../marshall/Serialization.hpp"
 #include "../utils/utils.hpp"
 
 /* 

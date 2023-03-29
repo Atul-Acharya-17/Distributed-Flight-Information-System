@@ -5,7 +5,7 @@
 #include <iostream>
 #include <iomanip>
 
-#include "../marshall/SerializablePOD.hpp"
+#include "../marshall/SerializePOD.hpp"
 
 
 TripServant::TripServant()
@@ -106,7 +106,7 @@ void TripServant::deserialize(char* &dataIn)
 {
     int num_flights;
 
-    SerializablePOD<int>::deserialize(dataIn, num_flights);
+    SerializePOD<int>::deserialize(dataIn, num_flights);
 
     this->flights.clear();
     this->cities.clear();
@@ -116,33 +116,33 @@ void TripServant::deserialize(char* &dataIn)
     for (int i=0; i<num_flights; ++i)
     {
         char* flight_id;
-        SerializablePOD<char*>::deserialize(dataIn, flight_id);
+        SerializePOD<char*>::deserialize(dataIn, flight_id);
         this->flights.push_back(flight_id);
     }
 
     for (int i=0; i<num_flights+1; ++i) // 1 more city (destination)
     {
         char* city;
-        SerializablePOD<char*>::deserialize(dataIn, city);
+        SerializePOD<char*>::deserialize(dataIn, city);
         this->cities.push_back(city);
     }
 
     for (int i=0; i<num_flights+1; ++i) // 1 more time (arrival time)
     {
         int time_in_seconds;
-        SerializablePOD<int>::deserialize(dataIn, time_in_seconds);
+        SerializePOD<int>::deserialize(dataIn, time_in_seconds);
         this->departureTimes.push_back(Time(time_in_seconds));
     }
 
     for (int i=0; i<num_flights; ++i) // 1 more time (arrival time)
     {
         int time_in_seconds;
-        SerializablePOD<int>::deserialize(dataIn, time_in_seconds);
+        SerializePOD<int>::deserialize(dataIn, time_in_seconds);
         this->durations.push_back(Time(time_in_seconds));
     }
 
-    SerializablePOD<float>::deserialize(dataIn, this->cost);
+    SerializePOD<float>::deserialize(dataIn, this->cost);
 
-    SerializablePOD<long>::deserialize(dataIn, this->travelTime);
+    SerializePOD<long>::deserialize(dataIn, this->travelTime);
 }
 

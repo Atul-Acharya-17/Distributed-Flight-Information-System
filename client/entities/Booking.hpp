@@ -1,7 +1,7 @@
 #ifndef BOOKING_H
 #define BOOKING_H
 
-#include "../marshall/Serializable.hpp"
+#include "../marshall/Serialization.hpp"
 
 /* 
     Interface for a Booking object used to make reservations in flight.

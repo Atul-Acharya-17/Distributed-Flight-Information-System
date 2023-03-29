@@ -14,7 +14,7 @@
 #include "../entities/TripServant.hpp"
 #include "../entities/CallbackServant.hpp"
 
-#include "../marshall/SerializablePOD.hpp"
+#include "../marshall/SerializePOD.hpp"
 
 void Proxy::handleFlightQuery(std::string ip, int request_id, std::string flight_id)
 {
@@ -30,9 +30,9 @@ void Proxy::handleFlightQuery(std::string ip, int request_id, std::string flight
 
     int service_type = 2;
 
-    SerializablePOD<int>::serialize(content_buffer, service_type);
+    SerializePOD<int>::serialize(content_buffer, service_type);
 
-    SerializablePOD<char *>::serialize(content_buffer, string_to_array(flight_id));
+    SerializePOD<char *>::serialize(content_buffer, string_to_array(flight_id));
 
     content_buffer -= content_size; // Bring back pointer to start address
 
@@ -58,18 +58,18 @@ void Proxy::handleFlightQuery(std::string ip, int request_id, std::string flight
     // Unmarshall reply
  
     int message_type;
-    SerializablePOD<int>::deserialize(message, message_type);
+    SerializePOD<int>::deserialize(message, message_type);
 
     short status;
-    SerializablePOD<short>::deserialize(message, status);
+    SerializePOD<short>::deserialize(message, status);
 
     long reply_size;
-    SerializablePOD<long>::deserialize(message, reply_size);
+    SerializePOD<long>::deserialize(message, reply_size);
 
     if (status == 1)
     {
         char *error_message;
-        SerializablePOD<char *>::deserialize(message, error_message);
+        SerializePOD<char *>::deserialize(message, error_message);
         std::cout << error_message << '\n';
         return;
     }
@@ -100,9 +100,9 @@ void Proxy::handleLocationQuery(std::string ip, int request_id, std::string sour
 
     int service_type = 1;
 
-    SerializablePOD<int>::serialize(content_buffer, service_type);
-    SerializablePOD<char *>::serialize(content_buffer, string_to_array(source));
-    SerializablePOD<char *>::serialize(content_buffer, string_to_array(destination));
+    SerializePOD<int>::serialize(content_buffer, service_type);
+    SerializePOD<char *>::serialize(content_buffer, string_to_array(source));
+    SerializePOD<char *>::serialize(content_buffer, string_to_array(destination));
 
     content_buffer -= content_size; // Bring pointer back to start address
 
@@ -127,18 +127,18 @@ void Proxy::handleLocationQuery(std::string ip, int request_id, std::string sour
     
     // Unmarshall reply
     int message_type;
-    SerializablePOD<int>::deserialize(message, message_type);
+    SerializePOD<int>::deserialize(message, message_type);
 
     short status;
-    SerializablePOD<short>::deserialize(message, status);
+    SerializePOD<short>::deserialize(message, status);
 
     long reply_size;
-    SerializablePOD<long>::deserialize(message, reply_size);
+    SerializePOD<long>::deserialize(message, reply_size);
 
     if (status == 1)
     {
         char *error_message;
-        SerializablePOD<char *>::deserialize(message, error_message);
+        SerializePOD<char *>::deserialize(message, error_message);
         std::cout << error_message << '\n';
         return;
     }
@@ -146,14 +146,14 @@ void Proxy::handleLocationQuery(std::string ip, int request_id, std::string sour
     else
     {
         int num_flights;
-        SerializablePOD<int>::deserialize(message, num_flights);
+        SerializePOD<int>::deserialize(message, num_flights);
 
         std::cout << "Num Flights: " << num_flights << '\n';
 
         for (int i = 0; i < num_flights; ++i)
         {
             char *flight_id;
-            SerializablePOD<char *>::deserialize(message, flight_id);
+            SerializePOD<char *>::deserialize(message, flight_id);
             std::cout << flight_id << '\n';
         }
         std::cout << '\n';
@@ -178,9 +178,9 @@ void Proxy::handlePlanTrip(std::string ip, int request_id, std::string source, s
 
     int service_type = 7;
 
-    SerializablePOD<int>::serialize(content_buffer, service_type);
-    SerializablePOD<char *>::serialize(content_buffer, string_to_array(source));
-    SerializablePOD<char *>::serialize(content_buffer, string_to_array(destination));
+    SerializePOD<int>::serialize(content_buffer, service_type);
+    SerializePOD<char *>::serialize(content_buffer, string_to_array(source));
+    SerializePOD<char *>::serialize(content_buffer, string_to_array(destination));
 
     content_buffer -= content_size; // Bring pointer back to start address
 
@@ -205,18 +205,18 @@ void Proxy::handlePlanTrip(std::string ip, int request_id, std::string source, s
     
     // Unmarshall reply
     int message_type;
-    SerializablePOD<int>::deserialize(message, message_type);
+    SerializePOD<int>::deserialize(message, message_type);
 
     short status;
-    SerializablePOD<short>::deserialize(message, status);
+    SerializePOD<short>::deserialize(message, status);
 
     long reply_size;
-    SerializablePOD<long>::deserialize(message, reply_size);
+    SerializePOD<long>::deserialize(message, reply_size);
 
     if (status == 1)
     {
         char *error_message;
-        SerializablePOD<char *>::deserialize(message, error_message);
+        SerializePOD<char *>::deserialize(message, error_message);
         std::cout << error_message << '\n';
         return;
     }
@@ -224,7 +224,7 @@ void Proxy::handlePlanTrip(std::string ip, int request_id, std::string source, s
     else
     {
         int num_trips;
-        SerializablePOD<int>::deserialize(message, num_trips);
+        SerializePOD<int>::deserialize(message, num_trips);
 
         std::cout << "Num Trips: " << num_trips << '\n';
 
@@ -255,11 +255,11 @@ void Proxy::handleReservation(std::string ip, int request_id, std::string flight
 
     int service_type = 3;
 
-    SerializablePOD<int>::serialize(content_buffer, service_type);
+    SerializePOD<int>::serialize(content_buffer, service_type);
 
-    SerializablePOD<char *>::serialize(content_buffer, string_to_array(flight_id));
-    SerializablePOD<char *>::serialize(content_buffer, string_to_array(customer_name));
-    SerializablePOD<int>::serialize(content_buffer, num_seats);
+    SerializePOD<char *>::serialize(content_buffer, string_to_array(flight_id));
+    SerializePOD<char *>::serialize(content_buffer, string_to_array(customer_name));
+    SerializePOD<int>::serialize(content_buffer, num_seats);
 
     content_buffer -= content_size; // Bring pointer back to start address
 
@@ -284,18 +284,18 @@ void Proxy::handleReservation(std::string ip, int request_id, std::string flight
 
     // Unmarshall reply
     int message_type;
-    SerializablePOD<int>::deserialize(message, message_type);
+    SerializePOD<int>::deserialize(message, message_type);
 
     short status;
-    SerializablePOD<short>::deserialize(message, status);
+    SerializePOD<short>::deserialize(message, status);
 
     long reply_size;
-    SerializablePOD<long>::deserialize(message, reply_size);
+    SerializePOD<long>::deserialize(message, reply_size);
 
     if (status == 1)
     {
         char *error_message;
-        SerializablePOD<char *>::deserialize(message, error_message);
+        SerializePOD<char *>::deserialize(message, error_message);
         std::cout << error_message << '\n';
         return;
     }
@@ -326,9 +326,9 @@ void Proxy::handleCancelReservation(std::string ip, int request_id, std::string 
 
     int service_type = 4;
 
-    SerializablePOD<int>::serialize(content_buffer, service_type);
+    SerializePOD<int>::serialize(content_buffer, service_type);
 
-    SerializablePOD<char *>::serialize(content_buffer, string_to_array(booking_id));
+    SerializePOD<char *>::serialize(content_buffer, string_to_array(booking_id));
 
     content_buffer -= content_size;
 
@@ -353,25 +353,25 @@ void Proxy::handleCancelReservation(std::string ip, int request_id, std::string 
     
     // Unmarshall reply
     int message_type;
-    SerializablePOD<int>::deserialize(message, message_type);
+    SerializePOD<int>::deserialize(message, message_type);
 
     short status;
-    SerializablePOD<short>::deserialize(message, status);
+    SerializePOD<short>::deserialize(message, status);
 
     long reply_size;
-    SerializablePOD<long>::deserialize(message, reply_size);
+    SerializePOD<long>::deserialize(message, reply_size);
 
     if (status == 1)
     {
         char *error_message;
-        SerializablePOD<char *>::deserialize(message, error_message);
+        SerializePOD<char *>::deserialize(message, error_message);
         std::cout << error_message << '\n';
         return;
     }
     else
     {
         char *confirmation_message;
-        SerializablePOD<char *>::deserialize(message, confirmation_message);
+        SerializePOD<char *>::deserialize(message, confirmation_message);
         std::cout << confirmation_message << '\n';
         return;
     }
@@ -394,9 +394,9 @@ void Proxy::handleCheckReservation(std::string ip, int request_id, std::string b
 
     int service_type = 5;
 
-    SerializablePOD<int>::serialize(content_buffer, service_type);
+    SerializePOD<int>::serialize(content_buffer, service_type);
 
-    SerializablePOD<char *>::serialize(content_buffer, string_to_array(booking_id));
+    SerializePOD<char *>::serialize(content_buffer, string_to_array(booking_id));
 
     content_buffer -= content_size; // Bring pointer back to start address
 
@@ -421,18 +421,18 @@ void Proxy::handleCheckReservation(std::string ip, int request_id, std::string b
     
     // Umarshall reply
     int message_type;
-    SerializablePOD<int>::deserialize(message, message_type);
+    SerializePOD<int>::deserialize(message, message_type);
 
     short status;
-    SerializablePOD<short>::deserialize(message, status);
+    SerializePOD<short>::deserialize(message, status);
 
     long reply_size;
-    SerializablePOD<long>::deserialize(message, reply_size);
+    SerializePOD<long>::deserialize(message, reply_size);
 
     if (status == 1)
     {
         char *error_message;
-        SerializablePOD<char *>::deserialize(message, error_message);
+        SerializePOD<char *>::deserialize(message, error_message);
         std::cout << error_message << '\n';
         return;
     }
@@ -458,9 +458,9 @@ void Proxy::handleMonitor(std::string ip, int request_id, std::string flight_id,
     content_buffer[content_size] = '\0';
     int service_type = 6;
 
-    SerializablePOD<int>::serialize(content_buffer, service_type);
-    SerializablePOD<char *>::serialize(content_buffer, string_to_array(flight_id));
-    SerializablePOD<int>::serialize(content_buffer, monitoringDuration);
+    SerializePOD<int>::serialize(content_buffer, service_type);
+    SerializePOD<char *>::serialize(content_buffer, string_to_array(flight_id));
+    SerializePOD<int>::serialize(content_buffer, monitoringDuration);
 
     content_buffer -= content_size;
 
@@ -477,25 +477,25 @@ void Proxy::handleMonitor(std::string ip, int request_id, std::string flight_id,
         n = Communication::receive(ACKmessage);
     }
     int message_type;
-    SerializablePOD<int>::deserialize(ACKmessage, message_type);
+    SerializePOD<int>::deserialize(ACKmessage, message_type);
 
     short status;
-    SerializablePOD<short>::deserialize(ACKmessage, status);
+    SerializePOD<short>::deserialize(ACKmessage, status);
 
     long reply_size;
-    SerializablePOD<long>::deserialize(ACKmessage, reply_size);
+    SerializePOD<long>::deserialize(ACKmessage, reply_size);
 
     if (status == 1)
     {
         char *error_message;
-        SerializablePOD<char *>::deserialize(ACKmessage, error_message);
+        SerializePOD<char *>::deserialize(ACKmessage, error_message);
         std::cout << error_message << '\n';
         return;
     }
     else
     {
         char* success_message;
-        SerializablePOD<char*>::deserialize(ACKmessage, success_message);
+        SerializePOD<char*>::deserialize(ACKmessage, success_message);
         std::cout << success_message << '\n';
     }
 
@@ -510,18 +510,18 @@ void Proxy::handleMonitor(std::string ip, int request_id, std::string flight_id,
         if (n==-1) continue;
 
         int message_type;
-        SerializablePOD<int>::deserialize(message, message_type);
+        SerializePOD<int>::deserialize(message, message_type);
         
         short status;
-        SerializablePOD<short>::deserialize(message, status);
+        SerializePOD<short>::deserialize(message, status);
 
         long reply_size;
-        SerializablePOD<long>::deserialize(message, reply_size);
+        SerializePOD<long>::deserialize(message, reply_size);
 
         if (status == 1)
         {
             char *error_message;
-            SerializablePOD<char *>::deserialize(message, error_message);
+            SerializePOD<char *>::deserialize(message, error_message);
             std::cout << error_message << '\n';
             return;
         }

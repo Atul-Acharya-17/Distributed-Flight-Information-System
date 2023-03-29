@@ -109,12 +109,12 @@ void FlightServant::display()
 
 size_t FlightServant::serialization_size() const
 {
-    return SerializablePOD<char* >::serialization_size(flightId) +
-           SerializablePOD<char* >::serialization_size(source) +
-           SerializablePOD<char* >::serialization_size(destination) +
-           SerializablePOD<int>::serialization_size(seatsAvailable) +
-           SerializablePOD<int>::serialization_size(seatsBooked) +
-           SerializablePOD<float>::serialization_size(price);
+    return SerializePOD<char* >::serialization_size(flightId) +
+           SerializePOD<char* >::serialization_size(source) +
+           SerializePOD<char* >::serialization_size(destination) +
+           SerializePOD<int>::serialization_size(seatsAvailable) +
+           SerializePOD<int>::serialization_size(seatsBooked) +
+           SerializePOD<float>::serialization_size(price);
 }
 char* FlightServant::serialize() const
 {
@@ -124,14 +124,14 @@ char* FlightServant::serialize() const
     char* dataOut = new char[size + 1];
     dataOut[size] = '\0';
 
-    SerializablePOD<char* >::serialize(dataOut, flightId);
-    SerializablePOD<char* >::serialize(dataOut, source);
-    SerializablePOD<char* >::serialize(dataOut, destination);
-    SerializablePOD<int>::serialize(dataOut, seatsAvailable);
-    SerializablePOD<int>::serialize(dataOut, seatsBooked);
-    SerializablePOD<float>::serialize(dataOut, price);
-    SerializablePOD<int>::serialize(dataOut, departureTime.toSecondOfDay());
-    SerializablePOD<int>::serialize(dataOut, duration.toSecondOfDay());
+    SerializePOD<char* >::serialize(dataOut, flightId);
+    SerializePOD<char* >::serialize(dataOut, source);
+    SerializePOD<char* >::serialize(dataOut, destination);
+    SerializePOD<int>::serialize(dataOut, seatsAvailable);
+    SerializePOD<int>::serialize(dataOut, seatsBooked);
+    SerializePOD<float>::serialize(dataOut, price);
+    SerializePOD<int>::serialize(dataOut, departureTime.toSecondOfDay());
+    SerializePOD<int>::serialize(dataOut, duration.toSecondOfDay());
 
     // Reset pointer to start of serialized string and return
     dataOut -= size;
@@ -149,14 +149,14 @@ void FlightServant::deserialize(char* &dataIn)
     int int_departureTime;
     int int_duration;
 
-    SerializablePOD<char*>::deserialize(dataIn, flightId);
-    SerializablePOD<char*>::deserialize(dataIn, source);
-    SerializablePOD<char*>::deserialize(dataIn, destination);
-    SerializablePOD<int>::deserialize(dataIn, seatsAvailable);
-    SerializablePOD<int>::deserialize(dataIn, seatsBooked);
-    SerializablePOD<float>::deserialize(dataIn, price);
-    SerializablePOD<int>::deserialize(dataIn, int_departureTime);
-    SerializablePOD<int>::deserialize(dataIn, int_duration);
+    SerializePOD<char*>::deserialize(dataIn, flightId);
+    SerializePOD<char*>::deserialize(dataIn, source);
+    SerializePOD<char*>::deserialize(dataIn, destination);
+    SerializePOD<int>::deserialize(dataIn, seatsAvailable);
+    SerializePOD<int>::deserialize(dataIn, seatsBooked);
+    SerializePOD<float>::deserialize(dataIn, price);
+    SerializePOD<int>::deserialize(dataIn, int_departureTime);
+    SerializePOD<int>::deserialize(dataIn, int_duration);
 
     this->flightId = flightId;
     this->source = source;

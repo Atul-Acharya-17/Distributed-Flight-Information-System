@@ -2,7 +2,7 @@
 #include <string>
 #include <iostream>
 #include <iomanip>
-#include "../marshall/SerializablePOD.hpp"
+#include "../marshall/SerializePOD.hpp"
 
 BookingServant::BookingServant()
 {
@@ -61,10 +61,10 @@ void BookingServant::display()
 
 size_t BookingServant::serialization_size() const
 {
-    return SerializablePOD<char *>::serialization_size(bookingId) +
-           SerializablePOD<char *>::serialization_size(flightId) +
-           SerializablePOD<char *>::serialization_size(clientId) +
-           SerializablePOD<int>::serialization_size(numSeatsBooked);
+    return SerializePOD<char *>::serialization_size(bookingId) +
+           SerializePOD<char *>::serialization_size(flightId) +
+           SerializePOD<char *>::serialization_size(clientId) +
+           SerializePOD<int>::serialization_size(numSeatsBooked);
 }
 
 char *BookingServant::serialize() const
@@ -75,10 +75,10 @@ char *BookingServant::serialize() const
     char *dataOut = new char[size + 1];
     dataOut[size] = '\0';
 
-    SerializablePOD<char *>::serialize(dataOut, bookingId);
-    SerializablePOD<char *>::serialize(dataOut, flightId);
-    SerializablePOD<char *>::serialize(dataOut, clientId);
-    SerializablePOD<int>::serialize(dataOut, numSeatsBooked);
+    SerializePOD<char *>::serialize(dataOut, bookingId);
+    SerializePOD<char *>::serialize(dataOut, flightId);
+    SerializePOD<char *>::serialize(dataOut, clientId);
+    SerializePOD<int>::serialize(dataOut, numSeatsBooked);
 
     // Reset pointer to start of serialized string and return
     dataOut -= size;
@@ -92,10 +92,10 @@ void BookingServant::deserialize(char* &dataIn)
     char *clientId;
     int numSeatsBooked;
 
-    SerializablePOD<char *>::deserialize(dataIn, bookingId);
-    SerializablePOD<char *>::deserialize(dataIn, flightId);
-    SerializablePOD<char *>::deserialize(dataIn, clientId);
-    SerializablePOD<int>::deserialize(dataIn, numSeatsBooked);
+    SerializePOD<char *>::deserialize(dataIn, bookingId);
+    SerializePOD<char *>::deserialize(dataIn, flightId);
+    SerializePOD<char *>::deserialize(dataIn, clientId);
+    SerializePOD<int>::deserialize(dataIn, numSeatsBooked);
 
     this->bookingId = bookingId;
     this->flightId = flightId;

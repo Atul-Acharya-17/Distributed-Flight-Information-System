@@ -1,7 +1,7 @@
 #include "Flight.hpp"
 #include <iostream>
 #include <string>
-#include "../marshall/SerializablePOD.hpp"
+#include "../marshall/SerializePOD.hpp"
 #include "CallbackServant.hpp"
 
 CallbackServant::CallbackServant()
@@ -16,7 +16,7 @@ void CallbackServant::displayUpdates()
 
 size_t CallbackServant::serialization_size() const
 {
-    return SerializablePOD<char *>::serialization_size(msg);
+    return SerializePOD<char *>::serialization_size(msg);
 }
 
 char *CallbackServant::serialize() const
@@ -27,7 +27,7 @@ char *CallbackServant::serialize() const
     char *dataOut = new char[size + 1];
     dataOut[size] = '\0';
 
-    SerializablePOD<char *>::serialize(dataOut, msg);
+    SerializePOD<char *>::serialize(dataOut, msg);
 
     // Reset pointer to start of serialized string and return
     dataOut -= size;
@@ -37,6 +37,6 @@ char *CallbackServant::serialize() const
 void CallbackServant::deserialize(char *&dataIn)
 {
     char *msg;
-    SerializablePOD<char *>::deserialize(dataIn, msg);
+    SerializePOD<char *>::deserialize(dataIn, msg);
     this->msg = msg;
 }

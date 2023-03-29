@@ -2,7 +2,7 @@
 
 #ifndef CALLBACK_H
 #define CALLBACK_H
-#include "../marshall/Serializable.hpp"
+#include "../marshall/Serialization.hpp"
 
 /* 
     Interface for a Callback object used to subscribe to updates from server.
