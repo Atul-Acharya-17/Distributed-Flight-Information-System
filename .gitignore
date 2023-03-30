@@ -4,3 +4,5 @@
 test*
 *.gch
 *.out
+*.zip
+*.docx
