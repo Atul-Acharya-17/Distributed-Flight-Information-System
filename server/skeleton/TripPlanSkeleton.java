@@ -32,7 +32,9 @@ public class TripPlanSkeleton extends Skeleton {
 
         // Find available trips
         FlightFactoryServant fm = new FlightFactoryServant();
-        ArrayList<TripServant> result = fm.planTrip(source, destination, 2, Float.MAX_VALUE);
+        ArrayList<TripServant> result = fm.planTrip(source, destination, 3, Float.MAX_VALUE);
+
+        if (result.size() == 0) result = fm.planTrip(source, destination, Integer.MAX_VALUE, Float.MAX_VALUE);
 
         short status = 0;
         byte[] replyContent;

@@ -105,7 +105,7 @@ public class FlightPublisherSkeleton extends Skeleton {
 
                         byte[] replyBuffer = reply.serialize();
 
-                        System.out.println("Sent update message to " + subscriber.getClientIp() + ":" + subscriber.getPort() + "---" + publish.getMsg().toString());
+                        System.out.println("Sent update message to " + subscriber.getClientIp() + ":" + subscriber.getPort() + "---" + new String(publish.getMsg()));
                         communication.Communication.send(subscriber.getClientIp(), subscriber.getPort(), replyBuffer);
                     }
                 } else {
