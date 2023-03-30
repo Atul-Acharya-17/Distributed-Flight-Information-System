@@ -1,8 +1,8 @@
 #ifndef MESSAGE_H
 #define MESSAGE_H
 
-#include "../marshall/Serializable.hpp"
-#include "../marshall/SerializablePOD.hpp"
+#include "../marshall/Serialization.hpp"
+#include "../marshall/SerializePOD.hpp"
 #include <string>
 #include <iostream>
 
@@ -27,9 +27,9 @@ class CommunicationMessage : public Serializable  {
 
     size_t serialization_size() const
     {
-        return SerializablePOD<int>::serialization_size(messageType) +
-               SerializablePOD<int>::serialization_size(requestId) +
-               SerializablePOD<char*>::serialization_size(clientId) +
+        return SerializePOD<int>::serialization_size(messageType) +
+               SerializePOD<int>::serialization_size(requestId) +
+               SerializePOD<char*>::serialization_size(clientId) +
                this->content_size + sizeof(size_t);
     }
 
@@ -42,10 +42,10 @@ class CommunicationMessage : public Serializable  {
         char* dataOut = new char[size + 1];
         dataOut[size] = '\0';
 
-        SerializablePOD<int>::serialize(dataOut, messageType);
-        SerializablePOD<int>::serialize(dataOut, requestId);
-        SerializablePOD<char*>::serialize(dataOut, clientId);
-        SerializablePOD<size_t>::serialize(dataOut, content_size);
+        SerializePOD<int>::serialize(dataOut, messageType);
+        SerializePOD<int>::serialize(dataOut, requestId);
+        SerializePOD<char*>::serialize(dataOut, clientId);
+        SerializePOD<size_t>::serialize(dataOut, content_size);
         
         memcpy(dataOut, contents, content_size);
         
@@ -63,10 +63,10 @@ class CommunicationMessage : public Serializable  {
         char* ip;
         char* contents;
 
-        SerializablePOD<int>::deserialize(dataIn, message_type);
-        SerializablePOD<int>::deserialize(dataIn, request_id);
-        SerializablePOD<char*>::deserialize(dataIn, ip);
-        SerializablePOD<char*>::deserialize(dataIn, contents);
+        SerializePOD<int>::deserialize(dataIn, message_type);
+        SerializePOD<int>::deserialize(dataIn, request_id);
+        SerializePOD<char*>::deserialize(dataIn, ip);
+        SerializePOD<char*>::deserialize(dataIn, contents);
 
         this->messageType = message_type;
         this->requestId = request_id;
@@ -76,8 +76,8 @@ class CommunicationMessage : public Serializable  {
         int service_id;
 	    char* location;
 
-        SerializablePOD<int>::deserialize(contents, service_id);
-        SerializablePOD<char*>::deserialize(contents, location);       
+        SerializePOD<int>::deserialize(contents, service_id);
+        SerializePOD<char*>::deserialize(contents, location);       
     }
 
 };

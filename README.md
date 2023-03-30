@@ -1,4 +1,6 @@
 ### Running Client
+Change to client directory:  
+`cd client/`  
 
 On Mac:  
 `g++ -std=c++17 -o client.o main.cpp constants.hpp marshall/* proxy/* communication/* entities/* client.hpp client.cpp `
@@ -10,6 +12,9 @@ To run the executable, enter server IP address and client IP address:
 `./client.o <server_ip> <client_ip>`
 
 ### Running Server
+Change to server directory:  
+`cd server/`
+
 Compile Java file  
 `javac Main.java`
 

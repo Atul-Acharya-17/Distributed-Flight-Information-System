@@ -2,7 +2,7 @@
 #define FLIGHTSERVANT_H
 
 #include "Flight.hpp"
-#include "../marshall/SerializablePOD.hpp"
+#include "../marshall/SerializePOD.hpp"
 
 /* 
     Servant class for Flight interface.

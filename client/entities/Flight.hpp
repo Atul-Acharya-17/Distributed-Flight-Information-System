@@ -1,7 +1,7 @@
 #ifndef FLIGHT_H
 #define FLIGHT_H
 
-#include "../marshall/Serializable.hpp"
+#include "../marshall/Serialization.hpp"
 #include "../utils/utils.hpp"
 
 /* 

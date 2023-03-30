@@ -2,7 +2,7 @@
 #define TRIP_SERVANT_H
 
 #include "Trip.hpp"
-#include "../marshall/SerializablePOD.hpp"
+#include "../marshall/SerializePOD.hpp"
 
 /* 
     Servant class for Trip interface.

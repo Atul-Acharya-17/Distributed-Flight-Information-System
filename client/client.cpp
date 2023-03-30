@@ -63,7 +63,7 @@ void Client::reserveSeats()
 
 	std::string flight_id;
 	std::string customer_name;
-	uint32_t num_seats;
+	int32_t num_seats;
 
 	std::cout << "Enter the flight ID\n";
 	std::getline(std::cin, flight_id);
@@ -121,12 +121,17 @@ void Client::monitorUpdates()
 	this->request_id++;
 
 	std::string flight_id;
-	std::uint32_t monitoringDuration; // in terms of seconds
+	std::int32_t monitoringDuration; // in terms of seconds
 
 	std::cout << "Enter the Flight ID for monitoring seat updates\n";
 	std::getline(std::cin, flight_id);
 	std::cout << "For how many second(s) would you like to monitor this flight?\n";
 	std::cin >> monitoringDuration;
+	if (monitoringDuration <= 0)
+	{
+		std::cerr << "You should enter a positive number\n";
+		return;
+	}
 	std::cout << std::endl;
 
 	Proxy proxy;
