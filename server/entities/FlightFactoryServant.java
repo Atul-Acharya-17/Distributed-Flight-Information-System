@@ -12,7 +12,7 @@ import java.util.Scanner;
 /*
  * Implementation of Booking Factory interface.
  * Implements functions for reading flights from file, lookup flights based on source-destination or flight ID, 
- * calculating multi-city trips using BFS, and displaying all flights.
+ * calculating multi-city trips using DFS, and displaying all flights.
  */
 public class FlightFactoryServant implements FlightFactory {
     private static Hashtable<String, Flight> flights = new Hashtable<>();
