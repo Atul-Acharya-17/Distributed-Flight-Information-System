@@ -72,9 +72,6 @@ public class Main{
                 Request request = new Request();
                 request.deserialize(messageByteString);
 
-                byte[] x = request.serialize();
-                request.deserialize(x);
-
                 String clientIp = new String(request.getClientIp());
                 int requestId = request.getRequestId();
 
